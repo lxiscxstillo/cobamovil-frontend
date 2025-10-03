@@ -1,0 +1,41 @@
+.users-container {
+  padding: 20px;
+
+  h2 {
+    color: #1976d2;
+    margin-bottom: 20px;
+    text-align: center;
+  }
+
+  .loading {
+    text-align: center;
+    color: #666;
+  }
+
+  .error {
+    text-align: center;
+    color: #e53935;
+    font-weight: bold;
+  }
+
+  .users-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+
+    th, td {
+      border: 1px solid #ddd;
+      padding: 10px;
+      text-align: left;
+    }
+
+    th {
+      background: #1976d2;
+      color: white;
+    }
+
+    tr:nth-child(even) {
+      background: #f5f5f5;
+    }
+  }
+}
