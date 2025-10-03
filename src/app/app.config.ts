@@ -4,16 +4,17 @@ import { provideHttpClient, withFetch, withInterceptors } from '@angular/common/
 import { provideClientHydration } from '@angular/platform-browser';
 
 import { routes } from './app.routes';
-import { jwtInterceptor } from './core/interceptors/jwt.interceptor';
+import { JwtInterceptor } from './core/interceptors/jwt.interceptor';
 
 export const appConfig: ApplicationConfig = {
   providers: [
+    provideHttpClient(
+      withFetch(),                        // 👈 habilita fetch API en vez de XHR
+      withInterceptors([JwtInterceptor])  // 👈 agrega tu interceptor JWT
+    ),
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes),
-    provideClientHydration(),
-    provideHttpClient(
-      withFetch(),
-      withInterceptors([jwtInterceptor])
-    )
+    provideClientHydration()
   ]
 };
+

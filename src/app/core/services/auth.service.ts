@@ -1,72 +1,54 @@
 import { Injectable } from '@angular/core';
-import { Router } from '@angular/router';
-import { BehaviorSubject, Observable, tap } from 'rxjs';
-import { ApiService } from './api.service';
-import { AuthResponse, LoginRequest, RegisterRequest, User } from '../models/user.model';
+import { HttpClient } from '@angular/common/http';
+import { Observable, tap } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  private currentUserSubject = new BehaviorSubject<User | null>(null);
-  public currentUser$ = this.currentUserSubject.asObservable();
+  private apiUrl = 'http://localhost:8081/api/auth'; // ⚠️ Ajustar al puerto del backend
 
-  constructor(
-    private apiService: ApiService,
-    private router: Router
-  ) {
-    this.loadUserFromStorage();
-  }
+  constructor(private http: HttpClient) {}
 
-  register(request: RegisterRequest): Observable<AuthResponse> {
-    return this.apiService.post<AuthResponse>('/auth/register', request).pipe(
-      tap(response => this.handleAuthResponse(response))
-    );
-  }
-
-  login(request: LoginRequest): Observable<AuthResponse> {
-    return this.apiService.post<AuthResponse>('/auth/login', request).pipe(
-      tap(response => this.handleAuthResponse(response))
-    );
-  }
-
-  logout(): Observable<any> {
-    return this.apiService.post('/auth/logout', {}).pipe(
-      tap(() => {
-        this.clearAuthData();
-        this.router.navigate(['/login']);
+  /**
+   * Login
+   */
+  login(credentials: { username: string; password: string }): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}/login`, credentials).pipe(
+      tap((response) => {
+        if (response?.token) {
+          localStorage.setItem('token', response.token);
+        }
       })
     );
   }
 
+  /**
+   * Register
+   */
+  register(userData: { username: string; email: string; password: string }): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}/register`, userData);
+  }
+
+  /**
+   * Logout
+   */
+  logout(): void {
+    localStorage.removeItem('token');
+  }
+
+  /**
+   * Get JWT token
+   */
   getToken(): string | null {
     return localStorage.getItem('token');
   }
 
+  /**
+   * Check if user is authenticated
+   */
   isAuthenticated(): boolean {
     return !!this.getToken();
   }
-
-  getCurrentUser(): User | null {
-    return this.currentUserSubject.value;
-  }
-
-  private handleAuthResponse(response: AuthResponse): void {
-    localStorage.setItem('token', response.token);
-    localStorage.setItem('user', JSON.stringify(response.user));
-    this.currentUserSubject.next(response.user);
-  }
-
-  private loadUserFromStorage(): void {
-    const userStr = localStorage.getItem('user');
-    if (userStr) {
-      this.currentUserSubject.next(JSON.parse(userStr));
-    }
-  }
-
-  private clearAuthData(): void {
-    localStorage.removeItem('token');
-    localStorage.removeItem('user');
-    this.currentUserSubject.next(null);
-  }
 }
+
