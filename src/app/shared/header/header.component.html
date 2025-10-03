@@ -1,0 +1,11 @@
+<nav class="navbar">
+  <div class="navbar-left">
+    <span class="app-title">CobaMovil</span>
+  </div>
+
+  <div class="navbar-right" *ngIf="isLoggedIn()">
+    <span class="user-info">👤 {{ username }}</span>
+    <button class="logout-btn" (click)="logout()">Logout</button>
+  </div>
+</nav>
+

@@ -1,12 +1,15 @@
 import { Component } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
+import { CommonModule } from '@angular/common';
 import { AuthService } from '../../core/services/auth.service';
 
 @Component({
   selector: 'app-login',
-  templateUrl: './login.html',
-  styleUrls: ['./login.scss']
+  standalone: true,
+  imports: [CommonModule, ReactiveFormsModule],
+  templateUrl: './login.component.html',
+  styleUrls: ['./login.component.scss']
 })
 export class LoginComponent {
   loginForm: FormGroup;
@@ -19,27 +22,31 @@ export class LoginComponent {
     private router: Router
   ) {
     this.loginForm = this.fb.group({
-      username: ['', [Validators.required]],
-      password: ['', [Validators.required]]
+      username: ['', Validators.required],
+      password: ['', Validators.required]
     });
   }
 
-  onSubmit(): void {
+  onSubmit() {
     if (this.loginForm.invalid) return;
 
     this.loading = true;
     this.errorMessage = null;
 
     this.authService.login(this.loginForm.value).subscribe({
-      next: () => {
-        this.loading = false;
+      next: (response) => {
+        // Guardar username junto con el token
+        localStorage.setItem('username', this.loginForm.value.username);
+
         this.router.navigate(['/dashboard']);
       },
       error: (err) => {
+        this.errorMessage = err.error?.message || 'Login failed. Please try again.';
         this.loading = false;
-        this.errorMessage = err.error?.message || 'Invalid credentials';
+      },
+      complete: () => {
+        this.loading = false;
       }
     });
   }
 }
-

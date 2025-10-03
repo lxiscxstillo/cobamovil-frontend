@@ -1,16 +1,20 @@
 import { Component } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
+import { CommonModule } from '@angular/common';
 import { AuthService } from '../../core/services/auth.service';
 
 @Component({
   selector: 'app-register',
-  templateUrl: './register.html',
-  styleUrls: ['./register.scss']
+  standalone: true,
+  imports: [CommonModule, ReactiveFormsModule],
+  templateUrl: './register.component.html',
+  styleUrls: ['./register.component.scss']
 })
 export class RegisterComponent {
   registerForm: FormGroup;
   errorMessage: string | null = null;
+  successMessage: string | null = null;
   loading = false;
 
   constructor(
@@ -19,28 +23,31 @@ export class RegisterComponent {
     private router: Router
   ) {
     this.registerForm = this.fb.group({
-      username: ['', [Validators.required]],
+      username: ['', [Validators.required, Validators.minLength(3)]],
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(6)]]
     });
   }
 
-  onSubmit(): void {
+  onSubmit() {
     if (this.registerForm.invalid) return;
 
     this.loading = true;
     this.errorMessage = null;
+    this.successMessage = null;
 
     this.authService.register(this.registerForm.value).subscribe({
       next: () => {
-        this.loading = false;
-        this.router.navigate(['/login']);
+        this.successMessage = 'Registration successful! Redirecting to login...';
+        setTimeout(() => this.router.navigate(['/login']), 2000);
       },
       error: (err) => {
+        this.errorMessage = err.error?.message || 'Registration failed. Try again.';
         this.loading = false;
-        this.errorMessage = err.error?.message || 'Registration failed';
+      },
+      complete: () => {
+        this.loading = false;
       }
     });
   }
 }
-
