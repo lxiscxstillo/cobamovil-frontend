@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, NgIf } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { HeaderComponent } from '../../shared/header/header.component';
 
 @Component({
   selector: 'app-users',
   standalone: true,
-  imports: [CommonModule, HeaderComponent],
+  imports: [CommonModule, NgIf, HeaderComponent],
   templateUrl: './users.component.html',
   styleUrls: ['./users.component.scss']
 })
