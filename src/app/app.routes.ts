@@ -6,23 +6,23 @@ export const routes: Routes = [
   {
     path: 'login',
     loadComponent: () =>
-      import('./pages/login/login').then(m => m.LoginComponent)
+      import('./pages/login/login.component').then(m => m.LoginComponent)
   },
   {
     path: 'register',
     loadComponent: () =>
-      import('./pages/register/register').then(m => m.RegisterComponent)
+      import('./pages/register/register.component').then(m => m.RegisterComponent)
   },
   {
     path: 'dashboard',
     loadComponent: () =>
-      import('./pages/dashboard/dashboard').then(m => m.DashboardComponent),
+      import('./pages/dashboard/dashboard.component').then(m => m.DashboardComponent),
     canActivate: [authGuard]
   },
   {
     path: 'users',
     loadComponent: () =>
-      import('./pages/users/users').then(m => m.UsersComponent),
+      import('./pages/users/users.component').then(m => m.UsersComponent),
     canActivate: [authGuard]
   },
   { path: '**', redirectTo: '/login' }
