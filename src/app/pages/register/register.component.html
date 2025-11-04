@@ -1,40 +1,70 @@
-<div class="register-container">
-  <h2>Register</h2>
+<div class="page-center">
+  <form class="card stack-lg" [formGroup]="registerForm" (ngSubmit)="onSubmit()" novalidate>
+    <header>
+      <div>
+        <h2>Crear cuenta</h2>
+        <div class="muted">Regístrate para comenzar</div>
+      </div>
+    </header>
 
-  <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
-    <div class="form-group">
-      <label for="username">Username</label>
-      <input id="username" type="text" formControlName="username" placeholder="Enter username" />
-      <div *ngIf="registerForm.get('username')?.touched && registerForm.get('username')?.invalid" class="error">
-        Username is required (min 3 characters)
+    <div class="field">
+      <label for="username" class="label">Usuario</label>
+      <div class="control">
+        <span class="input-icon">👤</span>
+        <input id="username" type="text" class="input"
+               [class.valid]="username?.valid && (username?.dirty || username?.touched)"
+               [class.invalid]="username?.invalid && (username?.dirty || username?.touched)"
+               formControlName="username" placeholder="Tu usuario" />
+      </div>
+      <div *ngIf="username?.invalid && (username?.dirty || username?.touched)" class="error">
+        <ng-container *ngIf="username?.errors?.['required']">El usuario es requerido.</ng-container>
+        <ng-container *ngIf="username?.errors?.['minlength']">Mínimo 3 caracteres.</ng-container>
+        <ng-container *ngIf="username?.errors?.['pattern']">Solo letras, números, guiones y guiones bajos.</ng-container>
       </div>
     </div>
 
-    <div class="form-group">
-      <label for="email">Email</label>
-      <input id="email" type="email" formControlName="email" placeholder="Enter email" />
-      <div *ngIf="registerForm.get('email')?.touched && registerForm.get('email')?.invalid" class="error">
-        Enter a valid email
+    <div class="field">
+      <label for="email" class="label">Email</label>
+      <div class="control">
+        <span class="input-icon">✉️</span>
+        <input id="email" type="email" class="input"
+               [class.valid]="email?.valid && (email?.dirty || email?.touched)"
+               [class.invalid]="email?.invalid && (email?.dirty || email?.touched)"
+               formControlName="email" placeholder="tu@email.com" />
+      </div>
+      <div *ngIf="email?.invalid && (email?.dirty || email?.touched)" class="error">
+        <ng-container *ngIf="email?.errors?.['required']">El email es requerido.</ng-container>
+        <ng-container *ngIf="email?.errors?.['email']">Ingresa un email válido.</ng-container>
       </div>
     </div>
 
-    <div class="form-group">
-      <label for="password">Password</label>
-      <input id="password" type="password" formControlName="password" placeholder="Enter password" />
-      <div *ngIf="registerForm.get('password')?.touched && registerForm.get('password')?.invalid" class="error">
-        Password must be at least 6 characters
+    <div class="field">
+      <label for="password" class="label">Contraseña</label>
+      <div class="control">
+        <span class="input-icon">🔒</span>
+        <input [type]="showPassword ? 'text' : 'password'" id="password" class="input"
+               [class.valid]="password?.valid && (password?.dirty || password?.touched)"
+               [class.invalid]="password?.invalid && (password?.dirty || password?.touched)"
+               formControlName="password" placeholder="Mínimo 6 caracteres" />
+        <button type="button" class="toggle-eye" (click)="togglePassword()" aria-label="Mostrar/Ocultar contraseña">
+          {{ showPassword ? '🙈' : '👁️' }}
+        </button>
       </div>
+      <div class="strength"><span [style.width.%]="passwordStrength"></span></div>
+      <div *ngIf="password?.invalid && (password?.dirty || password?.touched)" class="error">
+        <ng-container *ngIf="password?.errors?.['required']">La contraseña es requerida.</ng-container>
+        <ng-container *ngIf="password?.errors?.['minlength']">Mínimo 6 caracteres.</ng-container>
+      </div>
+      <div class="hint" *ngIf="password?.valid">Contraseña segura ✔</div>
     </div>
 
-    <button type="submit" [disabled]="loading || registerForm.invalid">
-      {{ loading ? 'Registering...' : 'Register' }}
+    <button class="btn" type="submit" [disabled]="loading || registerForm.invalid">
+      {{ loading ? 'Creando cuenta…' : 'Crear cuenta' }}
     </button>
 
     <div class="success" *ngIf="successMessage">{{ successMessage }}</div>
     <div class="error" *ngIf="errorMessage">{{ errorMessage }}</div>
-  </form>
 
-  <p class="login-link">
-    Already have an account? <a routerLink="/login">Login here</a>
-  </p>
+    <div class="muted" style="text-align:center">¿Ya tienes cuenta? <a class="link" routerLink="/login">Inicia sesión</a></div>
+  </form>
 </div>

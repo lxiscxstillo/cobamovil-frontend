@@ -1,25 +1,45 @@
-<div class="login-container">
-  <h2>Login</h2>
+<div class="page-center">
+  <form class="card stack-lg" [formGroup]="loginForm" (ngSubmit)="onSubmit()" novalidate>
+    <header>
+      <div>
+        <h2>Bienvenido</h2>
+        <div class="muted">Ingresa a tu cuenta</div>
+      </div>
+    </header>
 
-  <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
-    <div class="form-group">
-      <label for="username">Username</label>
-      <input id="username" type="text" formControlName="username" placeholder="Enter username" />
-      <div *ngIf="loginForm.get('username')?.touched && loginForm.get('username')?.invalid" class="error">
-        Username is required
+    <div class="field">
+      <label for="username" class="label">Usuario</label>
+      <div class="control">
+        <span class="input-icon">👤</span>
+        <input id="username" type="text" class="input"
+               [class.valid]="username?.valid && (username?.dirty || username?.touched)"
+               [class.invalid]="username?.invalid && (username?.dirty || username?.touched)"
+               formControlName="username" placeholder="Tu usuario" />
+      </div>
+      <div *ngIf="username?.invalid && (username?.dirty || username?.touched)" class="error">
+        El usuario es requerido.
       </div>
     </div>
 
-    <div class="form-group">
-      <label for="password">Password</label>
-      <input id="password" type="password" formControlName="password" placeholder="Enter password" />
-      <div *ngIf="loginForm.get('password')?.touched && loginForm.get('password')?.invalid" class="error">
-        Password is required
+    <div class="field">
+      <label for="password" class="label">Contraseña</label>
+      <div class="control">
+        <span class="input-icon">🔒</span>
+        <input [type]="showPassword ? 'text' : 'password'" id="password" class="input"
+               [class.valid]="password?.valid && (password?.dirty || password?.touched)"
+               [class.invalid]="password?.invalid && (password?.dirty || password?.touched)"
+               formControlName="password" placeholder="Tu contraseña" />
+        <button type="button" class="toggle-eye" (click)="togglePassword()" aria-label="Mostrar/Ocultar contraseña">
+          {{ showPassword ? '🙈' : '👁️' }}
+        </button>
+      </div>
+      <div *ngIf="password?.invalid && (password?.dirty || password?.touched)" class="error">
+        La contraseña es requerida.
       </div>
     </div>
 
-    <button type="submit" [disabled]="loading || loginForm.invalid">
-      {{ loading ? 'Logging in...' : 'Login' }}
+    <button class="btn" type="submit" [disabled]="loading || loginForm.invalid">
+      {{ loading ? 'Ingresando…' : 'Ingresar' }}
     </button>
 
     <div class="error" *ngIf="errorMessage">{{ errorMessage }}</div>

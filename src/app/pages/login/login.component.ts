@@ -15,6 +15,7 @@ export class LoginComponent {
   loginForm: FormGroup;
   errorMessage: string | null = null;
   loading = false;
+  showPassword = false;
 
   constructor(
     private fb: FormBuilder,
@@ -22,8 +23,8 @@ export class LoginComponent {
     private router: Router
   ) {
     this.loginForm = this.fb.group({
-      username: ['', Validators.required],
-      password: ['', Validators.required]
+      username: ['', [Validators.required]],
+      password: ['', [Validators.required]]
     });
   }
 
@@ -48,5 +49,12 @@ export class LoginComponent {
         this.loading = false;
       }
     });
+  }
+
+  get username() { return this.loginForm.get('username'); }
+  get password() { return this.loginForm.get('password'); }
+
+  togglePassword() {
+    this.showPassword = !this.showPassword;
   }
 }

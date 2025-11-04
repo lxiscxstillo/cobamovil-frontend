@@ -3,12 +3,13 @@
   text-align: center;
 
   h2 {
-    color: #1976d2;
-    margin-bottom: 15px;
+    color: var(--text-100);
+    margin-bottom: 12px;
+    font-weight: 600;
   }
 
   p {
     font-size: 16px;
-    color: #444;
+    color: var(--text-300);
   }
 }

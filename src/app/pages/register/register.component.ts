@@ -16,6 +16,8 @@ export class RegisterComponent {
   errorMessage: string | null = null;
   successMessage: string | null = null;
   loading = false;
+  showPassword = false;
+  passwordStrength = 0;
 
   constructor(
     private fb: FormBuilder,
@@ -23,9 +25,13 @@ export class RegisterComponent {
     private router: Router
   ) {
     this.registerForm = this.fb.group({
-      username: ['', [Validators.required, Validators.minLength(3)]],
+      username: ['', [Validators.required, Validators.minLength(3), Validators.pattern(/^[a-zA-Z0-9_-]+$/)]],
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(6)]]
+    });
+
+    this.registerForm.get('password')?.valueChanges.subscribe((val: string) => {
+      this.passwordStrength = this.calcStrength(val || '');
     });
   }
 
@@ -49,5 +55,22 @@ export class RegisterComponent {
         this.loading = false;
       }
     });
+  }
+
+  get username() { return this.registerForm.get('username'); }
+  get email() { return this.registerForm.get('email'); }
+  get password() { return this.registerForm.get('password'); }
+
+  togglePassword() { this.showPassword = !this.showPassword; }
+
+  private calcStrength(pwd: string): number {
+    let strength = 0;
+    if (!pwd) return 0;
+    if (pwd.length >= 6) strength += 25;
+    if (/[A-Z]/.test(pwd)) strength += 20;
+    if (/[0-9]/.test(pwd)) strength += 20;
+    if (/[^A-Za-z0-9]/.test(pwd)) strength += 20;
+    if (pwd.length >= 10) strength += 15;
+    return Math.min(100, strength);
   }
 }
