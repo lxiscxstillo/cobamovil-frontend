@@ -1,0 +1,79 @@
+<app-header></app-header>
+
+<div class="page-center">
+  <form class="card stack-lg" [formGroup]="form" (ngSubmit)="submit()" novalidate>
+    <header>
+      <div>
+        <h2>Reservar cita</h2>
+        <div class="muted">Selecciona servicio, fecha y hora</div>
+      </div>
+    </header>
+
+    <div class="field">
+      <label class="label">Mascota (ID)</label>
+      <div class="control">
+        <input class="input" formControlName="petId" placeholder="ID de tu mascota" />
+      </div>
+      <div *ngIf="form.get('petId')?.invalid && (form.get('petId')?.touched || form.get('petId')?.dirty)" class="error">
+        Debes indicar la mascota.
+      </div>
+      <div class="hint">Pronto cargaremos tus mascotas para seleccionar por nombre.</div>
+    </div>
+
+    <div class="field">
+      <label class="label">Servicio</label>
+      <div class="control">
+        <select class="input" formControlName="serviceType">
+          <option [ngValue]="null" disabled>Selecciona un servicio</option>
+          <option *ngFor="let s of services" [ngValue]="s.value">{{ s.label }}</option>
+        </select>
+      </div>
+      <div *ngIf="form.get('serviceType')?.invalid && (form.get('serviceType')?.touched || form.get('serviceType')?.dirty)" class="error">
+        Selecciona un servicio.
+      </div>
+    </div>
+
+    <div class="field">
+      <label class="label">Fecha</label>
+      <div class="control">
+        <input type="date" class="input" formControlName="date" />
+      </div>
+      <div *ngIf="form.get('date')?.invalid && (form.get('date')?.touched || form.get('date')?.dirty)" class="error">
+        Selecciona una fecha.
+      </div>
+    </div>
+
+    <div class="field">
+      <label class="label">Hora</label>
+      <div class="control">
+        <input type="time" class="input" formControlName="time" />
+      </div>
+      <div *ngIf="form.get('time')?.invalid && (form.get('time')?.touched || form.get('time')?.dirty)" class="error">
+        Selecciona una hora.
+      </div>
+    </div>
+
+    <div class="field">
+      <label class="label">Dirección (opcional)</label>
+      <div class="control">
+        <input class="input" formControlName="address" placeholder="Dirección exacta" />
+      </div>
+      <div class="hint">Integraremos autocompletado con Google Maps más adelante.</div>
+    </div>
+
+    <div class="field">
+      <label class="label">Notas (opcional)</label>
+      <div class="control">
+        <textarea class="input" formControlName="notes" rows="3" placeholder="Observaciones"></textarea>
+      </div>
+    </div>
+
+    <button class="btn" type="submit" [disabled]="submitting || form.invalid">
+      {{ submitting ? 'Creando…' : 'Reservar' }}
+    </button>
+
+    <div class="success" *ngIf="successMessage">{{ successMessage }}</div>
+    <div class="error" *ngIf="errorMessage">{{ errorMessage }}</div>
+  </form>
+</div>
+
