@@ -1,0 +1,52 @@
+<app-header></app-header>
+
+<div class="page-center">
+  <div class="card stack-lg" style="max-width:720px;">
+    <header>
+      <div>
+        <h2>Mis Mascotas</h2>
+        <div class="muted">Gestiona tus mascotas para reservar más rápido</div>
+      </div>
+    </header>
+
+    <div class="error" *ngIf="error">{{ error }}</div>
+
+    <div class="stack">
+      <label class="label">Nombre</label>
+      <input class="input" [(ngModel)]="model.name" placeholder="Nombre de la mascota" />
+
+      <label class="label">Raza</label>
+      <input class="input" [(ngModel)]="model.breed" placeholder="Raza" />
+
+      <label class="label">Sexo</label>
+      <select class="input" [(ngModel)]="model.sex">
+        <option value="M">Macho</option>
+        <option value="F">Hembra</option>
+      </select>
+
+      <button class="btn" (click)="add()">Añadir mascota</button>
+    </div>
+
+    <table class="table" *ngIf="items.length">
+      <thead>
+        <tr>
+          <th>Nombre</th>
+          <th>Raza</th>
+          <th>Sexo</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let p of items">
+          <td>{{ p.name }}</td>
+          <td>{{ p.breed || '—' }}</td>
+          <td>{{ p.sex }}</td>
+          <td>
+            <button class="btn" style="padding:6px 10px; background: linear-gradient(135deg,#ef4444,#f59e0b);" (click)="remove(p.id)">Eliminar</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+

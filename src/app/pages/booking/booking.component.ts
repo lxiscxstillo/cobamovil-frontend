@@ -9,11 +9,15 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { BookingService } from '../../core/services/booking.service';
 import { BookingCreateRequest, ServiceType } from '../../core/models/booking.model';
 import { HeaderComponent } from '../../shared/header/header.component';
+import { HttpClient } from '@angular/common/http';
+import { Pet } from '../../core/models/pet.model';
+import { environment } from '../../../environments/environment';
+import { MapPickerComponent } from '../../shared/map-picker/map-picker.component';
 
 @Component({
   selector: 'app-booking',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, MatFormFieldModule, MatInputModule, MatSelectModule, MatDatepickerModule, MatNativeDateModule, HeaderComponent],
+  imports: [CommonModule, ReactiveFormsModule, MatFormFieldModule, MatInputModule, MatSelectModule, MatDatepickerModule, MatNativeDateModule, HeaderComponent, MapPickerComponent],
   templateUrl: './booking.component.html',
   styleUrls: ['./booking.component.scss']
 })
@@ -21,6 +25,9 @@ export class BookingComponent {
   submitting = false;
   successMessage: string | null = null;
   errorMessage: string | null = null;
+  pets: Pet[] = [];
+  pickedLat?: number;
+  pickedLng?: number;
 
   services: { label: string; value: ServiceType }[] = [
     { label: 'Baño', value: 'BATH' },
@@ -32,7 +39,7 @@ export class BookingComponent {
 
   form!: FormGroup;
 
-  constructor(private fb: FormBuilder, private bookingService: BookingService) {
+  constructor(private fb: FormBuilder, private bookingService: BookingService, private http: HttpClient) {
     this.form = this.fb.group({
       petId: [null, [Validators.required]],
       serviceType: [null as ServiceType | null, [Validators.required]],
@@ -41,6 +48,7 @@ export class BookingComponent {
       address: [''],
       notes: ['']
     });
+    this.loadPets();
   }
 
   submit() {
@@ -56,6 +64,8 @@ export class BookingComponent {
       date: this.toIsoDate(v.date!),
       time: v.time!,
       address: v.address || undefined,
+      latitude: this.pickedLat,
+      longitude: this.pickedLng,
       notes: v.notes || undefined,
     };
 
@@ -77,5 +87,26 @@ export class BookingComponent {
     const pad = (n: number) => (n < 10 ? `0${n}` : String(n));
     return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
   }
-}
 
+  onMapPositionChange(pos: { lat: number; lng: number }) {
+    this.pickedLat = pos.lat;
+    this.pickedLng = pos.lng;
+  }
+
+  get availableTimes(): string[] {
+    const out: string[] = [];
+    for (let h = 9; h <= 18; h++) {
+      for (const m of [0, 30]) {
+        out.push(`${('0'+h).slice(-2)}:${('0'+m).slice(-2)}`);
+      }
+    }
+    return out;
+  }
+
+  private loadPets() {
+    this.http.get<Pet[]>(`${environment.apiUrl}/pets`).subscribe({
+      next: data => this.pets = data,
+      error: () => {}
+    });
+  }
+}

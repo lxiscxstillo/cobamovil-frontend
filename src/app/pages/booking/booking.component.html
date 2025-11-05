@@ -10,14 +10,17 @@
     </header>
 
     <div class="field">
-      <label class="label">Mascota (ID)</label>
+      <label class="label">Mascota</label>
       <div class="control">
-        <input class="input" formControlName="petId" placeholder="ID de tu mascota" />
+        <select class="input" formControlName="petId">
+          <option [ngValue]="null" disabled>Selecciona tu mascota</option>
+          <option *ngFor="let p of pets" [ngValue]="p.id">{{ p.name }}</option>
+        </select>
       </div>
       <div *ngIf="form.get('petId')?.invalid && (form.get('petId')?.touched || form.get('petId')?.dirty)" class="error">
         Debes indicar la mascota.
       </div>
-      <div class="hint">Pronto cargaremos tus mascotas para seleccionar por nombre.</div>
+      <div class="hint">Gestiona tus mascotas en “Mis Mascotas”.</div>
     </div>
 
     <div class="field">
@@ -46,7 +49,10 @@
     <div class="field">
       <label class="label">Hora</label>
       <div class="control">
-        <input type="time" class="input" formControlName="time" />
+        <select class="input" formControlName="time">
+          <option [ngValue]="null" disabled>Selecciona hora</option>
+          <option *ngFor="let t of availableTimes" [value]="t">{{ t }}</option>
+        </select>
       </div>
       <div *ngIf="form.get('time')?.invalid && (form.get('time')?.touched || form.get('time')?.dirty)" class="error">
         Selecciona una hora.
@@ -58,8 +64,10 @@
       <div class="control">
         <input class="input" formControlName="address" placeholder="Dirección exacta" />
       </div>
-      <div class="hint">Integraremos autocompletado con Google Maps más adelante.</div>
+      <div class="hint">También puedes pinchar el mapa para ubicarte.</div>
     </div>
+
+    <app-map-picker (positionChange)="onMapPositionChange($event)"></app-map-picker>
 
     <div class="field">
       <label class="label">Notas (opcional)</label>
@@ -76,4 +84,3 @@
     <div class="error" *ngIf="errorMessage">{{ errorMessage }}</div>
   </form>
 </div>
-

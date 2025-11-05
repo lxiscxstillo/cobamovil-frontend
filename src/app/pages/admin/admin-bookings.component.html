@@ -11,7 +11,7 @@
   <div class="loading" *ngIf="loading">Cargando…</div>
   <div class="error" *ngIf="error">{{ error }}</div>
 
-  <table class="table" *ngIf="!loading && !error">
+<table class="table" *ngIf="!loading && !error">
     <thead>
       <tr>
         <th>Hora</th>
@@ -40,5 +40,8 @@
       </tr>
     </tbody>
   </table>
-</div>
 
+  <div style="margin-top:16px" *ngIf="routePoints.length">
+    <app-map-route [points]="routePoints"></app-map-route>
+  </div>
+</div>

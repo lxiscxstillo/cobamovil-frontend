@@ -4,11 +4,12 @@ import { FormsModule } from '@angular/forms';
 import { Booking, BookingStatus } from '../../core/models/booking.model';
 import { BookingService } from '../../core/services/booking.service';
 import { HeaderComponent } from '../../shared/header/header.component';
+import { MapRouteComponent } from '../../shared/map-route/map-route.component';
 
 @Component({
   selector: 'app-admin-bookings',
   standalone: true,
-  imports: [CommonModule, FormsModule, HeaderComponent],
+  imports: [CommonModule, FormsModule, HeaderComponent, MapRouteComponent],
   templateUrl: './admin-bookings.component.html',
   styleUrls: ['./admin-bookings.component.scss']
 })
@@ -41,5 +42,10 @@ export class AdminBookingsComponent {
       error: err => this.error = err.error?.message || 'Error actualizando estado'
     });
   }
-}
 
+  get routePoints() {
+    return this.items
+      .filter(b => (b as any).latitude != null && (b as any).longitude != null)
+      .map(b => ({ lat: (b as any).latitude as number, lng: (b as any).longitude as number, label: `${b.time} - ${b.petName}` }));
+  }
+}

@@ -44,6 +44,7 @@ export class AuthService {
    * Get JWT token
    */
   getToken(): string | null {
+    if (typeof window === 'undefined') return null;
     return localStorage.getItem('token');
   }
 
@@ -54,4 +55,3 @@ export class AuthService {
     return !!this.getToken();
   }
 }
-
