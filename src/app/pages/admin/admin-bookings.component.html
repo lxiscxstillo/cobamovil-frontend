@@ -23,7 +23,7 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let b of items">
+      <tr *ngFor="let b of items; index as i">
         <td>{{ b.time }}</td>
         <td>{{ b.petName }}</td>
         <td>{{ b.serviceType }}</td>
@@ -35,6 +35,8 @@
             <button class="btn" style="padding:6px 10px; background: linear-gradient(135deg,#ef4444,#f59e0b);" (click)="changeStatus(b, 'REJECTED')">Rechazar</button>
             <button class="btn" style="padding:6px 10px;" (click)="changeStatus(b, 'ON_ROUTE')">En camino</button>
             <button class="btn" style="padding:6px 10px;" (click)="changeStatus(b, 'COMPLETED')">Completada</button>
+            <button class="btn" style="padding:6px 10px;" (click)="moveUp(i)">↑</button>
+            <button class="btn" style="padding:6px 10px;" (click)="moveDown(i)">↓</button>
           </div>
         </td>
       </tr>
@@ -43,5 +45,10 @@
 
   <div style="margin-top:16px" *ngIf="routePoints.length">
     <app-map-route [points]="routePoints"></app-map-route>
+  </div>
+
+  <div style="display:flex; justify-content:center; margin-top: 12px; gap: 8px;" *ngIf="items.length">
+    <button class="btn" (click)="saveRoute()" [disabled]="savingRoute">Guardar ruta</button>
+    <span *ngIf="savingRoute">Guardando…</span>
   </div>
 </div>

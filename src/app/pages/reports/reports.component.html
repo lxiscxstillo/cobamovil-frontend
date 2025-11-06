@@ -1,0 +1,24 @@
+<app-header></app-header>
+<div class="container" style="max-width: 980px; margin: 16px auto; padding: 0 16px;">
+  <h1 style="margin: 16px 0;">Reportes</h1>
+
+  <div style="display:flex; gap: 8px; align-items:center; margin-bottom: 12px; flex-wrap: wrap;">
+    <label>Desde</label>
+    <input type="date" [(ngModel)]="from" />
+    <label>Hasta</label>
+    <input type="date" [(ngModel)]="to" />
+    <button class="btn" (click)="load()">Actualizar</button>
+  </div>
+
+  <div *ngIf="loading">Cargando…</div>
+  <div *ngIf="error" style="color:#b00020">{{ error }}</div>
+
+  <div *ngIf="!loading && !error && data">
+    <h3>Total de servicios completados: {{ data.totalCompleted }}</h3>
+    <h4>Por tipo de servicio</h4>
+    <ul>
+      <li *ngFor="let kv of (data.byServiceType | keyvalue)">{{ kv.key }}: {{ kv.value }}</li>
+    </ul>
+  </div>
+</div>
+

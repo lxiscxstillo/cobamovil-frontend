@@ -27,5 +27,19 @@ export class BookingService {
     const params = new HttpParams().set('status', status);
     return this.http.put<Booking>(`${this.baseUrl}/${id}/status`, null, { params });
   }
-}
 
+  cancel(id: number) {
+    return this.http.delete<void>(`${this.baseUrl}/${id}`);
+  }
+
+  reschedule(id: number, dateIso: string, time: string, serviceType?: string) {
+    let params = new HttpParams().set('date', dateIso).set('time', time);
+    if (serviceType) params = params.set('serviceType', serviceType);
+    return this.http.put<Booking>(`${this.baseUrl}/${id}/reschedule`, null, { params });
+  }
+
+  saveRoute(dateIso: string, bookingIdsInOrder: number[]) {
+    const body = { date: dateIso, bookingIdsInOrder } as { date: string; bookingIdsInOrder: number[] };
+    return this.http.put<void>(`${this.baseUrl}/admin/route`, body);
+  }
+}

@@ -36,8 +36,7 @@ export class BookingComponent {
     { label: 'Servicio completo', value: 'FULL_GROOMING' },
   ];
 
-
-  form!: FormGroup;
+  form: FormGroup;
 
   constructor(private fb: FormBuilder, private bookingService: BookingService, private http: HttpClient) {
     this.form = this.fb.group({

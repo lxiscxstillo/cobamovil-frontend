@@ -1,0 +1,16 @@
+<app-header></app-header>
+<div class="container" style="max-width: 960px; margin: 16px auto; padding: 0 16px;">
+  <h1 style="margin: 16px 0;">Preguntas Frecuentes</h1>
+  <div *ngIf="loading">Cargando...</div>
+  <div *ngIf="error" style="color:#b00020;">{{ error }}</div>
+  <div *ngIf="!loading && !error">
+    <div *ngFor="let f of items" style="border:1px solid #e8e1cf; border-radius:8px; padding:12px; margin-bottom:8px; background:#fcfbf8;">
+      <strong>{{ f.question }}</strong>
+      <p style="margin: 6px 0 0 0;">{{ f.answer }}</p>
+    </div>
+  </div>
+  <p style="margin-top:16px;">¿Aún tienes dudas? Escríbenos por WhatsApp con el botón flotante.</p>
+  <app-floating-whatsapp></app-floating-whatsapp>
+  
+</div>
+

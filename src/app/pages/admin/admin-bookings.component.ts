@@ -18,6 +18,7 @@ export class AdminBookingsComponent {
   loading = false;
   error: string | null = null;
   items: Booking[] = [];
+  savingRoute = false;
 
   constructor(private bookingService: BookingService) {
     this.load();
@@ -47,5 +48,29 @@ export class AdminBookingsComponent {
     return this.items
       .filter(b => (b as any).latitude != null && (b as any).longitude != null)
       .map(b => ({ lat: (b as any).latitude as number, lng: (b as any).longitude as number, label: `${b.time} - ${b.petName}` }));
+  }
+
+  moveUp(i: number) {
+    if (i <= 0) return;
+    const tmp = this.items[i-1];
+    this.items[i-1] = this.items[i];
+    this.items[i] = tmp;
+  }
+
+  moveDown(i: number) {
+    if (i >= this.items.length - 1) return;
+    const tmp = this.items[i+1];
+    this.items[i+1] = this.items[i];
+    this.items[i] = tmp;
+  }
+
+  saveRoute() {
+    this.savingRoute = true;
+    const ids = this.items.filter(b => (b as any).status === 'APPROVED').map(b => b.id);
+    this.bookingService.saveRoute(this.date, ids).subscribe({
+      next: () => {},
+      error: err => this.error = err.error?.message || 'Error guardando ruta',
+      complete: () => this.savingRoute = false
+    });
   }
 }

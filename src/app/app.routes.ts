@@ -8,6 +8,11 @@ export const routes: Routes = [
       import('./pages/landing/landing.component').then(m => m.LandingComponent)
   },
   {
+    path: 'faq',
+    loadComponent: () =>
+      import('./pages/faq/faq.component').then(m => m.FaqComponent)
+  },
+  {
     path: 'login',
     loadComponent: () =>
       import('./pages/login/login.component').then(m => m.LoginComponent)
@@ -33,6 +38,12 @@ export const routes: Routes = [
     path: 'admin',
     loadComponent: () =>
       import('./pages/admin/admin-bookings.component').then(m => m.AdminBookingsComponent),
+    canActivate: [authGuard]
+  },
+  {
+    path: 'reports',
+    loadComponent: () =>
+      import('./pages/reports/reports.component').then(m => m.ReportsComponent),
     canActivate: [authGuard]
   },
   {
