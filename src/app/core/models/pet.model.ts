@@ -7,5 +7,8 @@ export interface Pet {
   weight?: number;
   behavior?: string;
   healthNotes?: string;
+  vaccinations?: string;
+  deworming?: string;
+  medicalConditions?: string;
+  lastGroomDate?: string; // yyyy-MM-dd
 }
-

@@ -5,6 +5,7 @@ import { Booking, BookingStatus } from '../../core/models/booking.model';
 import { BookingService } from '../../core/services/booking.service';
 import { HeaderComponent } from '../../shared/header/header.component';
 import { MapRouteComponent } from '../../shared/map-route/map-route.component';
+import { GroomerService, GroomerProfile } from '../../core/services/groomer.service';
 
 @Component({
   selector: 'app-admin-bookings',
@@ -20,9 +21,13 @@ export class AdminBookingsComponent {
   items: Booking[] = [];
   useOptimized = true;
   savingRoute = false;
+  groomers: GroomerProfile[] = [];
+  selectedGroomerId: number | null = null;
+  etas: Record<number, string> = {};
 
-  constructor(private bookingService: BookingService) {
+  constructor(private bookingService: BookingService, private groomerService: GroomerService) {
     this.load();
+    this.loadGroomers();
   }
 
   load() {
@@ -78,6 +83,20 @@ export class AdminBookingsComponent {
     });
   }
 
+  startRoute() {
+    this.savingRoute = true;
+    this.bookingService.adminStartRoute(this.date, this.selectedGroomerId || undefined).subscribe({
+      next: (dto) => {
+        if (dto?.bookingIdsInOrder) {
+          this.applyOptimizedOrder(dto.bookingIdsInOrder);
+          this.applyEtas(dto.bookingIdsInOrder, dto.etasMinutes);
+        }
+      },
+      error: err => this.error = err.error?.message || 'Error iniciando la ruta',
+      complete: () => this.savingRoute = false
+    });
+  }
+
   applyOptimizedOrder(routeIds: number[]) {
     const map = new Map(this.items.map(i => [i.id, i]));
     const ordered: Booking[] = [];
@@ -87,10 +106,33 @@ export class AdminBookingsComponent {
   }
 
   private fetchAndApplyOptimized() {
-    // For now request general route (admin scope). Could be filtered by groomer later.
-    fetch(`${location.origin}/api/bookings/admin/route?date=${this.date}`, { credentials: 'include' })
+    const params = new URLSearchParams({ date: this.date });
+    if (this.selectedGroomerId) params.set('groomerId', String(this.selectedGroomerId));
+    fetch(`${location.origin}/api/bookings/admin/route?${params.toString()}`, { credentials: 'include' })
       .then(r => r.json()).then((dto: any) => {
-        if (dto && Array.isArray(dto.bookingIdsInOrder)) this.applyOptimizedOrder(dto.bookingIdsInOrder);
+        if (dto && Array.isArray(dto.bookingIdsInOrder)) {
+          this.applyOptimizedOrder(dto.bookingIdsInOrder);
+          this.applyEtas(dto.bookingIdsInOrder, dto.etasMinutes);
+        }
       }).catch(() => {});
+  }
+
+  loadGroomers() {
+    this.groomerService.list().subscribe({ next: list => this.groomers = list, error: () => {} });
+  }
+
+  private applyEtas(idsInOrder: number[], etasMinutes?: number[]) {
+    this.etas = {};
+    if (!Array.isArray(idsInOrder) || !Array.isArray(etasMinutes)) return;
+    const fmt = (m: number) => {
+      if (m < 60) return `${m} min`;
+      const h = Math.floor(m / 60);
+      const mm = m % 60;
+      return `${h} h ${mm} min`;
+    };
+    idsInOrder.forEach((id, idx) => {
+      const m = etasMinutes[idx];
+      if (typeof m === 'number') this.etas[id] = fmt(m);
+    });
   }
 }

@@ -10,6 +10,11 @@
     <label style="display:flex;gap:8px;align-items:center;color:var(--text-300)">
       <input type="checkbox" [(ngModel)]="useOptimized" (change)="load()" /> Usar ruta optimizada
     </label>
+    <label class="label">Peluquero</label>
+    <select class="input" [(ngModel)]="selectedGroomerId" (change)="load()">
+      <option [ngValue]="null">Todos</option>
+      <option *ngFor="let g of groomers" [ngValue]="g.userId">{{ g.username }}</option>
+    </select>
   </div>
 
   <div class="loading" *ngIf="loading">Cargando…</div>
@@ -22,6 +27,7 @@
         <th>Mascota</th>
         <th>Servicio</th>
         <th>Dirección</th>
+        <th>ETA</th>
         <th>Estado</th>
         <th>Acciones</th>
       </tr>
@@ -32,6 +38,7 @@
         <td>{{ b.petName }}</td>
         <td>{{ b.serviceType }}</td>
         <td>{{ b.address || '—' }}</td>
+        <td>{{ etas[b.id] || '—' }}</td>
         <td>{{ b.status }}</td>
         <td>
           <div style="display:flex; gap:6px;">
@@ -52,7 +59,9 @@
   </div>
 
   <div style="display:flex; justify-content:center; margin-top: 12px; gap: 8px;" *ngIf="items.length">
+    <button class="btn" (click)="startRoute()" [disabled]="savingRoute">Iniciar ruta</button>
     <button class="btn" (click)="saveRoute()" [disabled]="savingRoute">Guardar ruta</button>
     <span *ngIf="savingRoute">Guardando…</span>
   </div>
 </div>
+

@@ -37,9 +37,9 @@ export class BookingComponent implements AfterViewInit {
   pickedLng?: number;
 
   services: { label: string; value: ServiceType }[] = [
-    { label: 'BaÃ±o', value: 'BATH' },
+    { label: 'Baño', value: 'BATH' },
     { label: 'Corte de pelo', value: 'HAIRCUT' },
-    { label: 'Corte de uÃ±as', value: 'NAIL_TRIM' },
+    { label: 'Corte de uñas', value: 'NAIL_TRIM' },
     { label: 'Servicio completo', value: 'FULL_GROOMING' },
   ];
 
@@ -145,3 +145,4 @@ export class BookingComponent implements AfterViewInit {
   }
 }
   
+

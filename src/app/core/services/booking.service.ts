@@ -23,6 +23,18 @@ export class BookingService {
     return this.http.get<Booking[]>(`${this.baseUrl}/admin/day`, { params });
   }
 
+  adminOptimizedRoute(dateIso: string, groomerId?: number): Observable<{ date: string; bookingIdsInOrder: number[]; etasMinutes?: number[]; }> {
+    let params = new HttpParams().set('date', dateIso);
+    if (groomerId) params = params.set('groomerId', groomerId);
+    return this.http.get<{ date: string; bookingIdsInOrder: number[]; etasMinutes?: number[]; }>(`${this.baseUrl}/admin/route`, { params });
+  }
+
+  adminStartRoute(dateIso: string, groomerId?: number): Observable<{ date: string; bookingIdsInOrder: number[]; etasMinutes?: number[]; }> {
+    let params = new HttpParams().set('date', dateIso);
+    if (groomerId) params = params.set('groomerId', groomerId);
+    return this.http.post<{ date: string; bookingIdsInOrder: number[]; etasMinutes?: number[]; }>(`${this.baseUrl}/route/start`, null, { params });
+  }
+
   updateStatus(id: number, status: BookingStatus): Observable<Booking> {
     const params = new HttpParams().set('status', status);
     return this.http.put<Booking>(`${this.baseUrl}/${id}/status`, null, { params });

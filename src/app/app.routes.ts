@@ -15,6 +15,7 @@ export const routes: Routes = [
   { path: 'mi-perfil', loadComponent: () => import('./pages/profile/profile.component').then(m => m.ProfileComponent), canActivate: [authGuard] },
   { path: 'administrador', loadComponent: () => import('./pages/admin/admin-bookings.component').then(m => m.AdminBookingsComponent), canActivate: [authGuard] },
   { path: 'administrador-peluqueros', loadComponent: () => import('./pages/admin/groomers/admin-groomers.component').then(m => m.AdminGroomersComponent), canActivate: [authGuard] },
+  { path: 'mis-reservas', loadComponent: () => import('./pages/mis-reservas/mis-reservas.component').then(m => m.MisReservasComponent), canActivate: [authGuard] },
   {
     path: 'faq',
     loadComponent: () =>

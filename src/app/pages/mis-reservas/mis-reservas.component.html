@@ -1,0 +1,30 @@
+<app-header></app-header>
+
+<div class="users-container">
+  <h2>Mis reservas</h2>
+
+  <div class="loading" *ngIf="loading">Cargando…</div>
+  <div class="error" *ngIf="error">{{ error }}</div>
+
+  <table class="table" *ngIf="!loading && !error">
+    <thead>
+      <tr>
+        <th>Fecha</th>
+        <th>Hora</th>
+        <th>Servicio</th>
+        <th>Estado</th>
+        <th>Dirección</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let b of items">
+        <td>{{ b.date }}</td>
+        <td>{{ b.time }}</td>
+        <td>{{ b.serviceType }}</td>
+        <td>{{ b.status }}</td>
+        <td>{{ b.address || '—' }}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+

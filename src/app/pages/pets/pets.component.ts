@@ -17,7 +17,7 @@ export class PetsComponent {
   loading = false;
   error: string | null = null;
 
-  model: Partial<Pet> = { name: '', breed: '', sex: 'M' };
+  model: Partial<Pet> = { name: '', breed: '', sex: 'M', age: undefined, weight: undefined, behavior: '', healthNotes: '', vaccinations: '', deworming: '', medicalConditions: '', lastGroomDate: '' };
 
   constructor(private petService: PetService) {
     this.load();
@@ -48,4 +48,3 @@ export class PetsComponent {
     });
   }
 }
-
