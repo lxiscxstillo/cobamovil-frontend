@@ -1,0 +1,50 @@
+<app-header></app-header>
+
+<div class="page-center">
+  <div class="card stack-lg" style="max-width:820px;">
+    <header>
+      <div>
+        <h2>Gestionar Peluqueros</h2>
+        <div class="muted">Crear perfiles de peluquero (rol interno)</div>
+      </div>
+    </header>
+
+    <div class="error" *ngIf="error">{{ error }}</div>
+
+    <div class="stack">
+      <label class="label">Usuario</label>
+      <input class="input" [(ngModel)]="model.username" placeholder="usuario" />
+      <label class="label">Email</label>
+      <input class="input" [(ngModel)]="model.email" placeholder="email" />
+      <label class="label">Teléfono</label>
+      <input class="input" [(ngModel)]="model.phone" placeholder="+57..." />
+      <label class="label">Contraseña</label>
+      <input class="input" type="password" [(ngModel)]="model.password" placeholder="contraseña" />
+      <label class="label">Avatar URL</label>
+      <input class="input" [(ngModel)]="model.avatarUrl" placeholder="https://..." />
+      <label class="label">Bio</label>
+      <textarea class="input" rows="2" [(ngModel)]="model.bio" placeholder="Experiencia, descripción"></textarea>
+      <label class="label">Especialidades (separadas por coma)</label>
+      <input class="input" [(ngModel)]="model.specialties" placeholder="baños, cortes, uñas" />
+      <button class="btn" (click)="create()">Crear Peluquero</button>
+    </div>
+
+    <table class="table" *ngIf="items.length">
+      <thead>
+        <tr>
+          <th>Usuario</th>
+          <th>Avatar</th>
+          <th>Especialidades</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let g of items">
+          <td>{{ g.username }}</td>
+          <td><img *ngIf="g.avatarUrl" [src]="g.avatarUrl" alt="avatar" style="width:40px;height:40px;border-radius:50%" /></td>
+          <td>{{ g.specialties || '—' }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+

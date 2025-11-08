@@ -20,6 +20,9 @@ export class AuthService {
         if (response?.token) {
           localStorage.setItem('token', response.token);
           localStorage.setItem('username', credentials.username);
+          if (response?.id) {
+            localStorage.setItem('userId', String(response.id));
+          }
         }
       })
     );
@@ -28,7 +31,7 @@ export class AuthService {
   /**
    * Register
    */
-  register(userData: { username: string; email: string; password: string }): Observable<any> {
+  register(userData: { username: string; email: string; password: string; phone?: string }): Observable<any> {
     return this.http.post<any>(`${this.apiUrl}/register`, userData);
   }
 

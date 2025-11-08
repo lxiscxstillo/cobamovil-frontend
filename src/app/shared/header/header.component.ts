@@ -19,7 +19,9 @@ export class HeaderComponent {
   ) {}
 
   ngOnInit() {
-    this.username = localStorage.getItem('username');
+    if (typeof window !== 'undefined') {
+      this.username = localStorage.getItem('username');
+    }
   }
 
   logout() {

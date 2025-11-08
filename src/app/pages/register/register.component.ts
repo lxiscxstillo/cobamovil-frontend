@@ -27,6 +27,7 @@ export class RegisterComponent {
     this.registerForm = this.fb.group({
       username: ['', [Validators.required, Validators.minLength(3), Validators.pattern(/^[a-zA-Z0-9_-]+$/)]],
       email: ['', [Validators.required, Validators.email]],
+      phone: ['', [Validators.pattern(/^$|^\+?[0-9]{7,20}$/)]],
       password: ['', [Validators.required, Validators.minLength(6)]]
     });
 
@@ -42,13 +43,19 @@ export class RegisterComponent {
     this.errorMessage = null;
     this.successMessage = null;
 
-    this.authService.register(this.registerForm.value).subscribe({
+    const payload = {
+      username: this.registerForm.value.username,
+      email: this.registerForm.value.email,
+      password: this.registerForm.value.password,
+      phone: this.registerForm.value.phone || undefined
+    };
+    this.authService.register(payload).subscribe({
       next: () => {
-        this.successMessage = 'Registration successful! Redirecting to login...';
-        setTimeout(() => this.router.navigate(['/login']), 2000);
+        this.successMessage = '¡Registro exitoso! Redirigiendo para iniciar sesión...';
+        setTimeout(() => this.router.navigate(['/iniciar-sesion']), 1500);
       },
       error: (err) => {
-        this.errorMessage = err.error?.message || 'Registration failed. Try again.';
+        this.errorMessage = err.error?.message || 'Registro fallido. Intenta de nuevo.';
         this.loading = false;
       },
       complete: () => {
@@ -59,6 +66,7 @@ export class RegisterComponent {
 
   get username() { return this.registerForm.get('username'); }
   get email() { return this.registerForm.get('email'); }
+  get phone() { return this.registerForm.get('phone'); }
   get password() { return this.registerForm.get('password'); }
 
   togglePassword() { this.showPassword = !this.showPassword; }

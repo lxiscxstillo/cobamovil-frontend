@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ElementRef, AfterViewInit, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, ReactiveFormsModule, Validators, FormGroup } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -13,6 +13,10 @@ import { HttpClient } from '@angular/common/http';
 import { Pet } from '../../core/models/pet.model';
 import { environment } from '../../../environments/environment';
 import { MapPickerComponent } from '../../shared/map-picker/map-picker.component';
+import { MapsLoaderService } from '../../core/services/maps-loader.service';
+import { GroomerService, GroomerProfile } from '../../core/services/groomer.service';
+
+declare const google: any;
 
 @Component({
   selector: 'app-booking',
@@ -21,11 +25,14 @@ import { MapPickerComponent } from '../../shared/map-picker/map-picker.component
   templateUrl: './booking.component.html',
   styleUrls: ['./booking.component.scss']
 })
-export class BookingComponent {
+
+export class BookingComponent implements AfterViewInit {
+  @ViewChild('addressInput') addressInput!: ElementRef<HTMLInputElement>;
   submitting = false;
   successMessage: string | null = null;
   errorMessage: string | null = null;
   pets: Pet[] = [];
+  groomers: GroomerProfile[] = [];
   pickedLat?: number;
   pickedLng?: number;
 
@@ -38,7 +45,7 @@ export class BookingComponent {
 
   form: FormGroup;
 
-  constructor(private fb: FormBuilder, private bookingService: BookingService, private http: HttpClient) {
+  constructor(private fb: FormBuilder, private bookingService: BookingService, private http: HttpClient, private mapsLoader: MapsLoaderService, private groomerService: GroomerService) {
     this.form = this.fb.group({
       petId: [null, [Validators.required]],
       serviceType: [null as ServiceType | null, [Validators.required]],
@@ -48,6 +55,29 @@ export class BookingComponent {
       notes: ['']
     });
     this.loadPets();
+    this.loadGroomers();
+  }
+
+  ngAfterViewInit(): void {
+    try {
+      if (typeof window === 'undefined') return;
+      this.mapsLoader.load().then(() => {
+        const input = this.addressInput?.nativeElement;
+        if (!input) return;
+        const autocomplete = new google.maps.places.Autocomplete(input, { fields: ['formatted_address','geometry'] });
+        autocomplete.addListener('place_changed', () => {
+          const place = autocomplete.getPlace();
+          const addr = place?.formatted_address;
+          const loc = place?.geometry?.location;
+          if (addr) this.form.get('address')?.setValue(addr);
+          if (loc) {
+            const lat = loc.lat();
+            const lng = loc.lng();
+            this.pickedLat = lat; this.pickedLng = lng;
+          }
+        });
+      });
+    } catch {}
   }
 
   submit() {
@@ -62,6 +92,7 @@ export class BookingComponent {
       serviceType: v.serviceType!,
       date: this.toIsoDate(v.date!),
       time: v.time!,
+      groomerId: v['groomerId'] ? Number((v as any)['groomerId']) : undefined,
       address: v.address || undefined,
       latitude: this.pickedLat,
       longitude: this.pickedLng,
@@ -108,4 +139,9 @@ export class BookingComponent {
       error: () => {}
     });
   }
+
+  private loadGroomers() {
+    this.groomerService.list().subscribe({ next: list => this.groomers = list, error: () => {} });
+  }
 }
+  

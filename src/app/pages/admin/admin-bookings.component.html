@@ -6,12 +6,16 @@
   <div class="stack" style="max-width: 420px; margin: 0 auto 16px;">
     <label class="label">Fecha</label>
     <input class="input" type="date" [(ngModel)]="date" (change)="load()" />
+    <label class="label">Orden</label>
+    <label style="display:flex;gap:8px;align-items:center;color:var(--text-300)">
+      <input type="checkbox" [(ngModel)]="useOptimized" (change)="load()" /> Usar ruta optimizada
+    </label>
   </div>
 
   <div class="loading" *ngIf="loading">Cargando…</div>
   <div class="error" *ngIf="error">{{ error }}</div>
 
-<table class="table" *ngIf="!loading && !error">
+  <table class="table" *ngIf="!loading && !error">
     <thead>
       <tr>
         <th>Hora</th>

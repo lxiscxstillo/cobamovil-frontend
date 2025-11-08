@@ -4,9 +4,15 @@
     <span class="app-title">CobaMovil</span>
   </div>
 
+  <div class="navbar-right" *ngIf="!isLoggedIn()">
+    <a class="link" routerLink="/iniciar-sesion">Iniciar sesión</a>
+    <a class="link" routerLink="/registrarse">Registrarse</a>
+  </div>
+
   <div class="navbar-right" *ngIf="isLoggedIn()">
-    <a class="link" routerLink="/booking">Reservar cita</a>
-    <a class="link" routerLink="/pets">Mis Mascotas</a>
+    <a class="link" routerLink="/reservar">Reservar cita</a>
+    <a class="link" routerLink="/mis-mascotas">Mis Mascotas</a>
+    <a class="link" routerLink="/mi-perfil">Mi perfil</a>
     <span class="user-info">
       <span class="user-dot"></span>
       {{ username }}

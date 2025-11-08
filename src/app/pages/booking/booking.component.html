@@ -37,6 +37,17 @@
     </div>
 
     <div class="field">
+      <label class="label">Peluquero</label>
+      <div class="control">
+        <select class="input" formControlName="groomerId">
+          <option [ngValue]="null">Cualquiera</option>
+          <option *ngFor="let g of groomers" [ngValue]="g.userId">{{ g.username }}</option>
+        </select>
+      </div>
+      <div class="hint">Elige tu peluquero favorito o deja "Cualquiera".</div>
+    </div>
+
+    <div class="field">
       <label class="label">Fecha</label>
       <div class="control">
         <input type="date" class="input" formControlName="date" />
@@ -62,9 +73,9 @@
     <div class="field">
       <label class="label">Dirección (opcional)</label>
       <div class="control">
-        <input class="input" formControlName="address" placeholder="Dirección exacta" />
+        <input #addressInput class="input" formControlName="address" placeholder="Dirección exacta (autocomplete)" />
       </div>
-      <div class="hint">También puedes pinchar el mapa para ubicarte.</div>
+      <div class="hint">Escribe para autocompletar; también puedes pinchar el mapa.</div>
     </div>
 
     <app-map-picker (positionChange)="onMapPositionChange($event)"></app-map-picker>

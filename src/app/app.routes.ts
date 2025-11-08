@@ -7,6 +7,14 @@ export const routes: Routes = [
     loadComponent: () =>
       import('./pages/landing/landing.component').then(m => m.LandingComponent)
   },
+  // Spanish friendly routes
+  { path: 'iniciar-sesion', loadComponent: () => import('./pages/login/login.component').then(m => m.LoginComponent) },
+  { path: 'registrarse', loadComponent: () => import('./pages/register/register.component').then(m => m.RegisterComponent) },
+  { path: 'reservar', loadComponent: () => import('./pages/booking/booking.component').then(m => m.BookingComponent), canActivate: [authGuard] },
+  { path: 'mis-mascotas', loadComponent: () => import('./pages/pets/pets.component').then(m => m.PetsComponent), canActivate: [authGuard] },
+  { path: 'mi-perfil', loadComponent: () => import('./pages/profile/profile.component').then(m => m.ProfileComponent), canActivate: [authGuard] },
+  { path: 'administrador', loadComponent: () => import('./pages/admin/admin-bookings.component').then(m => m.AdminBookingsComponent), canActivate: [authGuard] },
+  { path: 'administrador-peluqueros', loadComponent: () => import('./pages/admin/groomers/admin-groomers.component').then(m => m.AdminGroomersComponent), canActivate: [authGuard] },
   {
     path: 'faq',
     loadComponent: () =>
@@ -28,6 +36,7 @@ export const routes: Routes = [
       import('./pages/dashboard/dashboard.component').then(m => m.DashboardComponent),
     canActivate: [authGuard]
   },
+  { path: 'panel', redirectTo: 'dashboard', pathMatch: 'full' },
   {
     path: 'booking',
     loadComponent: () =>
@@ -53,11 +62,23 @@ export const routes: Routes = [
     canActivate: [authGuard]
   },
   {
+    path: 'profile',
+    loadComponent: () => import('./pages/profile/profile.component').then(m => m.ProfileComponent),
+    canActivate: [authGuard]
+  },
+  {
     path: 'users',
     loadComponent: () =>
       import('./pages/users/users.component').then(m => m.UsersComponent),
     canActivate: [authGuard]
   },
-  { path: '**', redirectTo: '/login' }
+  // Legacy redirects to Spanish slugs
+  { path: 'profile', redirectTo: 'mi-perfil', pathMatch: 'full' },
+  { path: 'pets', redirectTo: 'mis-mascotas', pathMatch: 'full' },
+  { path: 'booking', redirectTo: 'reservar', pathMatch: 'full' },
+  { path: 'admin', redirectTo: 'administrador', pathMatch: 'full' },
+  { path: 'register', redirectTo: 'registrarse', pathMatch: 'full' },
+  { path: 'login', redirectTo: 'iniciar-sesion', pathMatch: 'full' },
+  { path: '**', redirectTo: '/iniciar-sesion' }
 ];
 

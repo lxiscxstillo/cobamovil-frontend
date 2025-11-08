@@ -6,6 +6,7 @@ export interface BookingCreateRequest {
   serviceType: ServiceType;
   date: string; // ISO date (yyyy-MM-dd)
   time: string; // HH:mm
+  groomerId?: number; // selected groomer
   address?: string;
   latitude?: number;
   longitude?: number;
@@ -25,4 +26,3 @@ export interface Booking {
   status: BookingStatus;
   notes?: string;
 }
-

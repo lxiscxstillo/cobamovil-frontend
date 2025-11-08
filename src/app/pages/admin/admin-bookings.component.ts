@@ -18,6 +18,7 @@ export class AdminBookingsComponent {
   loading = false;
   error: string | null = null;
   items: Booking[] = [];
+  useOptimized = true;
   savingRoute = false;
 
   constructor(private bookingService: BookingService) {
@@ -28,7 +29,10 @@ export class AdminBookingsComponent {
     this.loading = true;
     this.error = null;
     this.bookingService.adminBookingsForDay(this.date).subscribe({
-      next: data => this.items = data,
+      next: data => {
+        this.items = data;
+        if (this.useOptimized) this.fetchAndApplyOptimized();
+      },
       error: err => this.error = err.error?.message || 'Error cargando reservas',
       complete: () => this.loading = false
     });
@@ -72,5 +76,21 @@ export class AdminBookingsComponent {
       error: err => this.error = err.error?.message || 'Error guardando ruta',
       complete: () => this.savingRoute = false
     });
+  }
+
+  applyOptimizedOrder(routeIds: number[]) {
+    const map = new Map(this.items.map(i => [i.id, i]));
+    const ordered: Booking[] = [];
+    for (const id of routeIds) { const b = map.get(id); if (b) ordered.push(b); }
+    for (const b of this.items) if (!routeIds.includes(b.id)) ordered.push(b);
+    this.items = ordered;
+  }
+
+  private fetchAndApplyOptimized() {
+    // For now request general route (admin scope). Could be filtered by groomer later.
+    fetch(`${location.origin}/api/bookings/admin/route?date=${this.date}`, { credentials: 'include' })
+      .then(r => r.json()).then((dto: any) => {
+        if (dto && Array.isArray(dto.bookingIdsInOrder)) this.applyOptimizedOrder(dto.bookingIdsInOrder);
+      }).catch(() => {});
   }
 }

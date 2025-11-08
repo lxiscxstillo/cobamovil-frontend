@@ -1,0 +1,27 @@
+<app-header></app-header>
+
+<div class="page-center">
+  <div class="card stack-lg" style="max-width:560px;">
+    <header>
+      <div>
+        <h2>Mi perfil</h2>
+        <div class="muted">Actualiza tu email y teléfono</div>
+      </div>
+    </header>
+
+    <div class="field">
+      <label class="label">Email</label>
+      <div class="control"><input class="input" [(ngModel)]="email" placeholder="tu@email.com" /></div>
+    </div>
+
+    <div class="field">
+      <label class="label">Teléfono (WhatsApp)</label>
+      <div class="control"><input class="input" [(ngModel)]="phone" placeholder="Ej: +573001112233" /></div>
+    </div>
+
+    <button class="btn" (click)="save()">Guardar</button>
+    <div class="success" *ngIf="message">{{ message }}</div>
+    <div class="error" *ngIf="error">{{ error }}</div>
+  </div>
+</div>
+
