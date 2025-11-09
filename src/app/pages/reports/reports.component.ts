@@ -44,4 +44,11 @@ export class ReportsComponent {
     }
     return max || 1;
   }
+
+  widthPercent(value: unknown): number {
+    const n = Number(value ?? 0);
+    if (!isFinite(n) || n <= 0) return 0;
+    const max = this.maxByServiceType || 1;
+    return Math.max(0, Math.min(100, (n / max) * 100));
+  }
 }

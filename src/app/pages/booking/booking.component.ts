@@ -125,12 +125,12 @@ export class BookingComponent implements AfterViewInit {
     this.bookingService.create(payload).subscribe({
       next: () => {
         this.successMessage = '¡Reserva creada! Pronto confirmaremos tu cita.';
-        this.toast.success('Reserva creada correctamente');
+        this.toast.created('Reserva');
         this.form.reset();
       },
       error: (err) => {
         this.errorMessage = err.error?.message || 'Error al crear la reserva. Inténtalo de nuevo.';
-        this.toast.error(this.errorMessage);
+        this.toast.errorFrom(err, 'Error al crear la reserva');
       },
       complete: () => {
         this.submitting = false;
@@ -169,3 +169,6 @@ export class BookingComponent implements AfterViewInit {
     this.groomerService.list().subscribe({ next: list => this.groomers = list, error: () => {} });
   }
 }
+
+
+

@@ -20,12 +20,13 @@
       <div class="bar" *ngFor="let kv of (data.byServiceType | keyvalue)">
         <span class="label">{{ kv.key }}</span>
         <div class="track">
-          <div class="fill" [style.width.%]="(kv.value / maxByServiceType) * 100"></div>
+          <div class="fill" [style.width.%]="widthPercent(kv.value)"></div>
         </div>
         <span class="value">{{ kv.value }}</span>
       </div>
     </div>
   </div></div>
+
 
 
 

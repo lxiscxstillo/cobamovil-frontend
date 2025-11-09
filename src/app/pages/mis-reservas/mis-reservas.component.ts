@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+﻿import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HeaderComponent } from '../../shared/header/header.component';
 import { BookingService } from '../../core/services/booking.service';
@@ -53,17 +53,19 @@ export class MisReservasComponent {
 
   doCancel(id: number) {
     this.bookingService.cancel(id).subscribe({
-      next: () => { this.toast.success('Reserva cancelada'); this.load(); },
-      error: e => this.toast.error(e.error?.message || 'Error al cancelar')
+      next: () => { this.toast.canceled('Reserva'); this.load(); },
+      error: e => this.toast.errorFrom(e, 'Error al cancelar')
     });
   }
 
   doReschedule(b: Booking) {
     const r = this.reschedule[b.id] || {};
-    if (!r.date || !r.time) { this.toast.error('Selecciona fecha y hora'); return; }
+    if (!r.date || !r.time) { this.toast.warn('Selecciona fecha y hora'); return; }
     this.bookingService.reschedule(b.id, r.date, r.time, b.serviceType).subscribe({
-      next: () => { this.toast.success('Reserva reprogramada'); this.load(); this.editing.delete(b.id); },
-      error: e => this.toast.error(e.error?.message || 'Error al reprogramar')
+      next: () => { this.toast.reprogrammed('Reserva'); this.load(); this.editing.delete(b.id); },
+      error: e => this.toast.errorFrom(e, 'Error al reprogramar')
     });
   }
 }
+
+

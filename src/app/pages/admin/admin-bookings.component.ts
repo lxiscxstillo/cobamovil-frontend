@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+﻿import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Booking, BookingStatus } from '../../core/models/booking.model';
@@ -49,9 +49,9 @@ export class AdminBookingsComponent {
       next: updated => {
         const idx = this.items.findIndex(x => x.id === updated.id);
         if (idx >= 0) this.items[idx] = updated;
-        this.toast.success('Estado actualizado');
+        this.toast.ok('Estado actualizado');
       },
-      error: err => { this.error = err.error?.message || 'Error actualizando estado'; this.toast.error(this.error); }
+      error: err => { this.error = err.error?.message || 'Error actualizando estado'; this.toast.errorFrom(err, 'Error actualizando estado'); }
     });
   }
 
@@ -79,8 +79,8 @@ export class AdminBookingsComponent {
     this.savingRoute = true;
     const ids = this.items.filter(b => (b as any).status === 'APPROVED').map(b => b.id);
     this.bookingService.saveRoute(this.date, ids).subscribe({
-      next: () => { this.toast.success('Ruta guardada'); },
-      error: err => { this.error = err.error?.message || 'Error guardando ruta'; this.toast.error(this.error); },
+      next: () => { this.toast.saved('Ruta'); },
+      error: err => { this.error = err.error?.message || 'Error guardando ruta'; this.toast.errorFrom(err, 'Error guardando ruta'); },
       complete: () => this.savingRoute = false
     });
   }
@@ -92,10 +92,10 @@ export class AdminBookingsComponent {
         if (dto?.bookingIdsInOrder) {
           this.applyOptimizedOrder(dto.bookingIdsInOrder);
           this.applyEtas(dto.bookingIdsInOrder, dto.etasMinutes);
-          this.toast.success('Ruta iniciada');
+          this.toast.started('Ruta');
         }
       },
-      error: err => { this.error = err.error?.message || 'Error iniciando la ruta'; this.toast.error(this.error); },
+      error: err => { this.error = err.error?.message || 'Error iniciando la ruta'; this.toast.errorFrom(err, 'Error iniciando la ruta'); },
       complete: () => this.savingRoute = false
     });
   }
@@ -139,3 +139,5 @@ export class AdminBookingsComponent {
     });
   }
 }
+
+

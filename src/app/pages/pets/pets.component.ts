@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+﻿import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { PetService } from '../../core/services/pet.service';
@@ -41,15 +41,15 @@ export class PetsComponent {
   add() {
     if (!this.model.name) return;
     this.petService.create(this.model).subscribe({
-      next: () => { this.model = { name: '', breed: '', sex: 'M' }; this.load(); this.toast.success('Mascota añadida'); },
-      error: err => { this.error = err.error?.message || 'Error creando mascota'; this.toast.error(this.error); }
+      next: () => { this.model = { name: '', breed: '', sex: 'M' }; this.load(); this.toast.success('Mascota aÃ±adida'); },
+      error: err => { this.error = err.error?.message || 'Error creando mascota'; this.toast.errorFrom(err, 'Error'); }
     });
   }
 
   remove(id: number) {
     this.petService.delete(id).subscribe({
-      next: () => { this.load(); this.toast.success('Mascota eliminada'); },
-      error: err => { this.error = err.error?.message || 'Error eliminando mascota'; this.toast.error(this.error); }
+      next: () => { this.load(); this.toast.deleted('Mascota'); },
+      error: err => { this.error = err.error?.message || 'Error eliminando mascota'; this.toast.errorFrom(err, 'Error'); }
     });
   }
 
@@ -60,3 +60,6 @@ export class PetsComponent {
     if (this.expandedIds.has(id)) this.expandedIds.delete(id); else this.expandedIds.add(id);
   }
 }
+
+
+
