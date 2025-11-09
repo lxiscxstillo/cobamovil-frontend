@@ -1,6 +1,6 @@
-﻿<div class="relative flex min-h-screen flex-col bg-[#fcfbf8] group/design-root overflow-x-hidden" style='font-family: "Plus Jakarta Sans", "Noto Sans", sans-serif;'>
+﻿<div class="relative flex min-h-screen flex-col bg-[#fcfbf8] overflow-x-hidden" style='font-family: "Plus Jakarta Sans", "Noto Sans", sans-serif;'>
   <div class="layout-container flex h-full grow flex-col">
-    <header class="flex items-center justify-between whitespace-nowrap border-b border-solid border-b-[#f3f0e7] px-10 py-3">
+    <header class="flex items-center justify-between border-b border-b-[#f3f0e7] px-10 py-3">
       <div class="flex items-center gap-4 text-[#1c170d]">
         <div class="size-4">
           <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -17,155 +17,102 @@
           <a class="text-[#1c170d] text-sm font-medium leading-normal" href="#testimonios">Testimonios</a>
           <a class="text-[#1c170d] text-sm font-medium leading-normal" routerLink="/iniciar-sesion">Iniciar sesión</a>
         </div>
-        <button class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-4 bg-[#f4c653] text-[#1c170d] text-sm font-bold leading-normal tracking-[0.015em]" [routerLink]="['/reservar']">
+        <button class="flex min-w-[84px] items-center justify-center rounded-lg h-10 px-4 bg-[#0ea5e9] text-white text-sm font-bold" [routerLink]="['/reservar']">
           <span class="truncate">Reservar cita</span>
         </button>
       </div>
     </header>
 
-    <div id="inicio" class="px-40 flex flex-1 justify-center py-5">
+    <div id="inicio" class="px-6 md:px-40 flex flex-1 justify-center py-5">
       <div class="layout-content-container flex flex-col max-w-[960px] flex-1">
-        <div class="@container">
-          <div class="@[480px]:p-4">
-            <div class="flex min-h-[480px] flex-col gap-6 bg-cover bg-center bg-no-repeat @[480px]:gap-8 @[480px]:rounded-lg items-start justify-end px-4 pb-10 @[480px]:px-10"
-                 style='background-image: linear-gradient(rgba(0, 0, 0, 0.1) 0%, rgba(0, 0, 0, 0.4) 100%), url("https://lh3.googleusercontent.com/aida-public/AB6AXuADrHBag1zPbNEDDP46sPuUzU0BWz7x2nrRwM3BbYJGdZSk4M_6GBrhznKl2IOyZUR0X1dxgsOQv26QQQTlwW1126TYpDw38-nrmAFsB_BaMZCzd5zSljY08N5R-_WQ5CcGXF1bS_QDXPPpNmV6_6fDT7TgSJz-P5c-zcLnVouus_WiQ-vPHV_nHn1DWv9KZPiE8DbwLBkIDNxvj5QUqalAF0dBTLfFOk6V2ovMOHW5e4qpv1ubYoZB0lATPP6coz6NHsrugFghzqM");'>
-              <div class="flex flex-col gap-2 text-left">
-                <h1 class="text-white text-4xl font-black leading-tight tracking-[-0.033em] @[480px]:text-5xl @[480px]:font-black @[480px]:leading-tight @[480px]:tracking-[-0.033em]">
-                  Peluquería canina a domicilio
-                </h1>
-                <h2 class="text-white text-sm font-normal leading-normal @[480px]:text-base @[480px]:font-normal @[480px]:leading-normal">
-                  Comodidad, confianza y amor para tu mascota sin salir de casa
-                </h2>
-              </div>
-              <button class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-4 @[480px]:h-12 @[480px]:px-5 bg-[#f4c653] text-[#1c170d] text-sm font-bold leading-normal tracking-[0.015em] @[480px]:text-base @[480px]:font-bold @[480px]:leading-normal @[480px]:tracking-[0.015em]" [routerLink]="['/reservar']">
-                <span class="truncate">Reservar cita</span>
-              </button>
+        <div class="p-4">
+          <div class="flex min-h-[480px] flex-col gap-6 bg-cover bg-center bg-no-repeat rounded-lg items-start justify-end px-4 pb-10 md:px-10"
+               style='background-image: linear-gradient(rgba(0, 0, 0, 0.1) 0%, rgba(0, 0, 0, 0.4) 100%), url("https://images.unsplash.com/photo-1558944351-af9e8e76b2c9?q=80&w=1600&auto=format&fit=crop");'>
+            <div class="flex flex-col gap-2 text-left">
+              <h1 class="text-white text-4xl md:text-5xl font-black leading-tight tracking-[-0.033em]">
+                Peluquería canina a domicilio
+              </h1>
+              <h2 class="text-white text-sm md:text-base">
+                Comodidad, confianza y amor para tu mascota sin salir de casa
+              </h2>
             </div>
+            <button class="flex min-w-[120px] items-center justify-center rounded-lg h-12 px-5 bg-[#0ea5e9] text-white text-base font-bold" [routerLink]="['/reservar']">
+              <span class="truncate">Reservar cita</span>
+            </button>
           </div>
         </div>
 
-        <div id="servicios" class="flex flex-col gap-10 px-4 py-10 @container">
+        <div id="servicios" class="flex flex-col gap-10 px-4 py-10">
           <div class="flex flex-col gap-4">
-            <h1 class="text-[#1c170d] tracking-light text-[32px] font-bold leading-tight @[480px]:text-4xl @[480px]:font-black @[480px]:leading-tight @[480px]:tracking-[-0.033em] max-w-[720px]">Beneficios</h1>
-            <p class="text-[#1c170d] text-base font-normal leading-normal max-w-[720px]">
-              En Coba Móvil, nos enfocamos en el bienestar de tu mascota, ofreciendo un servicio de Peluquería a domicilio que combina profesionalismo y cariño.
+            <h1 class="text-[#1c170d] text-4xl font-bold leading-tight max-w-[720px]">Beneficios</h1>
+            <p class="text-[#1c170d] text-base max-w-[720px]">
+              En Coba Móvil, nos enfocamos en el bienestar de tu mascota, ofreciendo un servicio de peluquería a domicilio que combina profesionalismo y cariño.
             </p>
           </div>
-          <div class="grid grid-cols-[repeat(auto-fit,minmax(158px,1fr))] gap-3 p-0">
+          <div class="grid grid-cols-[repeat(auto-fit,minmax(158px,1fr))] gap-3">
             <div class="flex flex-1 gap-3 rounded-lg border border-[#e8e1cf] bg-[#fcfbf8] p-4 flex-col">
-              <div class="text-[#1c170d]">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 256 256">
-                  <path d="M128,24A104,104,0,1,0,232,128,104.11,104.11,0,0,0,128,24Zm0,192a88,88,0,1,1,88-88A88.1,88.1,0,0,1,128,216Zm64-88a8,8,0,0,1-8,8H128a8,8,0,0,1-8-8V72a8,8,0,0,1,16,0v48h48A8,8,0,0,1,192,128Z"></path>
-                </svg>
-              </div>
-              <div class="flex flex-col gap-1">
-                <h2 class="text-[#1c170d] text-base font-bold leading-tight">Ahorra tiempo</h2>
-                <p class="text-[#9b844b] text-sm font-normal leading-normal">Evita traslados y esperas en la Peluquería tradicional.</p>
-              </div>
+              <div class="text-[#1c170d]">Tiempo y comodidad</div>
+              <p class="text-[#1c170d] text-sm">Evita traslados y esperas en la peluquería tradicional.</p>
             </div>
             <div class="flex flex-1 gap-3 rounded-lg border border-[#e8e1cf] bg-[#fcfbf8] p-4 flex-col">
-              <div class="text-[#1c170d]">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 256 256">
-                  <path d="M240,106.17V72a16,16,0,0,0-16-16H32A16,16,0,0,0,16,72v34.17A16,16,0,0,0,8,120v48a16,16,0,0,0,16,16h8v16a8,8,0,0,0,16,0V184H208v16a8,8,0,0,0,16,0V184h8a16,16,0,0,0,16-16V120A16,16,0,0,0,240,106.17ZM224,104h-8a16,16,0,0,0-16,16v16H136V72h88ZM120,72v64H56V120a16,16,0,0,0-16-16H32V72Zm112,96H24V120H40v16a16,16,0,0,0,16,16H200a16,16,0,0,0,16-16V120h16Z"></path>
-                </svg>
-              </div>
-              <div class="flex flex-col gap-1">
-                <h2 class="text-[#1c170d] text-base font-bold leading-tight">Comodidad</h2>
-                <p class="text-[#9b844b] text-sm font-normal leading-normal">Tu mascota se siente segura y relajada en su propio hogar.</p>
-              </div>
+              <div class="text-[#1c170d]">Atención personalizada</div>
+              <p class="text-[#1c170d] text-sm">Adaptamos el servicio a las necesidades de tu mascota.</p>
             </div>
             <div class="flex flex-1 gap-3 rounded-lg border border-[#e8e1cf] bg-[#fcfbf8] p-4 flex-col">
-              <div class="text-[#1c170d]">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 256 256">
-                  <path d="M230.92,212c-15.23-26.33-38.7-45.21-66.09-54.16a72,72,0,1,0-73.66,0C63.78,166.78,40.31,185.66,25.08,212a8,8,0,1,0,13.85,8c18.84-32.56,52.14-52,89.07-52s70.23,19.44,89.07,52a8,8,0,1,0,13.85-8ZM72,96a56,56,0,1,1,56,56A56.06,56.06,0,0,1,72,96Z"></path>
-                </svg>
-              </div>
-              <div class="flex flex-col gap-1">
-                <h2 class="text-[#1c170d] text-base font-bold leading-tight">Personalización</h2>
-                <p class="text-[#9b844b] text-sm font-normal leading-normal">Adaptamos el servicio a las necesidades y preferencias de tu mascota.</p>
-              </div>
+              <div class="text-[#1c170d]">Profesionales certificados</div>
+              <p class="text-[#1c170d] text-sm">Cuidadores expertos y procesos higiénicos.</p>
             </div>
           </div>
         </div>
 
-        <h2 id="galeria" class="text-[#1c170d] text-[22px] font-bold leading-tight tracking-[-0.015em] px-4 pb-3 pt-5">Galería</h2>
-        <div class="grid grid-cols-[repeat(auto-fit,minmax(158px,1fr))] gap-3 p-4">
-          <div class="flex flex-col gap-3">
-            <div class="w-full bg-center bg-no-repeat aspect-square bg-cover rounded-lg" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAchWa56VYIRBHwd2rXfjmDMrlNeAkt-vm9bS-nzG4hROI-Q-Lmu_EpmmDPjQbNFcHaT5NI-GAOdapHQnJLkVtX2F27_Tu6IZyjEZpSC_Or827JX4o6fWT1F3ly6PGMrlPghGOgMbqIXt6yq3_fiDZdeM4BBaD6ONLdJykSg5fNv5DZmpVebXqhN86NvglmPXsMzvnFLTFyd4rSFq1TtxK53RkImUHe1-3If8-avF3QmnI5aSPzAxcMFbnPZIyMslBG7fo-DsODU_w");'></div>
-          </div>
-          <div class="flex flex-col gap-3">
-            <div class="w-full bg-center bg-no-repeat aspect-square bg-cover rounded-lg" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBRZCAukUUhPnvnBbBre7fSYv4IdVZnVk0klSI7efdVa_gfiEyeB5Xpo_X493xvPA_PdbAZgMRM15jFHzWfKkyM7wofEerMdGNHls3GdVlLh4FKxNsKMNW6Ml8FolGHrslOVHV94tNKMUYY-wJ6ezJyD1Kj0iGgNBpYrHdbPk0YkbKNoTXcM_rti0TBecww4T_1n2b-oxCvmrFMyIhIpMKwF4QbuIjUali-qsNQGU2kgMi3RGIgXVxGyrcSpRjU98s9hd49qANksNA");'></div>
-          </div>
-          <div class="flex flex-col gap-3">
-            <div class="w-full bg-center bg-no-repeat aspect-square bg-cover rounded-lg" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuD-lwVPAtYRb1is62L1spAYttXSp-RmwOBP2f-r5SQ8VqE0hTATaDZmrkv3d7MOsquZIG9fCDnGIiyj2vC4UX9o98Cn0vZmPDRaCDcn1E2W80RTDxy-3woKv1QG5WK4fyEgX1RZghfqpfPTT0gFiM_pGPTBKY5K_QzHhE-bU1tb9g7N1Nlcty3tKQaojIkmq9xx0hou7kFyguJ79xlANoaeUllQgo-RGOU8uYAmp6cBN6ilYwtm0wVyXIM3GI-2N6A0UvbvJKkPTLg");'></div>
-          </div>
-          <div class="flex flex-col gap-3">
-            <div class="w-full bg-center bg-no-repeat aspect-square bg-cover rounded-lg" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBa23lHE_LuB9Mpjbbm3O9UqksuKlO2pBNfEChtEcOe1cmq3NzOz7ymrqOuivHUaHFyWz3fc-mclQD53Mn2plNG5_joTvok2wBKZ-eUQeoFdQ4DUNlS2f12F4LJQ3M7TWja0a00odkCl1JoLLvs19vLGDdSc6eaFwPjZO5CkBgmzo9aMybMQ9I3r8HWLPoZ_IVbuDaarVlQ_qy4qrr563bvqYLCN179g9HbhpID1ebujth3h4hQoq1ef-OAISPzX2aXEcIvNNId79E");'></div>
-          </div>
-          <div class="flex flex-col gap-3">
-            <div class="w-full bg-center bg-no-repeat aspect-square bg-cover rounded-lg" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAjLz-rcBwgwUD8ClUrMwEkKTkm-WUr6GfV39I_v_5fHzLXnRjG2KrXOfcfU3vadSrROCyAD3lVC55UVSseMH6e2QIAhZJ1X9tOo954T0AP8hwPSNOVm30PJ4sOF64M-tlS7OQJE7Q6DPAieRKbO3JB1FRgUg3CY4d5-AbfVfKXsg-dfvtG1T7ompctCm59FJjzKnFjlZnMBU-yhBYmvEESseHibGAsJDzN1XxL61P3AV3dRgVLgOkpuZ8IPFppa3gaFQ0znLB_5mE");'></div>
-          </div>
-          <div class="flex flex-col gap-3">
-            <div class="w-full bg-center bg-no-repeat aspect-square bg-cover rounded-lg" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBdAqv9dEyqajRmp1022aj9vkuCXtV8bgu72I6TINvajZnKdml1zOOwABzzAolfGuYucToWetwgmCNGqFx_0LdhyACRoieeVyaCbT-puh_qm0Z62Dl6a5hv5Ybrwi88rSwlIr_TkZqET8RqSRFEMTwRaTg_qgV3T9-8qHdL27dm0jeZ-7gU4ZYwjWoHWx9bSkGM0VQT1rF60ptV8m26rTfzFyRZ04F0VGaD3_KuUayurWWNI2_pb2O9wWlKPr5WlITWQzgaRuMgo4k");'></div>
+        <div id="galeria" class="px-4 py-10">
+          <h2 class="text-[#1c170d] text-2xl font-bold mb-4">Galería</h2>
+          <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+            <div class="aspect-square bg-cover rounded-lg" style='background-image:url("https://images.unsplash.com/photo-1518020382113-a7e8fc38eac9?q=80&w=800&auto=format&fit=crop");'></div>
+            <div class="aspect-square bg-cover rounded-lg" style='background-image:url("https://images.unsplash.com/photo-1568640347023-a6161c59b98e?q=80&w=800&auto=format&fit=crop");'></div>
+            <div class="aspect-square bg-cover rounded-lg" style='background-image:url("https://images.unsplash.com/photo-1619980296991-0f19042c1cdf?q=80&w=800&auto=format&fit=crop");'></div>
+            <div class="aspect-square bg-cover rounded-lg" style='background-image:url("https://images.unsplash.com/photo-1598133894008-7c6a58d1b82b?q=80&w=800&auto=format&fit=crop");'></div>
           </div>
         </div>
 
-        <h2 id="testimonios" class="text-[#1c170d] text-[22px] font-bold leading-tight tracking-[-0.015em] px-4 pb-3 pt-5">Testimonios</h2>
-        <div class="flex overflow-y-auto [-ms-scrollbar-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-          <div class="flex items-stretch p-4 gap-3">
-            <div class="flex h-full flex-1 flex-col gap-4 rounded-lg min-w-40">
-              <div class="w-full bg-center bg-no-repeat aspect-square bg-cover rounded-lg flex flex-col" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBsrd6lMnrypLYTaHYsSaEDTB7C_nS8lPomNzgItgQzbIhpzQ02ngfuILuzEa3khmSLH_lA1m-orNl-IOnfr24isMEuqgjYqH9MS1kDaZmXtfY8DuL5tp7o2CcH08xr4zAWcdz6PZiQNOln17r1OZbBSraN-_omlA5E4XY_F3T_oz0lbrMGfNPVuUpEknpErCr4IAlhIYJ37_x-v2U-PXR_1Y8FfpeNgpe1jAH2SztV0oGCuvukiKWNgIigCulzx-DmUbjYX5ganfI");'></div>
-              <div>
-                <p class="text-[#1c170d] text-base font-medium leading-normal">"El servicio de Coba Móvil es excepcional. Mi perro siempre vuelve feliz y con un corte impecable."</p>
-                <p class="text-[#9b844b] text-sm font-normal leading-normal">Laura G.</p>
-              </div>
+        <div id="testimonios" class="px-4 py-10">
+          <h2 class="text-[#1c170d] text-2xl font-bold mb-4">Testimonios</h2>
+          <div class="grid md:grid-cols-3 gap-3">
+            <div class="rounded-lg border border-[#e8e1cf] bg-[#fcfbf8] p-4">
+              <p class="text-[#1c170d] text-base font-medium">"El servicio de Coba Móvil es excepcional. Mi perro siempre vuelve feliz y con un corte impecable."</p>
+              <p class="text-[#9b844b] text-sm">Camilo A.</p>
             </div>
-            <div class="flex h-full flex-1 flex-col gap-4 rounded-lg min-w-40">
-              <div class="w-full bg-center bg-no-repeat aspect-square bg-cover rounded-lg flex flex-col" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBzYekggMkcrTfYzUv-_Uz7M4q4BGpWynxAiZ0Iqe2-F_KqJy5LePv1Q_eu1K02vcerTBopksgkfxlwixUdEERM8WgKecpsFvpTZBD9VfbXFRJ9mTyUT-S5Gmc3QXI68uy9YbhDyoHom0nDtqcM3aMhfcTvqNSaue2ayd3n2YdSbJABXFG5Op0cePRiOJUHzYbD5qxVDqt9uT5RmgrQFKMfR3nCTcUBF_dJEjFVxY5dvXLZ3qyeBiTJ9E6wu5Jvc3AryzvikOhDxwo");'></div>
-              <div>
-                <p class="text-[#1c170d] text-base font-medium leading-normal">"La comodidad de no tener que salir de casa es un gran plus. Además, el trato con los animales es muy cariñoso."</p>
-                <p class="text-[#9b844b] text-sm font-normal leading-normal">Carlos M.</p>
-              </div>
+            <div class="rounded-lg border border-[#e8e1cf] bg-[#fcfbf8] p-4">
+              <p class="text-[#1c170d] text-base font-medium">"La comodidad de no tener que salir de casa es un gran plus. Además, el trato con los animales es muy cariñoso."</p>
+              <p class="text-[#9b844b] text-sm">María P.</p>
             </div>
-            <div class="flex h-full flex-1 flex-col gap-4 rounded-lg min-w-40">
-              <div class="w-full bg-center bg-no-repeat aspect-square bg-cover rounded-lg flex flex-col" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCfIViksGVZRWeXlA9bQsIrudMeUSa0EuhCxGkWvsUx1PUk6eMxK0ueW76bDBvmTnLYawTlub1NAYc3PjDjrQeTAwWipBXC6qMlrDQbZgnP-CpcQthPaMJKhZqwbeVPKagZD4Id1deZmDnoX7Zd3ww-KnItf5smdaaGPXQIbQtgx5gRlPTGyPdL-foowrUDFmAYAc9awltHLffqWT1sGAnN7uHrDsFjIZdhp_H8mnrz5q93gJ7fLBmkn_V4W_vuqZqhIafwebOplVk");'></div>
-              <div>
-                <p class="text-[#1c170d] text-base font-medium leading-normal">"Recomiendo Coba Móvil a todos los dueños de mascotas. La calidad del servicio y la atención personalizada son inigualables."</p>
-                <p class="text-[#9b844b] text-sm font-normal leading-normal">Sofía R.</p>
-              </div>
+            <div class="rounded-lg border border-[#e8e1cf] bg-[#fcfbf8] p-4">
+              <p class="text-[#1c170d] text-base font-medium">"Recomiendo Coba Móvil a todos los dueños de mascotas. La calidad del servicio y la atención personalizada son inigualables."</p>
+              <p class="text-[#9b844b] text-sm">Sofía R.</p>
             </div>
           </div>
         </div>
 
-        <div id="cta" class="@container">
-          <div class="flex flex-col justify-end gap-6 px-4 py-10 @[480px]:gap-8 @[480px]:px-10 @[480px]:py-20">
-            <div class="flex flex-col gap-2 text-center">
-              <h1 class="text-[#1c170d] tracking-light text-[32px] font-bold leading-tight @[480px]:text-4xl @[480px]:font-black @[480px]:leading-tight @[480px]:tracking-[-0.033em] max-w-[720px] mx-auto">
-                ¿Listo para consentir a tu mascota? Agenda tu cita hoy mismo
-              </h1>
-            </div>
-            <div class="flex flex-1 justify-center">
-              <div class="flex justify-center">
-                <button class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-4 @[480px]:h-12 @[480px]:px-5 bg-[#f4c653] text-[#1c170d] text-sm font-bold leading-normal tracking-[0.015em] @[480px]:text-base @[480px]:font-bold @[480px]:leading-normal @[480px]:tracking-[0.015em] grow" [routerLink]="['/reservar']">
-                  <span class="truncate">Reservar ahora</span>
-                </button>
-              </div>
-            </div>
+        <div id="cta" class="px-4 py-10">
+          <div class="flex flex-col gap-2 text-center">
+            <h1 class="text-[#1c170d] text-3xl md:text-4xl font-bold">¿Listo para consentir a tu mascota? Agenda tu cita hoy mismo</h1>
+          </div>
+          <div class="flex justify-center mt-4">
+            <button class="flex min-w-[120px] items-center justify-center rounded-lg h-12 px-5 bg-[#0ea5e9] text-white text-base font-bold" [routerLink]="['/reservar']">
+              <span class="truncate">Reservar ahora</span>
+            </button>
           </div>
         </div>
 
-        <footer class="flex flex-col gap-6 px-5 py-10 text-center @container">
-          <div class="flex flex-wrap items-center justify-center gap-6 @[480px]:flex-row @[480px]:justify-around">
-            <a class="text-[#9b844b] text-base font-normal leading-normal min-w-40" href="#">Contacto</a>
-            <a class="text-[#9b844b] text-base font-normal leading-normal min-w-40" href="#">Preguntas frecuentes</a>
-            <a class="text-[#9b844b] text-base font-normal leading-normal min-w-40" href="#">Política de privacidad</a>
+        <footer class="flex flex-col gap-6 px-5 py-10 text-center">
+          <div class="flex flex-wrap items-center justify-center gap-6">
+            <a class="text-[#9b844b] text-base" href="#">Contacto</a>
+            <a class="text-[#9b844b] text-base" href="#">Preguntas frecuentes</a>
+            <a class="text-[#9b844b] text-base" href="#">Política de privacidad</a>
           </div>
-          <p class="text-[#9b844b] text-base font-normal leading-normal">© 2025 Coba Móvil - Todos los derechos reservados</p>
+          <p class="text-[#9b844b] text-base">© 2025 Coba Móvil - Todos los derechos reservados</p>
         </footer>
       </div>
     </div>
   </div>
-
-
-
-
+</div>

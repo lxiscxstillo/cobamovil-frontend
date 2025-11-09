@@ -33,5 +33,15 @@ export class ReportsComponent {
       complete: () => this.loading = false
     });
   }
-}
 
+  get maxByServiceType(): number {
+    const map = this.data?.byServiceType as Record<string, number> | undefined;
+    if (!map) return 1;
+    let max = 1;
+    for (const k of Object.keys(map)) {
+      const v = Number(map[k] ?? 0);
+      if (v > max) max = v;
+    }
+    return max || 1;
+  }
+}

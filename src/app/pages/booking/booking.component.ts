@@ -1,4 +1,4 @@
-import { Component, ElementRef, AfterViewInit, ViewChild } from '@angular/core';
+﻿import { Component, ElementRef, AfterViewInit, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, ReactiveFormsModule, Validators, FormGroup } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -169,4 +169,3 @@ export class BookingComponent implements AfterViewInit {
     this.groomerService.list().subscribe({ next: list => this.groomers = list, error: () => {} });
   }
 }
-

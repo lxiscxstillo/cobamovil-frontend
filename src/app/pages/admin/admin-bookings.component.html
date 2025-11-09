@@ -1,4 +1,4 @@
-<app-header></app-header>
+﻿<app-header></app-header>
 
 <div class="users-container">
   <h2>Agenda diaria</h2>
@@ -46,8 +46,8 @@
             <button class="btn" style="padding:6px 10px; background: linear-gradient(135deg,#ef4444,#f59e0b);" (click)="changeStatus(b, 'REJECTED')">Rechazar</button>
             <button class="btn" style="padding:6px 10px;" (click)="changeStatus(b, 'ON_ROUTE')">En camino</button>
             <button class="btn" style="padding:6px 10px;" (click)="changeStatus(b, 'COMPLETED')">Completada</button>
-            <button class="btn" style="padding:6px 10px;" (click)="moveUp(i)">↑</button>
-            <button class="btn" style="padding:6px 10px;" (click)="moveDown(i)">↓</button>
+            <button class="btn" style="padding:6px 10px;" (click)="moveUp(i)">&uarr;</button>
+            <button class="btn" style="padding:6px 10px;" (click)="moveDown(i)">&darr;</button>
           </div>
         </td>
       </tr>
@@ -64,4 +64,3 @@
     <span *ngIf="savingRoute">Guardando…</span>
   </div>
 </div>
-

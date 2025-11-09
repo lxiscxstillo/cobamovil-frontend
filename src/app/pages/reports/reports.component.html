@@ -1,4 +1,4 @@
-<app-header></app-header>
+﻿<app-header></app-header>
 <div class="container" style="max-width: 980px; margin: 16px auto; padding: 0 16px;">
   <h1 style="margin: 16px 0;">Reportes</h1>
 
@@ -10,15 +10,22 @@
     <button class="btn" (click)="load()">Actualizar</button>
   </div>
 
-  <div *ngIf="loading">Cargando…</div>
+  <div *ngIf="loading">Cargandoâ€¦</div>
   <div *ngIf="error" style="color:#b00020">{{ error }}</div>
 
-  <div *ngIf="!loading && !error && data">
+    <div *ngIf="!loading && !error && data">
     <h3>Total de servicios completados: {{ data.totalCompleted }}</h3>
     <h4>Por tipo de servicio</h4>
-    <ul>
-      <li *ngFor="let kv of (data.byServiceType | keyvalue)">{{ kv.key }}: {{ kv.value }}</li>
-    </ul>
-  </div>
-</div>
+    <div class="bars">
+      <div class="bar" *ngFor="let kv of (data.byServiceType | keyvalue)">
+        <span class="label">{{ kv.key }}</span>
+        <div class="track">
+          <div class="fill" [style.width.%]="(kv.value / maxByServiceType) * 100"></div>
+        </div>
+        <span class="value">{{ kv.value }}</span>
+      </div>
+    </div>
+  </div></div>
+
+
 
