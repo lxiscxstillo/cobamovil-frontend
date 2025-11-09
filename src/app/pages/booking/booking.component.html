@@ -1,97 +1,88 @@
 <app-header></app-header>
 
-<div class="page-center">
-  <form class="card stack-lg" [formGroup]="form" (ngSubmit)="submit()" novalidate>
-    <header>
-      <div>
-        <h2>Reservar cita</h2>
-        <div class="muted">Selecciona servicio, fecha y hora</div>
-      </div>
-    </header>
+<div class="wizard">
+  <div class="wiz-head">
+    <div class="wiz-title">Reservar cita</div>
+    <div class="wiz-sub">Sigue los pasos para agendar tu servicio</div>
+  </div>
+  <div class="wiz-stepper">
+    <div class="step" [class.active]="currentStep>=1">1<span>Mascota</span></div>
+    <div class="bar" [style.width.%]="(currentStep-1)*25"></div>
+    <div class="step" [class.active]="currentStep>=2">2<span>Servicio</span></div>
+    <div class="step" [class.active]="currentStep>=3">3<span>Fecha y hora</span></div>
+    <div class="step" [class.active]="currentStep>=4">4<span>Dirección</span></div>
+    <div class="step" [class.active]="currentStep>=5">5<span>Peluquero</span></div>
+  </div>
 
-    <div class="field">
-      <label class="label">Mascota</label>
-      <div class="control">
-        <select class="input" formControlName="petId">
-          <option [ngValue]="null" disabled>Selecciona tu mascota</option>
-          <option *ngFor="let p of pets" [ngValue]="p.id">{{ p.name }}</option>
-        </select>
+  <form class="wiz-card" [formGroup]="form" (ngSubmit)="submit()" novalidate>
+    <!-- Paso 1 Mascota -->
+    <section *ngIf="currentStep===1" class="cm-anim-slideUp">
+      <div class="section-title">Elige tu mascota</div>
+      <div class="pet-grid">
+        <button type="button" class="pet-card" *ngFor="let p of pets" [class.sel]="form.value.petId===p.id" (click)="form.get('petId')?.setValue(p.id)">
+          <div class="avatar">{{ (p.sex==='M'?'♂':'♀') }}</div>
+          <div class="name">{{ p.name }}</div>
+          <div class="sub">{{ p.breed || '—' }}</div>
+        </button>
       </div>
-      <div *ngIf="form.get('petId')?.invalid && (form.get('petId')?.touched || form.get('petId')?.dirty)" class="error">
-        Debes indicar la mascota.
+      <div class="hint">¿Aún no registras una mascota? Ve a “Mis Mascotas”.</div>
+    </section>
+
+    <!-- Paso 2 Servicio -->
+    <section *ngIf="currentStep===2" class="cm-anim-slideUp">
+      <div class="section-title">Selecciona el servicio</div>
+      <div class="service-grid">
+        <button type="button" class="srv-card" *ngFor="let s of services" [class.sel]="form.value.serviceType===s.value" (click)="form.get('serviceType')?.setValue(s.value)">
+          <div class="icon"></div>
+          <div class="name">{{ s.label }}</div>
+        </button>
       </div>
-      <div class="hint">Gestiona tus mascotas en “Mis Mascotas”.</div>
+    </section>
+
+    <!-- Paso 3 Fecha/Hora -->
+    <section *ngIf="currentStep===3" class="cm-anim-slideUp">
+      <div class="section-title">Fecha y hora</div>
+      <div class="grid2">
+        <div>
+          <label class="label">Fecha</label>
+          <input type="date" class="input" formControlName="date" />
+        </div>
+        <div>
+          <label class="label">Hora</label>
+          <div class="times">
+            <button type="button" class="time" *ngFor="let t of availableTimes" [class.sel]="form.value.time===t" (click)="form.get('time')?.setValue(t)">{{ t }}</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Paso 4 Dirección -->
+    <section *ngIf="currentStep===4" class="cm-anim-slideUp">
+      <div class="section-title">¿Dónde te atendemos?</div>
+      <input #addressInput class="input" formControlName="address" placeholder="Dirección exacta (autocomplete)" />
+      <div class="hint">Escribe para autocompletar o ajusta el pin en el mapa.</div>
+      <app-map-picker (positionChange)="onMapPositionChange($event)"></app-map-picker>
+    </section>
+
+    <!-- Paso 5 Peluquero -->
+    <section *ngIf="currentStep===5" class="cm-anim-slideUp">
+      <div class="section-title">Peluquero</div>
+      <select class="input" formControlName="groomerId">
+        <option [ngValue]="null">Cualquiera</option>
+        <option *ngFor="let g of groomers" [ngValue]="g.userId">{{ g.username }}</option>
+      </select>
+      <label class="label" style="margin-top:12px">Notas adicionales</label>
+      <textarea class="input" rows="3" maxlength="300" formControlName="notes" placeholder="Algo que debamos saber (máx. 300 caracteres)"></textarea>
+    </section>
+
+    <!-- Navegación -->
+    <div class="wiz-actions">
+      <button type="button" class="btn-ghost" (click)="back()" [disabled]="currentStep===1">Atrás</button>
+      <button type="button" class="btn-primary" (click)="next()" *ngIf="currentStep<5" [disabled]="!isStepValid(currentStep)">Siguiente</button>
+      <button class="btn-primary" type="submit" *ngIf="currentStep===5" [disabled]="submitting || form.invalid">{{ submitting ? 'Procesando…' : 'Confirmar reserva' }}</button>
     </div>
 
-    <div class="field">
-      <label class="label">Servicio</label>
-      <div class="control">
-        <select class="input" formControlName="serviceType">
-          <option [ngValue]="null" disabled>Selecciona un servicio</option>
-          <option *ngFor="let s of services" [ngValue]="s.value">{{ s.label }}</option>
-        </select>
-      </div>
-      <div *ngIf="form.get('serviceType')?.invalid && (form.get('serviceType')?.touched || form.get('serviceType')?.dirty)" class="error">
-        Selecciona un servicio.
-      </div>
-    </div>
-
-    <div class="field">
-      <label class="label">Peluquero</label>
-      <div class="control">
-        <select class="input" formControlName="groomerId">
-          <option [ngValue]="null">Cualquiera</option>
-          <option *ngFor="let g of groomers" [ngValue]="g.userId">{{ g.username }}</option>
-        </select>
-      </div>
-      <div class="hint">Elige tu peluquero favorito o deja "Cualquiera".</div>
-    </div>
-
-    <div class="field">
-      <label class="label">Fecha</label>
-      <div class="control">
-        <input type="date" class="input" formControlName="date" />
-      </div>
-      <div *ngIf="form.get('date')?.invalid && (form.get('date')?.touched || form.get('date')?.dirty)" class="error">
-        Selecciona una fecha.
-      </div>
-    </div>
-
-    <div class="field">
-      <label class="label">Hora</label>
-      <div class="control">
-        <select class="input" formControlName="time">
-          <option [ngValue]="null" disabled>Selecciona hora</option>
-          <option *ngFor="let t of availableTimes" [value]="t">{{ t }}</option>
-        </select>
-      </div>
-      <div *ngIf="form.get('time')?.invalid && (form.get('time')?.touched || form.get('time')?.dirty)" class="error">
-        Selecciona una hora.
-      </div>
-    </div>
-
-    <div class="field">
-      <label class="label">Dirección (opcional)</label>
-      <div class="control">
-        <input #addressInput class="input" formControlName="address" placeholder="Dirección exacta (autocomplete)" />
-      </div>
-      <div class="hint">Escribe para autocompletar; también puedes pinchar el mapa.</div>
-    </div>
-
-    <app-map-picker (positionChange)="onMapPositionChange($event)"></app-map-picker>
-
-    <div class="field">
-      <label class="label">Notas (opcional)</label>
-      <div class="control">
-        <textarea class="input" formControlName="notes" rows="3" placeholder="Observaciones"></textarea>
-      </div>
-    </div>
-
-    <button class="btn" type="submit" [disabled]="submitting || form.invalid">
-      {{ submitting ? 'Creando…' : 'Reservar' }}
-    </button>
-
-    <div class="success" *ngIf="successMessage">{{ successMessage }}</div>
     <div class="error" *ngIf="errorMessage">{{ errorMessage }}</div>
+    <div class="success" *ngIf="successMessage">{{ successMessage }}</div>
   </form>
 </div>

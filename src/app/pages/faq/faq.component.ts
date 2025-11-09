@@ -3,14 +3,13 @@ import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
 import { HeaderComponent } from '../../shared/header/header.component';
-import { FloatingWhatsappComponent } from '../../shared/floating-whatsapp/floating-whatsapp.component';
 
 interface Faq { id: number; question: string; answer: string; }
 
 @Component({
   selector: 'app-faq',
   standalone: true,
-  imports: [CommonModule, HeaderComponent, FloatingWhatsappComponent],
+  imports: [CommonModule, HeaderComponent],
   templateUrl: './faq.component.html',
   styleUrls: ['./faq.component.scss']
 })

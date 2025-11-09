@@ -10,6 +10,7 @@ import { environment } from '../../../environments/environment';
   styleUrls: ['./floating-whatsapp.component.scss']
 })
 export class FloatingWhatsappComponent {
+  show = (environment as any).showFloatingWhatsapp !== false && !!(environment as any).whatsappNumber;
   get href() {
     // Fallback to configured number if present, else sample number
     const raw = (environment as any).whatsappNumber || '573001112233';

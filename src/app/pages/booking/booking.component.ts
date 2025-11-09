@@ -15,6 +15,7 @@ import { environment } from '../../../environments/environment';
 import { MapPickerComponent } from '../../shared/map-picker/map-picker.component';
 import { MapsLoaderService } from '../../core/services/maps-loader.service';
 import { GroomerService, GroomerProfile } from '../../core/services/groomer.service';
+import { ToastService } from '../../shared/toast/toast.service';
 
 declare const google: any;
 
@@ -25,7 +26,6 @@ declare const google: any;
   templateUrl: './booking.component.html',
   styleUrls: ['./booking.component.scss']
 })
-
 export class BookingComponent implements AfterViewInit {
   @ViewChild('addressInput') addressInput!: ElementRef<HTMLInputElement>;
   submitting = false;
@@ -37,15 +37,25 @@ export class BookingComponent implements AfterViewInit {
   pickedLng?: number;
 
   services: { label: string; value: ServiceType }[] = [
-    { label: 'Ba�o', value: 'BATH' },
+    { label: 'Baño', value: 'BATH' },
     { label: 'Corte de pelo', value: 'HAIRCUT' },
-    { label: 'Corte de u�as', value: 'NAIL_TRIM' },
+    { label: 'Corte de uñas', value: 'NAIL_TRIM' },
     { label: 'Servicio completo', value: 'FULL_GROOMING' },
   ];
 
+  // Wizard state
+  currentStep = 1; // 1 Mascota, 2 Servicio, 3 Fecha/hora, 4 Dirección, 5 Peluquero
+
   form: FormGroup;
 
-  constructor(private fb: FormBuilder, private bookingService: BookingService, private http: HttpClient, private mapsLoader: MapsLoaderService, private groomerService: GroomerService) {
+  constructor(
+    private fb: FormBuilder,
+    private bookingService: BookingService,
+    private http: HttpClient,
+    private mapsLoader: MapsLoaderService,
+    private groomerService: GroomerService,
+    private toast: ToastService
+  ) {
     this.form = this.fb.group({
       petId: [null, [Validators.required]],
       serviceType: [null as ServiceType | null, [Validators.required]],
@@ -80,6 +90,19 @@ export class BookingComponent implements AfterViewInit {
     } catch {}
   }
 
+  next() { if (this.isStepValid(this.currentStep)) this.currentStep = Math.min(5, this.currentStep + 1); }
+  back() { this.currentStep = Math.max(1, this.currentStep - 1); }
+  isStepValid(step: number) {
+    switch (step) {
+      case 1: return !!this.form.get('petId')?.value;
+      case 2: return !!this.form.get('serviceType')?.value;
+      case 3: return !!this.form.get('date')?.value && !!this.form.get('time')?.value;
+      case 4: return !!(this.form.get('address')?.value || (this.pickedLat && this.pickedLng));
+      case 5: return true;
+      default: return true;
+    }
+  }
+
   submit() {
     if (this.form.invalid) return;
     this.submitting = true;
@@ -102,10 +125,12 @@ export class BookingComponent implements AfterViewInit {
     this.bookingService.create(payload).subscribe({
       next: () => {
         this.successMessage = '¡Reserva creada! Pronto confirmaremos tu cita.';
+        this.toast.success('Reserva creada correctamente');
         this.form.reset();
       },
       error: (err) => {
         this.errorMessage = err.error?.message || 'Error al crear la reserva. Inténtalo de nuevo.';
+        this.toast.error(this.errorMessage);
       },
       complete: () => {
         this.submitting = false;
@@ -144,5 +169,4 @@ export class BookingComponent implements AfterViewInit {
     this.groomerService.list().subscribe({ next: list => this.groomers = list, error: () => {} });
   }
 }
-  
 

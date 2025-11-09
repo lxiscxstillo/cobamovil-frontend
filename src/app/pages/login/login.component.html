@@ -1,47 +1,55 @@
-<div class="page-center">
-  <form class="card stack-lg" [formGroup]="loginForm" (ngSubmit)="onSubmit()" novalidate>
-    <header>
-      <div>
-        <h2>Bienvenido</h2>
-        <div class="muted">Ingresa a tu cuenta</div>
-      </div>
-    </header>
+﻿<div class="auth-wrapper">
+  <div class="bg-decor">
+    <div class="bubble b1"></div>
+    <div class="bubble b2"></div>
+  </div>
 
-    <div class="field">
-      <label for="username" class="label">Usuario</label>
-      <div class="control">
-        <span class="input-icon">👤</span>
-        <input id="username" type="text" class="input"
-               [class.valid]="username?.valid && (username?.dirty || username?.touched)"
-               [class.invalid]="username?.invalid && (username?.dirty || username?.touched)"
-               formControlName="username" placeholder="Tu usuario" />
+  <form class="auth-card" [formGroup]="loginForm" (ngSubmit)="onSubmit()" novalidate>
+    <div class="auth-header">
+      <div class="logo-circle">
+        <svg class="logo" viewBox="0 0 48 48" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+          <path d="M24 45.81C19.69 45.81 15.47 44.53 11.88 42.13 8.3 39.74 5.5 36.33 3.85 32.35 2.2 28.36 1.77 23.98 2.61 19.75 3.45 15.51 5.53 11.63 8.58 8.58 11.63 5.53 15.51 3.45 19.75 2.61 23.98 1.77 28.36 2.2 32.35 3.85 36.33 5.5 39.74 8.3 42.13 11.88 44.53 15.47 45.81 19.69 45.81 24L24 24 24 45.81Z" />
+        </svg>
       </div>
-      <div *ngIf="username?.invalid && (username?.dirty || username?.touched)" class="error">
-        El usuario es requerido.
-      </div>
+      <h1 class="brand">Coba Móvil</h1>
+      <p class="subtitle">Peluquería canina a domicilio</p>
     </div>
 
-    <div class="field">
-      <label for="password" class="label">Contraseña</label>
-      <div class="control">
-        <span class="input-icon">🔒</span>
-        <input [type]="showPassword ? 'text' : 'password'" id="password" class="input"
-               [class.valid]="password?.valid && (password?.dirty || password?.touched)"
-               [class.invalid]="password?.invalid && (password?.dirty || password?.touched)"
-               formControlName="password" placeholder="Tu contraseña" />
-        <button type="button" class="toggle-eye" (click)="togglePassword()" aria-label="Mostrar/Ocultar contraseña">
-          {{ showPassword ? '🙈' : '👁️' }}
-        </button>
-      </div>
-      <div *ngIf="password?.invalid && (password?.dirty || password?.touched)" class="error">
-        La contraseña es requerida.
-      </div>
+    <div class="tabs">
+      <button type="button" class="tab active">Iniciar sesión</button>
+      <a class="tab ghost" routerLink="/registrarse">Registrarse</a>
     </div>
 
-    <button class="btn" type="submit" [disabled]="loading || loginForm.invalid">
-      {{ loading ? 'Ingresando…' : 'Ingresar' }}
+    <div class="stack">
+      <label class="label">Usuario</label>
+      <div class="input-wrap" [class.invalid]="username?.invalid && (username?.dirty || username?.touched)">
+        <span class="icon user"></span>
+        <input id="username" type="text" class="input" formControlName="username" placeholder="Tu usuario" />
+      </div>
+      <div *ngIf="username?.invalid && (username?.dirty || username?.touched)" class="error">El usuario es requerido.</div>
+    </div>
+
+    <div class="stack">
+      <label class="label">Contraseña</label>
+      <div class="input-wrap" [class.invalid]="password?.invalid && (password?.dirty || password?.touched)">
+        <span class="icon lock"></span>
+        <input [type]="showPassword ? 'text' : 'password'" id="password" class="input" formControlName="password" placeholder="Tu contraseña" />
+        <button type="button" class="eye" (click)="togglePassword()" aria-label="Mostrar/Ocultar contraseña"></button>
+      </div>
+      <div *ngIf="password?.invalid && (password?.dirty || password?.touched)" class="error">La contraseña es requerida.</div>
+    </div>
+
+    <button class="cta" type="submit" [disabled]="loading || loginForm.invalid">
+      <span *ngIf="!loading">Ingresar</span>
+      <span *ngIf="loading" class="spinner"></span>
     </button>
 
-    <div class="error" *ngIf="errorMessage">{{ errorMessage }}</div>
+    <div class="foot-note">¿Aún no tienes cuenta? <a routerLink="/registrarse">Crea una</a></div>
+
+    <div class="error bAúner" *ngIf="errorMessage">{{ errorMessage }}</div>
   </form>
 </div>
+
+
+
+

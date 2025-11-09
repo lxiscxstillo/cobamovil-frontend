@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { PetService } from '../../core/services/pet.service';
 import { Pet } from '../../core/models/pet.model';
 import { HeaderComponent } from '../../shared/header/header.component';
+import { ToastService } from '../../shared/toast/toast.service';
 
 @Component({
   selector: 'app-pets',
@@ -19,7 +20,11 @@ export class PetsComponent {
 
   model: Partial<Pet> = { name: '', breed: '', sex: 'M', age: undefined, weight: undefined, behavior: '', healthNotes: '', vaccinations: '', deworming: '', medicalConditions: '', lastGroomDate: '' };
 
-  constructor(private petService: PetService) {
+  // UI state (visual only)
+  showForm = false;
+  expandedIds = new Set<number>();
+
+  constructor(private petService: PetService, private toast: ToastService) {
     this.load();
   }
 
@@ -36,15 +41,22 @@ export class PetsComponent {
   add() {
     if (!this.model.name) return;
     this.petService.create(this.model).subscribe({
-      next: () => { this.model = { name: '', breed: '', sex: 'M' }; this.load(); },
-      error: err => this.error = err.error?.message || 'Error creando mascota'
+      next: () => { this.model = { name: '', breed: '', sex: 'M' }; this.load(); this.toast.success('Mascota añadida'); },
+      error: err => { this.error = err.error?.message || 'Error creando mascota'; this.toast.error(this.error); }
     });
   }
 
   remove(id: number) {
     this.petService.delete(id).subscribe({
-      next: () => this.load(),
-      error: err => this.error = err.error?.message || 'Error eliminando mascota'
+      next: () => { this.load(); this.toast.success('Mascota eliminada'); },
+      error: err => { this.error = err.error?.message || 'Error eliminando mascota'; this.toast.error(this.error); }
     });
+  }
+
+  toggleForm() { this.showForm = !this.showForm; }
+  isExpanded(id?: number): boolean { return !!(id && this.expandedIds.has(id)); }
+  toggleExpand(id?: number) {
+    if (!id) return;
+    if (this.expandedIds.has(id)) this.expandedIds.delete(id); else this.expandedIds.add(id);
   }
 }

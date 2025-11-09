@@ -1,6 +1,48 @@
 <app-header></app-header>
 
-<div class="dashboard-container">
-  <h2>Welcome to the Dashboard!</h2>
-  <p>You are successfully logged in. 🚀</p>
-</div>
+<section class="hero">
+  <div class="hero-inner">
+    <div>
+      <h1>¡Bienvenido a Coba Móvil!</h1>
+      <p class="muted">Gestiona tus reservas, mascotas y perfil desde un solo lugar.</p>
+      <div class="cta">
+        <a class="btn" routerLink="/reservar">Reservar ahora</a>
+        <a class="btn secondary" routerLink="/mis-reservas">Ver mis reservas</a>
+      </div>
+    </div>
+
+    <div class="next" *ngIf="nextBooking as nb">
+      <h3>Próxima reserva</h3>
+      <div class="next-card">
+        <div class="row"><span>Mascota</span><b>{{ nb.petName }}</b></div>
+        <div class="row"><span>Servicio</span><b>{{ nb.serviceType }}</b></div>
+        <div class="row"><span>Fecha/Hora</span><b>{{ nb.date }} · {{ nb.time }}</b></div>
+        <div class="row"><span>Estado</span><b>{{ nb.status }}</b></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="tiles">
+  <a class="tile" routerLink="/mis-mascotas">
+    <div class="icon">🐾</div>
+    <h4>Mis Mascotas</h4>
+    <p>Gestiona las fichas de tus mascotas.</p>
+  </a>
+  <a class="tile" routerLink="/reservar">
+    <div class="icon">📅</div>
+    <h4>Reservar</h4>
+    <p>Agenda un servicio a domicilio.</p>
+  </a>
+  <a class="tile" routerLink="/mis-reservas">
+    <div class="icon">🧭</div>
+    <h4>Mis Reservas</h4>
+    <p>Consulta estado y detalles.</p>
+  </a>
+  <a class="tile" routerLink="/mi-perfil">
+    <div class="icon">👤</div>
+    <h4>Mi Perfil</h4>
+    <p>Actualiza tus datos de contacto.</p>
+  </a>
+</section>
+

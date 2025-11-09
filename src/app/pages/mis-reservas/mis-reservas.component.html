@@ -1,30 +1,58 @@
 <app-header></app-header>
 
-<div class="users-container">
-  <h2>Mis reservas</h2>
+<div class="page-center">
+  <div class="card stack-lg" style="max-width:980px;">
+    <header>
+      <div>
+        <h2>Mis reservas</h2>
+        <div class="muted">Consulta y gestiona tus servicios programados</div>
+      </div>
+    </header>
 
-  <div class="loading" *ngIf="loading">Cargando…</div>
-  <div class="error" *ngIf="error">{{ error }}</div>
+    <div class="loading" *ngIf="loading">Cargando…</div>
+    <div class="error" *ngIf="error">{{ error }}</div>
 
-  <table class="table" *ngIf="!loading && !error">
-    <thead>
-      <tr>
-        <th>Fecha</th>
-        <th>Hora</th>
-        <th>Servicio</th>
-        <th>Estado</th>
-        <th>Dirección</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let b of items">
-        <td>{{ b.date }}</td>
-        <td>{{ b.time }}</td>
-        <td>{{ b.serviceType }}</td>
-        <td>{{ b.status }}</td>
-        <td>{{ b.address || '—' }}</td>
-      </tr>
-    </tbody>
-  </table>
+    <div class="reservas-grid" *ngIf="!loading && !error">
+      <article class="reserva" *ngFor="let b of items">
+        <div class="top">
+          <div>
+            <h3>{{ b.petName }}</h3>
+            <p class="muted">{{ b.serviceType }} · {{ b.date }} · {{ b.time }}</p>
+          </div>
+          <div class="status" [attr.data-status]="b.status">{{ b.status }}</div>
+        </div>
+
+        <div class="actions">
+          <a class="link" [href]="mapsUrl(b)" target="_blank" rel="noopener">Ver en mapa</a>
+          <button class="btn secondary" style="width:auto;padding:8px 12px" (click)="toggleEdit(b.id)">{{ isEditing(b.id) ? 'Cerrar' : 'Reprogramar' }}</button>
+          <button class="btn danger" style="width:auto;padding:8px 12px" (click)="doCancel(b.id)">Cancelar</button>
+          <button class="icon" (click)="toggleExpand(b.id)" aria-label="Detalles">
+            <svg [class.rotate]="isExpanded(b.id)" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+          </button>
+        </div>
+
+        <div class="details" [class.open]="isExpanded(b.id)">
+          <div class="kv"><span>Dirección</span><b>{{ b.address || '—' }}</b></div>
+          <div class="kv" *ngIf="b.notes"><span>Notas</span><b>{{ b.notes }}</b></div>
+        </div>
+
+        <div class="edit" *ngIf="isEditing(b.id)">
+          <div class="grid-2">
+            <div>
+              <label class="label">Nueva fecha</label>
+              <input class="input" type="date" [(ngModel)]="reschedule[b.id].date" />
+            </div>
+            <div>
+              <label class="label">Nueva hora</label>
+              <input class="input" type="time" step="1800" [(ngModel)]="reschedule[b.id].time" />
+            </div>
+          </div>
+          <div class="edit-actions">
+            <button class="btn" style="width:auto;padding:10px 14px" (click)="doReschedule(b)">Guardar cambios</button>
+          </div>
+        </div>
+      </article>
+    </div>
+  </div>
 </div>
 

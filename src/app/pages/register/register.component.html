@@ -1,20 +1,30 @@
-<div class="page-center">
-  <form class="card stack-lg" [formGroup]="registerForm" (ngSubmit)="onSubmit()" novalidate>
-    <header>
-      <div>
-        <h2>Crear cuenta</h2>
-        <div class="muted">Regístrate para comenzar</div>
-      </div>
-    </header>
+﻿<div class="auth-wrapper">
+  <div class="bg-decor">
+    <div class="bubble b1"></div>
+    <div class="bubble b2"></div>
+  </div>
 
-    <div class="field">
-      <label for="username" class="label">Usuario</label>
-      <div class="control">
-        <span class="input-icon">👤</span>
-        <input id="username" type="text" class="input"
-               [class.valid]="username?.valid && (username?.dirty || username?.touched)"
-               [class.invalid]="username?.invalid && (username?.dirty || username?.touched)"
-               formControlName="username" placeholder="Tu usuario" />
+  <form class="auth-card" [formGroup]="registerForm" (ngSubmit)="onSubmit()" novalidate>
+    <div class="auth-header">
+      <div class="logo-circle">
+        <svg class="logo" viewBox="0 0 48 48" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+          <path d="M24 45.81C19.69 45.81 15.47 44.53 11.88 42.13 8.3 39.74 5.5 36.33 3.85 32.35 2.2 28.36 1.77 23.98 2.61 19.75 3.45 15.51 5.53 11.63 8.58 8.58 11.63 5.53 15.51 3.45 19.75 2.61 23.98 1.77 28.36 2.2 32.35 3.85 36.33 5.5 39.74 8.3 42.13 11.88 44.53 15.47 45.81 19.69 45.81 24L24 24 24 45.81Z" />
+        </svg>
+      </div>
+      <h1 class="brand">Crea tu cuenta</h1>
+      <p class="subtitle">Te tomará menos de un minuto</p>
+    </div>
+
+    <div class="tabs">
+      <a class="tab ghost" routerLink="/iniciar-sesion">Iniciar sesión</a>
+      <button type="button" class="tab active">Registrarse</button>
+    </div>
+
+    <div class="stack">
+      <label class="label">Usuario</label>
+      <div class="input-wrap" [class.invalid]="username?.invalid && (username?.dirty || username?.touched)">
+        <span class="icon user"></span>
+        <input id="username" type="text" class="input" formControlName="username" placeholder="Tu usuario" />
       </div>
       <div *ngIf="username?.invalid && (username?.dirty || username?.touched)" class="error">
         <ng-container *ngIf="username?.errors?.['required']">El usuario es requerido.</ng-container>
@@ -23,14 +33,11 @@
       </div>
     </div>
 
-    <div class="field">
-      <label for="email" class="label">Email</label>
-      <div class="control">
-        <span class="input-icon">✉️</span>
-        <input id="email" type="email" class="input"
-               [class.valid]="email?.valid && (email?.dirty || email?.touched)"
-               [class.invalid]="email?.invalid && (email?.dirty || email?.touched)"
-               formControlName="email" placeholder="tu@email.com" />
+    <div class="stack">
+      <label class="label">Email</label>
+      <div class="input-wrap" [class.invalid]="email?.invalid && (email?.dirty || email?.touched)">
+        <span class="icon mail"></span>
+        <input id="email" type="email" class="input" formControlName="email" placeholder="tu@email.com" />
       </div>
       <div *ngIf="email?.invalid && (email?.dirty || email?.touched)" class="error">
         <ng-container *ngIf="email?.errors?.['required']">El email es requerido.</ng-container>
@@ -38,47 +45,38 @@
       </div>
     </div>
 
-    <div class="field">
-      <label for="phone" class="label">Teléfono (WhatsApp)</label>
-      <div class="control">
-        <span class="input-icon">📱</span>
-        <input id="phone" type="tel" class="input"
-               [class.valid]="phone?.valid && (phone?.dirty || phone?.touched)"
-               [class.invalid]="phone?.invalid && (phone?.dirty || phone?.touched)"
-               formControlName="phone" placeholder="Ej: +573001112233" />
+    <div class="stack">
+      <label class="label">Teléfono (WhatsApp)</label>
+      <div class="input-wrap" [class.invalid]="phone?.invalid && (phone?.dirty || phone?.touched)">
+        <span class="icon phone"></span>
+        <input id="phone" type="tel" class="input" formControlName="phone" placeholder="Ej: +573001112233" />
       </div>
-      <div *ngIf="phone?.invalid && (phone?.dirty || phone?.touched)" class="error">
-        Ingresa un teléfono válido (incluye prefijo país, ej: +57)
-      </div>
+      <div class="hint">Usaremos WhatsApp para confirmar y notificar tus reservas.</div>
+      <div *ngIf="phone?.invalid && (phone?.dirty || phone?.touched)" class="error">Ingresa un teléfono válido (incluye prefijo país, ej: +57)</div>
     </div>
 
-    <div class="field">
-      <label for="password" class="label">Contraseña</label>
-      <div class="control">
-        <span class="input-icon">🔒</span>
-        <input [type]="showPassword ? 'text' : 'password'" id="password" class="input"
-               [class.valid]="password?.valid && (password?.dirty || password?.touched)"
-               [class.invalid]="password?.invalid && (password?.dirty || password?.touched)"
-               formControlName="password" placeholder="Mínimo 6 caracteres" />
-        <button type="button" class="toggle-eye" (click)="togglePassword()" aria-label="Mostrar/Ocultar contraseña">
-          {{ showPassword ? '🙈' : '👁️' }}
-        </button>
+    <div class="stack">
+      <label class="label">Contraseña</label>
+      <div class="input-wrap" [class.invalid]="password?.invalid && (password?.dirty || password?.touched)">
+        <span class="icon lock"></span>
+        <input [type]="showPassword ? 'text' : 'password'" id="password" class="input" formControlName="password" placeholder="Mínimo 6 caracteres" />
+        <button type="button" class="eye" (click)="togglePassword()" aria-label="Mostrar/Ocultar contraseña"></button>
       </div>
       <div class="strength"><span [style.width.%]="passwordStrength"></span></div>
       <div *ngIf="password?.invalid && (password?.dirty || password?.touched)" class="error">
         <ng-container *ngIf="password?.errors?.['required']">La contraseña es requerida.</ng-container>
         <ng-container *ngIf="password?.errors?.['minlength']">Mínimo 6 caracteres.</ng-container>
       </div>
-      <div class="hint" *ngIf="password?.valid">Contraseña segura ✔</div>
     </div>
 
-    <button class="btn" type="submit" [disabled]="loading || registerForm.invalid">
-      {{ loading ? 'Creando cuenta…' : 'Crear cuenta' }}
+    <button class="cta" type="submit" [disabled]="loading || registerForm.invalid">
+      <span *ngIf="!loading">Crear cuenta</span>
+      <span *ngIf="loading" class="spinner"></span>
     </button>
 
-    <div class="success" *ngIf="successMessage">{{ successMessage }}</div>
-    <div class="error" *ngIf="errorMessage">{{ errorMessage }}</div>
+    <div class="foot-note">Al registrarte aceptas nuestros <a routerLink="/terminos">Términos</a> y <a routerLink="/privacidad">Privacidad</a></div>
 
-    <div class="muted" style="text-align:center">¿Ya tienes cuenta? <a class="link" routerLink="/iniciar-sesion">Inicia sesión</a></div>
+    <div class="success banner" *ngIf="successMessage">{{ successMessage }}</div>
+    <div class="error banner" *ngIf="errorMessage">{{ errorMessage }}</div>
   </form>
 </div>

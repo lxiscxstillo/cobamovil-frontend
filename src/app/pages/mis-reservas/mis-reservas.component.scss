@@ -1,2 +1,33 @@
-/* reuse containers */
+/* Mis Reservas cards/timeline styling */
 
+.reservas-grid { display: grid; gap: 14px; }
+
+.reserva {
+  background: #fff;
+  border: 1px solid rgba(2,132,199,.18);
+  border-radius: var(--radius);
+  padding: 14px;
+  box-shadow: var(--shadow-md);
+}
+
+.top { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.top h3 { margin: 0; font-size: 16px; }
+
+.status { font-size: 12px; padding: 6px 10px; border-radius: 999px; border: 1px solid; }
+.status[data-status="PENDING"]   { color: #a16207; background: #fef9c3; border-color: #facc15; }
+.status[data-status="APPROVED"]  { color: #065f46; background: #d1fae5; border-color: #34d399; }
+.status[data-status="ON_ROUTE"]  { color: #075985; background: #e0f2fe; border-color: #38bdf8; }
+.status[data-status="COMPLETED"] { color: #334155; background: #f1f5f9; border-color: #94a3b8; }
+.status[data-status="REJECTED"]  { color: #991b1b; background: #fee2e2; border-color: #f87171; }
+
+.actions { display: flex; gap: 10px; align-items: center; margin-top: 8px; }
+.actions .icon { border: 1px solid rgba(2,132,199,.18); background: #fff; border-radius: 10px; width: 36px; height: 36px; display: grid; place-items: center; cursor: pointer; }
+.actions .icon svg.rotate { transform: rotate(180deg); transition: transform var(--transition-fast); }
+
+.details { max-height: 0; overflow: hidden; opacity: 0; transition: max-height .3s var(--ease-smooth), opacity .3s var(--ease-smooth); }
+.details.open { max-height: 300px; opacity: 1; }
+.kv { display: flex; justify-content: space-between; gap: 12px; margin-top: 8px; font-size: 14px; }
+.kv span { color: var(--text-300); }
+
+.edit { margin-top: 12px; padding-top: 10px; border-top: 1px dashed rgba(2,132,199,.2); }
+.edit-actions { margin-top: 10px; }

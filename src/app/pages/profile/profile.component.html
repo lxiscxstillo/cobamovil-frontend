@@ -1,4 +1,4 @@
-<app-header></app-header>
+﻿<app-header></app-header>
 
 <div class="page-center">
   <div class="card stack-lg" style="max-width:560px;">
@@ -8,6 +8,8 @@
         <div class="muted">Actualiza tu email y teléfono</div>
       </div>
     </header>
+
+    <div class="avatar-lg" aria-hidden="true">{{ (email || 'U').slice(0,1).toUpperCase() }}</div>
 
     <div class="field">
       <label class="label">Email</label>
@@ -19,9 +21,8 @@
       <div class="control"><input class="input" [(ngModel)]="phone" placeholder="Ej: +573001112233" /></div>
     </div>
 
-    <button class="btn" (click)="save()">Guardar</button>
+    <button class="btn" (click)="save()">Guardar cambios</button>
     <div class="success" *ngIf="message">{{ message }}</div>
     <div class="error" *ngIf="error">{{ error }}</div>
   </div>
 </div>
-

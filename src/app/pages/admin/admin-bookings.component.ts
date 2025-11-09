@@ -6,6 +6,7 @@ import { BookingService } from '../../core/services/booking.service';
 import { HeaderComponent } from '../../shared/header/header.component';
 import { MapRouteComponent } from '../../shared/map-route/map-route.component';
 import { GroomerService, GroomerProfile } from '../../core/services/groomer.service';
+import { ToastService } from '../../shared/toast/toast.service';
 
 @Component({
   selector: 'app-admin-bookings',
@@ -25,7 +26,7 @@ export class AdminBookingsComponent {
   selectedGroomerId: number | null = null;
   etas: Record<number, string> = {};
 
-  constructor(private bookingService: BookingService, private groomerService: GroomerService) {
+  constructor(private bookingService: BookingService, private groomerService: GroomerService, private toast: ToastService) {
     this.load();
     this.loadGroomers();
   }
@@ -48,8 +49,9 @@ export class AdminBookingsComponent {
       next: updated => {
         const idx = this.items.findIndex(x => x.id === updated.id);
         if (idx >= 0) this.items[idx] = updated;
+        this.toast.success('Estado actualizado');
       },
-      error: err => this.error = err.error?.message || 'Error actualizando estado'
+      error: err => { this.error = err.error?.message || 'Error actualizando estado'; this.toast.error(this.error); }
     });
   }
 
@@ -77,8 +79,8 @@ export class AdminBookingsComponent {
     this.savingRoute = true;
     const ids = this.items.filter(b => (b as any).status === 'APPROVED').map(b => b.id);
     this.bookingService.saveRoute(this.date, ids).subscribe({
-      next: () => {},
-      error: err => this.error = err.error?.message || 'Error guardando ruta',
+      next: () => { this.toast.success('Ruta guardada'); },
+      error: err => { this.error = err.error?.message || 'Error guardando ruta'; this.toast.error(this.error); },
       complete: () => this.savingRoute = false
     });
   }
@@ -90,9 +92,10 @@ export class AdminBookingsComponent {
         if (dto?.bookingIdsInOrder) {
           this.applyOptimizedOrder(dto.bookingIdsInOrder);
           this.applyEtas(dto.bookingIdsInOrder, dto.etasMinutes);
+          this.toast.success('Ruta iniciada');
         }
       },
-      error: err => this.error = err.error?.message || 'Error iniciando la ruta',
+      error: err => { this.error = err.error?.message || 'Error iniciando la ruta'; this.toast.error(this.error); },
       complete: () => this.savingRoute = false
     });
   }
