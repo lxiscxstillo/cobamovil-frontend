@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+
+# Opcional: bloquear rutas internas/administrativas
+Disallow: /administrador
+Disallow: /administrador-peluqueros
+
+Sitemap: https://cobamovil.vercel.app/sitemap.xml

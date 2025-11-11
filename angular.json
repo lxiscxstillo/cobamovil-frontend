@@ -36,6 +36,10 @@
             "outputMode": "server",
             "ssr": {
               "entry": "src/server.ts"
+            },
+            "prerender": {
+              "discoverRoutes": false,
+              "routes": ["/"]
             }
           },
           "configurations": {
