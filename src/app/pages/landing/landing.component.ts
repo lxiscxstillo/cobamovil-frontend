@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+﻿import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { Title, Meta } from '@angular/platform-browser';
@@ -15,7 +15,7 @@ export class LandingComponent implements OnInit {
 
   ngOnInit(): void {
     const title = 'Coba Móvil | Peluquería canina a domicilio';
-    const description = 'Servicio profesional de peluquería canina a domicilio. Agenda en línea, ruta optimizada, atención personalizada y notificaciones por WhatsApp y correo.';
+    const description = 'Servicio profesional de Peluquería canina a domicilio. Agenda en línea, ruta optimizada, atención personalizada y notificaciones por WhatsApp y correo.';
 
     this.title.setTitle(title);
     this.meta.updateTag({ name: 'description', content: description });
@@ -27,3 +27,4 @@ export class LandingComponent implements OnInit {
     this.meta.updateTag({ name: 'twitter:description', content: description });
   }
 }
+
