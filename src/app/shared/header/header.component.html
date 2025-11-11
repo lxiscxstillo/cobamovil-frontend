@@ -10,9 +10,11 @@
   </div>
 
   <div class="navbar-right" *ngIf="isLoggedIn()">
-    <a class="link" routerLink="/administrador" *ngIf="isAdmin()">Administrador</a>
-    <a class="link" routerLink="/administrador-peluqueros" *ngIf="isAdmin()">Peluqueros</a>
-    <a class="link" routerLink="/reports" *ngIf="isAdmin()">Reportes</a>
+    <!-- Agenda/Ruta visible para ADMIN y GROOMER -->
+    <a class="link" routerLink="/administrador" *ngIf="isAdmin()">Agenda</a>
+    <!-- Gestión de peluqueros y reportes solo para ADMIN -->
+    <a class="link" routerLink="/administrador-peluqueros" *ngIf="isAdminStrict()">Peluqueros</a>
+    <a class="link" routerLink="/reports" *ngIf="isAdminStrict()">Reportes</a>
     <a class="link" routerLink="/reservar">Reservar cita</a>
     <a class="link" routerLink="/mis-reservas">Mis reservas</a>
     <a class="link" routerLink="/mis-mascotas">Mis mascotas</a>

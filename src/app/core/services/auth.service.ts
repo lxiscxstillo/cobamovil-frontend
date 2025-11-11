@@ -74,4 +74,14 @@ export class AuthService {
     const role = this.getRole();
     return role === 'ADMIN' || role === 'GROOMER';
   }
+
+  /** True only for ADMIN */
+  isAdminStrict(): boolean {
+    return this.getRole() === 'ADMIN';
+  }
+
+  /** True only for GROOMER */
+  isGroomer(): boolean {
+    return this.getRole() === 'GROOMER';
+  }
 }
