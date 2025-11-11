@@ -46,4 +46,11 @@ export class HeaderComponent {
   isLoggedIn(): boolean {
     return this.authService.isAuthenticated();
   }
+
+  isAdmin(): boolean {
+    // simple check based on stored role
+    if (typeof window === 'undefined') return false;
+    const role = localStorage.getItem('role');
+    return role === 'ADMIN' || role === 'GROOMER';
+  }
 }

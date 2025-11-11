@@ -10,6 +10,9 @@
   </div>
 
   <div class="navbar-right" *ngIf="isLoggedIn()">
+    <a class="link" routerLink="/administrador" *ngIf="isAdmin()">Administrador</a>
+    <a class="link" routerLink="/administrador-peluqueros" *ngIf="isAdmin()">Peluqueros</a>
+    <a class="link" routerLink="/reports" *ngIf="isAdmin()">Reportes</a>
     <a class="link" routerLink="/reservar">Reservar cita</a>
     <a class="link" routerLink="/mis-reservas">Mis reservas</a>
     <a class="link" routerLink="/mis-mascotas">Mis mascotas</a>

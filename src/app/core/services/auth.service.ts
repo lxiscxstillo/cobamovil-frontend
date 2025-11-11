@@ -23,6 +23,10 @@ export class AuthService {
           if (response?.id) {
             localStorage.setItem('userId', String(response.id));
           }
+          // Persist role returned by backend for UI/guards
+          if (response?.role) {
+            localStorage.setItem('role', String(response.role));
+          }
         }
       })
     );
@@ -41,6 +45,7 @@ export class AuthService {
   logout(): void {
     localStorage.removeItem('token');
     localStorage.removeItem('username');
+    localStorage.removeItem('role');
   }
 
   /**
@@ -56,5 +61,17 @@ export class AuthService {
    */
   isAuthenticated(): boolean {
     return !!this.getToken();
+  }
+
+  /** Returns current role from storage (ADMIN/GROOMER/USER) */
+  getRole(): string | null {
+    if (typeof window === 'undefined') return null;
+    return localStorage.getItem('role');
+  }
+
+  /** True when role is ADMIN or GROOMER */
+  isAdmin(): boolean {
+    const role = this.getRole();
+    return role === 'ADMIN' || role === 'GROOMER';
   }
 }
