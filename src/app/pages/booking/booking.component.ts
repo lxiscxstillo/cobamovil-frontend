@@ -59,10 +59,12 @@ export class BookingComponent implements AfterViewInit {
     this.form = this.fb.group({
       petId: [null, [Validators.required]],
       serviceType: [null as ServiceType | null, [Validators.required]],
-      date: [null as Date | null, [Validators.required]],
+      // For <input type="date"> the control value is a string "YYYY-MM-DD"
+      date: [null as unknown as string | Date | null, [Validators.required]],
       time: ['', [Validators.required]],
       address: [''],
-      notes: ['']
+      notes: [''],
+      groomerId: [null]
     });
     this.loadPets();
     this.loadGroomers();
@@ -139,9 +141,21 @@ export class BookingComponent implements AfterViewInit {
     });
   }
 
-  private toIsoDate(d: Date): string {
+  private toIsoDate(d: unknown): string {
+    // If already a string from <input type="date">, pass through (YYYY-MM-DD)
+    if (typeof d === 'string') return d;
     const pad = (n: number) => (n < 10 ? `0${n}` : String(n));
-    return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
+    if (d instanceof Date) {
+      return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
+    }
+    try {
+      const dt = new Date(d as any);
+      if (!isNaN(dt.getTime())) {
+        return `${dt.getFullYear()}-${pad(dt.getMonth() + 1)}-${pad(dt.getDate())}`;
+      }
+    } catch {}
+    // Fallback: empty string to avoid crashing; caller validates form required
+    return '';
   }
 
   onMapPositionChange(pos: { lat: number; lng: number }) {
