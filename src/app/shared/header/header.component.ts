@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../core/services/auth.service';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-header',
@@ -12,6 +13,7 @@ import { AuthService } from '../../core/services/auth.service';
 })
 export class HeaderComponent {
   username: string | null = null;
+  logoUrl: string = environment.logoUrl || '/logo.png';
 
   constructor(
     private authService: AuthService,

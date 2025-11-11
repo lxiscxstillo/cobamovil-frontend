@@ -1,0 +1,21 @@
+<section class="services-section py-5 bg-white" id="servicios">
+  <div class="container">
+    <div class="text-center mb-5">
+      <h2 class="fw-bold mb-3">Nuestros Servicios</h2>
+      <p class="lead text-muted">Ofrecemos una amplia gama de servicios profesionales para el cuidado y belleza de tu mascota, todos desde la comodidad de tu hogar.</p>
+    </div>
+
+    <div class="row g-4">
+      <div class="col-md-4" *ngFor="let service of services; let i = index">
+        <div class="service-card text-center h-100" [class]="'animate-delay-' + (i + 1)">
+          <div class="service-icon mb-3">
+            <i [class]="service.icon"></i>
+          </div>
+          <h4 class="service-title mb-3">{{ service.title }}</h4>
+          <p class="service-description">{{ service.description }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+

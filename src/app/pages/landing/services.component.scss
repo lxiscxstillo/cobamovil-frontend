@@ -1,0 +1,54 @@
+.services-section {
+  padding-top: 2.5rem;
+  padding-bottom: 2.5rem;
+
+  .container { max-width: 980px; margin: 0 auto; padding: 0 16px; }
+
+  .text-center { text-align: center; }
+  .mb-5 { margin-bottom: 2rem; }
+  .mb-3 { margin-bottom: 1rem; }
+  .lead { font-size: 1.05rem; }
+  .text-muted { color: var(--text-300); }
+  .fw-bold { font-weight: 800; }
+
+  .row { display: grid; grid-template-columns: repeat(1, minmax(0,1fr)); gap: 16px; }
+  @media (min-width: 768px) { .row { grid-template-columns: repeat(3, minmax(0,1fr)); gap: 18px; } }
+
+  .service-card {
+    background: #fff;
+    border-radius: 15px;
+    padding: 2.2rem 1.5rem;
+    border: 1px solid rgba(155,132,75,.22);
+    box-shadow: var(--shadow-md);
+    transition: transform var(--transition), box-shadow var(--transition), filter var(--transition);
+  }
+  .service-card:hover { transform: translateY(-8px); box-shadow: var(--shadow-lg); filter: saturate(1.05); }
+
+  .service-icon i {
+    font-size: 2rem;
+    color: #e8b83e; /* primary gold */
+    padding: 18px;
+    background: rgba(232,184,62,0.12);
+    border-radius: 50%;
+    width: 72px; height: 72px;
+    display: inline-flex; align-items: center; justify-content: center;
+    transition: transform var(--transition), background var(--transition), color var(--transition);
+  }
+  .service-card:hover .service-icon i { background: #e8b83e; color: #fff; transform: scale(1.06); }
+
+  .service-title { color: var(--text-100); font-weight: 800; font-size: 1.25rem; letter-spacing: -.01em; }
+  .service-description { color: var(--text-300); line-height: 1.6; margin: 0; }
+
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(8px) } to { opacity: 1; transform: translateY(0) } }
+  .service-card { opacity: 0; animation: fadeUp .5s var(--ease-smooth) forwards; }
+  .animate-delay-1 { animation-delay: .05s }
+  .animate-delay-2 { animation-delay: .1s }
+  .animate-delay-3 { animation-delay: .15s }
+  .animate-delay-4 { animation-delay: .2s }
+  .animate-delay-5 { animation-delay: .25s }
+  .animate-delay-6 { animation-delay: .3s }
+  .animate-delay-7 { animation-delay: .35s }
+  .animate-delay-8 { animation-delay: .4s }
+  .animate-delay-9 { animation-delay: .45s }
+}
+

@@ -1,25 +1,29 @@
 ﻿<nav class="navbar glass-nav">
   <div class="navbar-left">
-    <span class="brand-mark"></span>
-    <span class="app-title">Coba Móvil</span>
+    <img [src]="logoUrl" alt="Coba" style="height:28px; width:auto; display:block;" />
+    <span class="app-title">Coba M&#243;vil</span>
   </div>
 
   <div class="navbar-right" *ngIf="!isLoggedIn()">
-    <a class="link" routerLink="/iniciar-sesion">Iniciar sesión</a>
+    <a class="link" routerLink="/iniciar-sesion">Iniciar sesi&#243;n</a>
     <a class="link" routerLink="/registrarse">Registrarse</a>
   </div>
 
   <div class="navbar-right" *ngIf="isLoggedIn()">
     <a class="link" routerLink="/reservar">Reservar cita</a>
     <a class="link" routerLink="/mis-reservas">Mis reservas</a>
-    <a class="link" routerLink="/mis-mascotas">Mis Mascotas</a>
+    <a class="link" routerLink="/mis-mascotas">Mis mascotas</a>
     <a class="link" routerLink="/mi-perfil">Mi perfil</a>
     <span class="user-info">
       <span class="user-dot"></span>
       {{ username }}
     </span>
-    <button class="logout-btn" (click)="logout()">Cerrar sesión</button>
+    <button class="logout-btn" (click)="logout()">Cerrar sesi&#243;n</button>
   </div>
 </nav>
+
+
+
+
 
 

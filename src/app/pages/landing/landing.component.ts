@@ -2,11 +2,12 @@
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { Title, Meta } from '@angular/platform-browser';
+import { ServicesComponent } from './services.component';
 
 @Component({
   selector: 'app-landing',
   standalone: true,
-  imports: [CommonModule, RouterModule],
+  imports: [CommonModule, RouterModule, ServicesComponent],
   templateUrl: './landing.component.html',
   styleUrls: ['./landing.component.scss']
 })

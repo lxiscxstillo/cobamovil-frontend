@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angula
 import { Router, RouterLink } from '@angular/router';
 import { CommonModule, NgIf } from '@angular/common';
 import { AuthService } from '../../core/services/auth.service';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-register',
@@ -18,6 +19,7 @@ export class RegisterComponent {
   loading = false;
   showPassword = false;
   passwordStrength = 0;
+  logoUrl: string = environment.logoUrl || '/logo.png';
 
   constructor(
     private fb: FormBuilder,
