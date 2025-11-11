@@ -1,11 +1,11 @@
 ﻿<nav class="navbar glass-nav">
   <div class="navbar-left">
-    <img [src]="logoUrl" alt="Coba" style="height:28px; width:auto; display:block;" />
-    <span class="app-title">Coba M&#243;vil</span>
+    <img [src]="logoSrc" (error)="onLogoError()" alt="Coba" style="height:28px; width:auto; display:block;" />
+    <span class="app-title">Coba Móvil</span>
   </div>
 
   <div class="navbar-right" *ngIf="!isLoggedIn()">
-    <a class="link" routerLink="/iniciar-sesion">Iniciar sesi&#243;n</a>
+    <a class="link" routerLink="/iniciar-sesion">Iniciar sesión</a>
     <a class="link" routerLink="/registrarse">Registrarse</a>
   </div>
 
@@ -18,7 +18,7 @@
       <span class="user-dot"></span>
       {{ username }}
     </span>
-    <button class="logout-btn" (click)="logout()">Cerrar sesi&#243;n</button>
+    <button class="logout-btn" (click)="logout()">Cerrar sesión</button>
   </div>
 </nav>
 

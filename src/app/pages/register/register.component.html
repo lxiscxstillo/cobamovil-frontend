@@ -7,7 +7,7 @@
   <form class="auth-card" [formGroup]="registerForm" (ngSubmit)="onSubmit()" novalidate>
     <div class="auth-header">
       <div class="logo-circle">
-        <img [src]="logoUrl" alt="Coba" style="width:48px; height:auto; display:block;" />
+        <img [src]="logoSrc" (error)="onLogoError()" alt="Coba" style="width:48px; height:auto; display:block;" />
       </div>
       <h1 class="brand">Crea tu cuenta</h1>
       <p class="subtitle">Te tomará menos de un minuto</p>

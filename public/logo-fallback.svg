@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="240" height="72" viewBox="0 0 240 72">
+  <rect width="240" height="72" rx="12" fill="#f4c653"/>
+  <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" font-family="Poppins, Arial, sans-serif" font-size="28" font-weight="800" fill="#1c170d">COBA</text>
+  <text x="50%" y="64" dominant-baseline="middle" text-anchor="middle" font-family="Poppins, Arial, sans-serif" font-size="10" font-weight="600" fill="#1c170d" opacity=".85">Pet Shop &amp; Grooming</text>
+</svg>
