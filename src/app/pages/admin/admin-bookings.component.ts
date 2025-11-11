@@ -109,15 +109,17 @@ export class AdminBookingsComponent {
   }
 
   private fetchAndApplyOptimized() {
-    const params = new URLSearchParams({ date: this.date });
-    if (this.selectedGroomerId) params.set('groomerId', String(this.selectedGroomerId));
-    fetch(`${location.origin}/api/bookings/admin/route?${params.toString()}`, { credentials: 'include' })
-      .then(r => r.json()).then((dto: any) => {
-        if (dto && Array.isArray(dto.bookingIdsInOrder)) {
-          this.applyOptimizedOrder(dto.bookingIdsInOrder);
-          this.applyEtas(dto.bookingIdsInOrder, dto.etasMinutes);
-        }
-      }).catch(() => {});
+    this.bookingService
+      .adminOptimizedRoute(this.date, this.selectedGroomerId ?? undefined)
+      .subscribe({
+        next: (dto) => {
+          if (dto && Array.isArray(dto.bookingIdsInOrder)) {
+            this.applyOptimizedOrder(dto.bookingIdsInOrder);
+            this.applyEtas(dto.bookingIdsInOrder, dto.etasMinutes);
+          }
+        },
+        error: () => {}
+      });
   }
 
   loadGroomers() {
