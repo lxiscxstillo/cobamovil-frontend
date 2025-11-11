@@ -131,6 +131,7 @@ export class BookingComponent implements AfterViewInit {
       error: (err) => {
         this.errorMessage = err.error?.message || 'Error al crear la reserva. Inténtalo de nuevo.';
         this.toast.errorFrom(err, 'Error al crear la reserva');
+        this.submitting = false;
       },
       complete: () => {
         this.submitting = false;
@@ -169,6 +170,8 @@ export class BookingComponent implements AfterViewInit {
     this.groomerService.list().subscribe({ next: list => this.groomers = list, error: () => {} });
   }
 }
+
+
 
 
 
