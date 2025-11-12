@@ -1,0 +1,24 @@
+<section class="testimonials-section" id="testimonios">
+  <div class="container">
+    <div class="text-center mb-5">
+      <h2 class="fw-bold mb-3">Testimonios</h2>
+      <p class="lead text-muted">Lo que dicen nuestros clientes sobre la experiencia a domicilio.</p>
+    </div>
+
+    <div class="row g-4">
+      <div class="col" *ngFor="let t of items; let i = index">
+        <figure class="t-card" [class]="'animate-delay-' + (i + 1)">
+          <div class="stars" *ngIf="t.rating">
+            <i class="fas fa-star" *ngFor="let s of [].constructor(t.rating)" aria-hidden="true"></i>
+          </div>
+          <blockquote>“{{ t.quote }}”</blockquote>
+          <figcaption>
+            <div class="author">{{ t.author }}</div>
+            <div class="sub" *ngIf="t.subtitle">{{ t.subtitle }}</div>
+          </figcaption>
+        </figure>
+      </div>
+    </div>
+  </div>
+</section>
+

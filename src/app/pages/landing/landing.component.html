@@ -32,13 +32,13 @@
               <h2 class="text-white text-sm md:text-base">
                 Comodidad, confianza y amor para tu mascota sin salir de casa
               </h2>
-            </div>
             <button class="flex min-w-[120px] items-center justify-center rounded-lg h-12 px-5 bg-[#f4c653] text-[#1c170d] text-base font-bold" [routerLink]="['/reservar']">
               <span class="truncate">Reservar cita</span>
             </button>
           </div>
         </div>
 
+        <app-benefits></app-benefits>
         <div id="beneficios" class="flex flex-col gap-10 px-4 py-10">
           <div class="flex flex-col gap-4">
             <h1 class="text-[#1c170d] text-4xl font-bold leading-tight max-w-[720px]">Beneficios</h1>
@@ -58,35 +58,16 @@
             <div class="flex flex-1 gap-3 rounded-lg border border-[#e8e1cf] bg-[#fcfbf8] p-4 flex-col">
               <div class="text-[#1c170d]">Profesionales certificados</div>
               <p class="text-[#1c170d] text-sm">Cuidadores expertos y procesos higi&#233;nicos.</p>
-            </div>
-          </div>
-        </div>
+ 
+ 
+ 
 
                 <!-- Servicios -->
-        <app-services></app-services><div id="galeria" class="px-4 py-10">
-          <h2 class="text-[#1c170d] text-2xl font-bold mb-4">Galer&#237;a</h2>
-          <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
-            <div class="aspect-square bg-cover rounded-lg" style='background-image:url("https://images.unsplash.com/photo-1518020382113-a7e8fc38eac9?q=80&w=800&auto=format&fit=crop");'></div>
-            <div class="aspect-square bg-cover rounded-lg" style='background-image:url("https://images.unsplash.com/photo-1568640347023-a6161c59b98e?q=80&w=800&auto=format&fit=crop");'></div>
-            <div class="aspect-square bg-cover rounded-lg" style='background-image:url("https://images.unsplash.com/photo-1619980296991-0f19042c1cdf?q=80&w=800&auto=format&fit=crop");'></div>
-            <div class="aspect-square bg-cover rounded-lg" style='background-image:url("https://images.unsplash.com/photo-1598133894008-7c6a58d1b82b?q=80&w=800&auto=format&fit=crop");'></div>
-          </div>
-        </div>
+        <app-services></app-services>
+        <app-gallery></app-gallery>
 
-        <div id="testimonios" class="px-4 py-10">
-          <h2 class="text-[#1c170d] text-2xl font-bold mb-4">Testimonios</h2>
-          <div class="grid md:grid-cols-3 gap-3">
-            <div class="rounded-lg border border-[#e8e1cf] bg-[#fcfbf8] p-4">
-              <p class="text-[#1c170d] text-base font-medium">"El servicio de Coba M&#243;vil es excepcional. Mi perro siempre vuelve feliz y con un corte impecable."</p>
-              <p class="text-[#9b844b] text-sm">Camilo A.</p>
-            </div>
-            <div class="rounded-lg border border-[#e8e1cf] bg-[#fcfbf8] p-4">
-              <p class="text-[#1c170d] text-base font-medium">"La comodidad de no tener que salir de casa es un gran plus. Adem&#225;s, el trato con los animales es muy cari&#241;oso."</p>
-              <p class="text-[#9b844b] text-sm">Mar&#237;a P.</p>
-            </div>
-            <div class="rounded-lg border border-[#e8e1cf] bg-[#fcfbf8] p-4">
+        <app-testimonials></app-testimonials>
               <p class="text-[#1c170d] text-base font-medium">"Recomiendo Coba M&#243;vil a todos los due&#241;os de mascotas. La calidad del servicio y la atención personalizada son inigualables."</p>
-              <p class="text-[#9b844b] text-sm">Sof&#237;a R.</p>
             </div>
           </div>
         </div>

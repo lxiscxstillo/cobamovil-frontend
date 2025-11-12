@@ -1,0 +1,21 @@
+<section class="benefits-section" id="beneficios">
+  <div class="container">
+    <div class="text-center mb-5">
+      <h2 class="fw-bold mb-3">Beneficios</h2>
+      <p class="lead text-muted">Servicio a domicilio pensado para tu comodidad y el bienestar de tu mascota.</p>
+    </div>
+
+    <div class="row g-4">
+      <div class="col" *ngFor="let b of benefits; let i = index">
+        <div class="benefit-card text-center h-100" [class]="'animate-delay-' + (i + 1)">
+          <div class="benefit-icon mb-3">
+            <i [class]="b.icon"></i>
+          </div>
+          <h4 class="benefit-title mb-2">{{ b.title }}</h4>
+          <p class="benefit-description">{{ b.description }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
