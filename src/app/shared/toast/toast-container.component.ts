@@ -7,10 +7,19 @@ import { ToastService, ToastItem } from './toast.service';
   standalone: true,
   imports: [CommonModule],
   template: `
-  <div class="cm-toasts">
-    <div *ngFor="let t of items" class="cm-toast" [class.succ]="t.type==='success'" [class.err]="t.type==='error'" [class.info]="t.type==='info'" [class.warn]="t.type==='warn'">
-      <span class="icon" [innerHTML]="icon(t.type)"></span>
+  <div class="cm-toasts" role="region" aria-label="Notificaciones">
+    <div *ngFor="let t of items"
+         class="cm-toast"
+         [class.succ]="t.type==='success'"
+         [class.err]="t.type==='error'"
+         [class.info]="t.type==='info'"
+         [class.warn]="t.type==='warn'"
+         [attr.role]="t.type==='error' || t.type==='warn' ? 'alert' : 'status'"
+         [attr.aria-live]="t.type==='error' || t.type==='warn' ? 'assertive' : 'polite'"
+         aria-atomic="true">
+      <span class="icon" [innerHTML]="icon(t.type)" aria-hidden="true"></span>
       <span class="msg">{{ t.message }}</span>
+      <button *ngIf="t.action && t.actionLabel" class="act" (click)="t.action()">{{ t.actionLabel }}</button>
       <button class="x" (click)="close(t.id)" aria-label="Cerrar">×</button>
     </div>
   </div>
@@ -24,6 +33,7 @@ import { ToastService, ToastItem } from './toast.service';
   .cm-toast.warn{ border-color:#fde68a; background:#fffbeb }
   .cm-toast .icon{ width:18px; height:18px; display:inline-block }
   .cm-toast .msg{ flex:1; font-size:13px }
+  .cm-toast .act{ border:0; background:#e8b83e; color:#1c170d; padding:6px 10px; border-radius:8px; font-weight:700; cursor:pointer }
   .cm-toast .x{ border:0; background:transparent; cursor:pointer; font-size:16px; opacity:.6 }
   .cm-toast .x:hover{ opacity: 1 }
   @keyframes fadein { from{ opacity:0; transform: translateY(6px)} to{ opacity:1; transform: translateY(0)} }
@@ -34,7 +44,7 @@ export class ToastContainerComponent {
   constructor(private toasts: ToastService) {
     this.toasts.toasts$.subscribe(t => {
       this.items = [...this.items, t];
-      setTimeout(() => this.close(t.id), 3500);
+      setTimeout(() => this.close(t.id), 4000);
     });
   }
   close(id: number){ this.items = this.items.filter(x => x.id !== id); }

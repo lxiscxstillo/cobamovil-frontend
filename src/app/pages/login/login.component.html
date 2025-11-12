@@ -1,4 +1,4 @@
-<div class="auth-wrapper">
+﻿<div class="auth-wrapper">
   <div class="bg-decor">
     <div class="bubble b1"></div>
     <div class="bubble b2"></div>
@@ -22,7 +22,7 @@
       <label class="label">Usuario</label>
       <div class="input-wrap" [class.invalid]="username?.invalid && (username?.dirty || username?.touched || submitted)">
         <span class="icon user"></span>
-        <input id="username" type="text" class="input" formControlName="username" placeholder="Tu usuario" />
+        <input id="username" type="text" class="input" formControlName="username" placeholder="Tu usuario" autofocus [attr.aria-invalid]="username?.invalid && (username?.dirty || username?.touched || submitted)" />
       </div>
       <div *ngIf="username?.invalid && (username?.dirty || username?.touched || submitted)" class="error">El usuario es requerido.</div>
     </div>
@@ -42,8 +42,10 @@
       <span *ngIf="loading" class="spinner"></span>
     </button>
 
-    <div class="foot-note">¿Aún no tienes cuenta? <a routerLink="/registrarse">Crea una</a></div>
+    <div class="foot-note">Â¿AÃºn no tienes cuenta? <a routerLink="/registrarse">Crea una</a></div>
 
     <div class="error banner" *ngIf="errorMessage">{{ errorMessage }}</div>
   </form>
 </div>
+
+

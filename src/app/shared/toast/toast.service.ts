@@ -1,8 +1,8 @@
-import { Injectable } from '@angular/core';
+﻿import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
 
 export type ToastType = 'success' | 'error' | 'info' | 'warn';
-export interface ToastItem { id: number; type: ToastType; message: string; }
+export interface ToastItem { id: number; type: ToastType; message: string; actionLabel?: string; action?: () => void }
 
 @Injectable({ providedIn: 'root' })
 export class ToastService {
@@ -10,8 +10,8 @@ export class ToastService {
   private stream = new Subject<ToastItem>();
   public readonly toasts$ = this.stream.asObservable();
 
-  private push(type: ToastType, message: string) {
-    this.stream.next({ id: ++this.seq, type, message });
+  private push(type: ToastType, message: string, actionLabel?: string, action?: () => void) {
+    this.stream.next({ id: ++this.seq, type, message, actionLabel, action });
   }
 
   success(msg: string) { this.push('success', msg); }
@@ -33,8 +33,8 @@ export class ToastService {
   }
 
   /**
-   * Info helper: muestra información derivada de una fuente mixta
-   * (útil para respuestas no críticas o avisos del backend).
+   * Info helper: muestra informaciÃ³n derivada de una fuente mixta
+   * (Ãºtil para respuestas no crÃ­ticas o avisos del backend).
    */
   infoFrom(src: unknown, fallback: string) {
     let msg = fallback;
@@ -63,4 +63,6 @@ export class ToastService {
   started(entity: string) { this.success(`${entity} iniciada`); }
   canceled(entity: string) { this.success(`${entity} cancelada`); }
   reprogrammed(entity: string) { this.success(`${entity} reprogramada`); }
-}
+  action(type: ToastType, msg: string, label: string, cb: () => void) { this.push(type, msg, label, cb); }
+
+

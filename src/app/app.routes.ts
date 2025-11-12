@@ -1,4 +1,4 @@
-import { Routes } from '@angular/router';
+﻿import { Routes } from '@angular/router';
 import { authGuard } from './core/guards/auth.guard';
 
 export const routes: Routes = [
@@ -80,6 +80,8 @@ export const routes: Routes = [
   { path: 'admin', redirectTo: 'administrador', pathMatch: 'full' },
   { path: 'register', redirectTo: 'registrarse', pathMatch: 'full' },
   { path: 'login', redirectTo: 'iniciar-sesion', pathMatch: 'full' },
-  { path: '**', redirectTo: '/iniciar-sesion' }
+  { path: '500', loadComponent: () => import('./pages/system/error.component').then(m => m.ErrorComponent) },
+  { path: '**', loadComponent: () => import('./pages/system/not-found.component').then(m => m.NotFoundComponent) }
 ];
+
 

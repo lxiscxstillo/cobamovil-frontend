@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
+import { BreadcrumbsComponent } from '../breadcrumbs/breadcrumbs.component';
 import { AuthService } from '../../core/services/auth.service';
 import { environment } from '../../../environments/environment';
 
@@ -9,7 +10,7 @@ import { environment } from '../../../environments/environment';
   standalone: true,
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.scss'],
-  imports: [CommonModule, RouterLink]
+  imports: [CommonModule, RouterLink, BreadcrumbsComponent]
 })
 export class HeaderComponent {
   username: string | null = null;
