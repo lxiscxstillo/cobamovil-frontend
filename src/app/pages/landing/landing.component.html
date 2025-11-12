@@ -1,18 +1,18 @@
-﻿<div class="relative flex min-h-screen flex-col bg-[#fcfbf8] overflow-x-hidden" style='font-family: "Plus Jakarta Sans", "Noto Sans", sans-serif;'>
+<div class="relative flex min-h-screen flex-col bg-[#fcfbf8] overflow-x-hidden" style='font-family: "Plus Jakarta Sans", "Noto Sans", sans-serif;'>
   <div class="layout-container flex h-full grow flex-col">
     <header class="flex items-center justify-between border-b border-b-[#f3f0e7] px-10 py-3">
       <div class="flex items-center gap-4 text-[#1c170d]">
         <div class="size-4"><img src="/logo.png" onerror="this.onerror=null;this.src='/logo-fallback.svg'" alt="Coba" style="height:24px; width:auto; display:block;" /></div>
-        <h2 class="text-[#1c170d] text-lg font-bold leading-tight tracking-[-0.015em]">Coba M&#243;vil</h2>
+        <h2 class="text-[#1c170d] text-lg font-bold leading-tight tracking-[-0.015em]">Coba Móvil</h2>
       </div>
       <div class="flex flex-1 justify-end gap-8">
         <div class="flex items-center gap-9">
           <a class="text-[#1c170d] text-sm font-medium leading-normal" href="#inicio">Inicio</a>
           <a class="text-[#1c170d] text-sm font-medium leading-normal" href="#beneficios">Beneficios</a>
           <a class="text-[#1c170d] text-sm font-medium leading-normal" href="#servicios">Servicios</a>
-          <a class="text-[#1c170d] text-sm font-medium leading-normal" href="#galeria">Galer&#237;a</a>
+          <a class="text-[#1c170d] text-sm font-medium leading-normal" href="#galeria">Galería</a>
           <a class="text-[#1c170d] text-sm font-medium leading-normal" href="#testimonios">Testimonios</a>
-          <a class="text-[#1c170d] text-sm font-medium leading-normal" routerLink="/iniciar-sesion">Iniciar sesi&#243;n</a>
+          <a class="text-[#1c170d] text-sm font-medium leading-normal" routerLink="/iniciar-sesion">Iniciar sesión</a>
         </div>
         <button class="flex min-w-[84px] items-center justify-center rounded-lg h-10 px-4 bg-[#f4c653] text-[#1c170d] text-sm font-bold" [routerLink]="['/reservar']">
           <span class="truncate">Reservar cita</span>
@@ -20,79 +20,46 @@
       </div>
     </header>
 
-    <div id="inicio" class="px-6 md:px-40 flex flex-1 justify-center py-5">
-      <div class="layout-content-container flex flex-col max-w-[960px] flex-1">
-        <div class="p-4">
-          <div class="flex min-h-[480px] flex-col gap-6 bg-cover bg-center bg-no-repeat rounded-lg items-start justify-end px-4 pb-10 md:px-10"
-               style='background-image: linear-gradient(rgba(0, 0, 0, 0.1) 0%, rgba(0, 0, 0, 0.4) 100%), url("https://images.unsplash.com/photo-1558944351-af9e8e76b2c9?q=80&w=1600&auto=format&fit=crop");'>
-            <div class="flex flex-col gap-2 text-left">
-              <h1 class="text-white text-4xl md:text-5xl font-black leading-tight tracking-[-0.033em]">
-                Peluquer&#237;a canina a domicilio
-              </h1>
-              <h2 class="text-white text-sm md:text-base">
-                Comodidad, confianza y amor para tu mascota sin salir de casa
-              </h2>
-            <button class="flex min-w-[120px] items-center justify-center rounded-lg h-12 px-5 bg-[#f4c653] text-[#1c170d] text-base font-bold" [routerLink]="['/reservar']">
-              <span class="truncate">Reservar cita</span>
-            </button>
-          </div>
+    <!-- Hero -->
+    <section id="inicio" class="px-6 md:px-40 py-5">
+      <div class="flex min-h-[480px] flex-col gap-6 bg-cover bg-center bg-no-repeat rounded-lg items-start justify-end px-4 pb-10 md:px-10"
+           style="background-image: linear-gradient(rgba(0, 0, 0, 0.1) 0%, rgba(0, 0, 0, 0.4) 100%), url('https://images.unsplash.com/photo-1558944351-af9e8e76b2c9?q=80&w=1600&auto=format&fit=crop');">
+        <div class="flex flex-col gap-2 text-left">
+          <h1 class="text-white text-4xl md:text-5xl font-black leading-tight tracking-[-0.033em]">Peluquería canina a domicilio</h1>
+          <h2 class="text-white text-sm md:text-base">Comodidad, confianza y amor para tu mascota sin salir de casa</h2>
         </div>
+        <button class="flex min-w-[120px] items-center justify-center rounded-lg h-12 px-5 bg-[#f4c653] text-[#1c170d] text-base font-bold" [routerLink]="['/reservar']">
+          <span class="truncate">Reservar cita</span>
+        </button>
+      </div>
+    </section>
 
-        <app-benefits></app-benefits>
-        <div id="beneficios" class="flex flex-col gap-10 px-4 py-10">
-          <div class="flex flex-col gap-4">
-            <h1 class="text-[#1c170d] text-4xl font-bold leading-tight max-w-[720px]">Beneficios</h1>
-            <p class="text-[#1c170d] text-base max-w-[720px]">
-              En Coba M&#243;vil, nos enfocamos en el bienestar de tu mascota, ofreciendo un servicio de peluquería a domicilio que combina profesionalismo y cari&#241;o.
-            </p>
-          </div>
-          <div class="grid grid-cols-[repeat(auto-fit,minmax(158px,1fr))] gap-3">
-            <div class="flex flex-1 gap-3 rounded-lg border border-[#e8e1cf] bg-[#fcfbf8] p-4 flex-col">
-              <div class="text-[#1c170d]">Tiempo y comodidad</div>
-              <p class="text-[#1c170d] text-sm">Evita traslados y esperas en la peluquería tradicional.</p>
-            </div>
-            <div class="flex flex-1 gap-3 rounded-lg border border-[#e8e1cf] bg-[#fcfbf8] p-4 flex-col">
-              <div class="text-[#1c170d]">Atenci&#243;n personalizada</div>
-              <p class="text-[#1c170d] text-sm">Adaptamos el servicio a las necesidades de tu mascota.</p>
-            </div>
-            <div class="flex flex-1 gap-3 rounded-lg border border-[#e8e1cf] bg-[#fcfbf8] p-4 flex-col">
-              <div class="text-[#1c170d]">Profesionales certificados</div>
-              <p class="text-[#1c170d] text-sm">Cuidadores expertos y procesos higi&#233;nicos.</p>
- 
- 
- 
+    <!-- Sections -->
+    <app-benefits></app-benefits>
+    <app-services></app-services>
+    <app-gallery></app-gallery>
+    <app-testimonials></app-testimonials>
 
-                <!-- Servicios -->
-        <app-services></app-services>
-        <app-gallery></app-gallery>
+    <!-- CTA -->
+    <section id="cta" class="px-4 py-10">
+      <div class="flex flex-col gap-2 text-center">
+        <h1 class="text-[#1c170d] text-3xl md:text-4xl font-bold">¿Listo para consentir a tu mascota? Agenda tu cita hoy mismo</h1>
+      </div>
+      <div class="flex justify-center mt-4">
+        <button class="flex min-w-[120px] items-center justify-center rounded-lg h-12 px-5 bg-[#f4c653] text-[#1c170d] text-base font-bold" [routerLink]="['/reservar']">
+          <span class="truncate">Reservar ahora</span>
+        </button>
+      </div>
+    </section>
 
-        <app-testimonials></app-testimonials>
-              <p class="text-[#1c170d] text-base font-medium">"Recomiendo Coba M&#243;vil a todos los due&#241;os de mascotas. La calidad del servicio y la atención personalizada son inigualables."</p>
-            </div>
-          </div>
-        </div>
-
-        <div id="cta" class="px-4 py-10">
-          <div class="flex flex-col gap-2 text-center">
-            <h1 class="text-[#1c170d] text-3xl md:text-4xl font-bold">¿Listo para consentir a tu mascota? Agenda tu cita hoy mismo</h1>
-          </div>
-          <div class="flex justify-center mt-4">
-            <button class="flex min-w-[120px] items-center justify-center rounded-lg h-12 px-5 bg-[#f4c653] text-[#1c170d] text-base font-bold" [routerLink]="['/reservar']">
-              <span class="truncate">Reservar ahora</span>
-            </button>
-          </div>
-        </div>
-
-        <footer class="flex flex-col gap-6 px-5 py-10 text-center">
-          <div class="flex flex-wrap items-center justify-center gap-6">
-            <a class="text-[#9b844b] text-base" href="#">Contacto</a>
-            <a class="text-[#9b844b] text-base" href="#">Preguntas frecuentes</a>
-            <a class="text-[#9b844b] text-base" href="#">Pol&#237;tica de privacidad</a>
-          </div>
-          <p class="text-[#9b844b] text-base">© 2025 Coba M&#243;vil - Todos los derechos reservados</p>
-        </footer>
-</div>
-</div>
+    <footer class="flex flex-col gap-6 px-5 py-10 text-center">
+      <div class="flex flex-wrap items-center justify-center gap-6">
+        <a class="text-[#9b844b] text-base" href="#">Contacto</a>
+        <a class="text-[#9b844b] text-base" routerLink="/faq">Preguntas frecuentes</a>
+        <a class="text-[#9b844b] text-base" href="#">Política de privacidad</a>
+      </div>
+      <p class="text-[#9b844b] text-base">© 2025 Coba Móvil - Todos los derechos reservados</p>
+    </footer>
   </div>
 </div>
 
@@ -101,22 +68,12 @@
 {
   "@context": "https://schema.org",
   "@type": "LocalBusiness",
-  "name": "Coba M&#243;vil",
+  "name": "Coba Móvil",
   "url": "https://cobamovil.vercel.app/",
-  "description": "Servicio profesional de peluquer&#237;a canina a domicilio. Agenda en l&#237;nea, ruta optimizada y atenci&#243;n personalizada.",
+  "description": "Servicio profesional de peluquería canina a domicilio. Agenda en línea, ruta optimizada y atención personalizada.",
   "areaServed": "Colombia",
-  "serviceType": "Peluquer&#237;a canina a domicilio",
+  "serviceType": "Peluquería canina a domicilio",
   "sameAs": []
 }
 </script>
-
-
-
-
-
-
-
-
-
-
 

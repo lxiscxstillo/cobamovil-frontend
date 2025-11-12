@@ -1,4 +1,4 @@
-<section class="testimonials-section" id="testimonios">
+﻿<section class="testimonials-section" id="testimonios">
   <div class="container">
     <div class="text-center mb-5">
       <h2 class="fw-bold mb-3">Testimonios</h2>
@@ -11,7 +11,7 @@
           <div class="stars" *ngIf="t.rating">
             <i class="fas fa-star" *ngFor="let s of [].constructor(t.rating)" aria-hidden="true"></i>
           </div>
-          <blockquote>“{{ t.quote }}”</blockquote>
+          <blockquote>&ldquo;{{ t.quote }}&rdquo;</blockquote>
           <figcaption>
             <div class="author">{{ t.author }}</div>
             <div class="sub" *ngIf="t.subtitle">{{ t.subtitle }}</div>
@@ -21,4 +21,5 @@
     </div>
   </div>
 </section>
+
 
