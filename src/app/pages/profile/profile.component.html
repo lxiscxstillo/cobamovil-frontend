@@ -14,18 +14,20 @@
     <div class="field">
       <label class="label">Email</label>
       <div class="control"><input class="input" [(ngModel)]="email" (blur)="emailTouched=true" placeholder="tu@email.com" /></div>
-      <div class="error" *ngIf="emailTouched && (!email || !/.+@.+\..+/.test(email))">Ingresa un email válido.</div>
+      <div class="error" *ngIf="emailTouched && isEmailInvalid()">Ingresa un email válido.</div>
     </div>
 
     <div class="field">
       <label class="label">Teléfono (WhatsApp)</label>
       <div class="control"><input class="input" [(ngModel)]="phone" (blur)="phoneTouched=true" placeholder="Ej: +573001112233" /></div>
       <div class="hint">Formato: +57 seguido de tu número (7 a 20 dígitos).</div>
-      <div class="error" *ngIf="phoneTouched && phone && !/^\+?[0-9]{7,20}$/.test(phone)">Ingresa un teléfono válido (incluye prefijo país, ej: +57).</div>
+      <div class="error" *ngIf="phoneTouched && isPhoneInvalid()">Ingresa un teléfono válido (incluye prefijo país, ej: +57).</div>
     </div>
 
     <button class="btn" (click)="save()">Guardar cambios</button>
     <div class="success" *ngIf="message">{{ message }}</div>
     <div class="error" *ngIf="error">{{ error }}</div>
   </div>
+  
 </div>
+

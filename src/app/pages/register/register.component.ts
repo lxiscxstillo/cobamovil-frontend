@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+﻿import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { CommonModule, NgIf } from '@angular/common';
@@ -55,7 +55,7 @@ export class RegisterComponent {
     };
     this.authService.register(payload).subscribe({
       next: () => {
-        this.successMessage = '¡Registro exitoso! Redirigiendo para iniciar sesión...';
+        this.successMessage = 'Â¡Registro exitoso! Redirigiendo para iniciar sesiÃ³n...';
         setTimeout(() => this.router.navigate(['/iniciar-sesion']), 1500);
       },
       error: (err) => {
@@ -94,3 +94,4 @@ export class RegisterComponent {
     }
   }
 }
+

@@ -16,6 +16,8 @@ export class ProfileComponent implements OnInit {
   phone = '';
   message: string | null = null;
   error: string | null = null;
+  emailTouched = false;
+  phoneTouched = false;
 
   constructor(private userService: UserService) {}
 
@@ -50,5 +52,13 @@ export class ProfileComponent implements OnInit {
         error: err => { this.error = err.error?.message || 'Error al actualizar'; this.message = null; }
       });
   }
-}
 
+  // Template helpers to avoid regex literals in templates
+  isEmailInvalid(): boolean {
+    return !this.email || !/.+@.+\..+/.test(this.email);
+  }
+
+  isPhoneInvalid(): boolean {
+    return !!(this.phone && !/^\+?[0-9]{7,20}$/.test(this.phone));
+  }
+}

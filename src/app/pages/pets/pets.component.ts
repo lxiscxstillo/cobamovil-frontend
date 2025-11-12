@@ -18,11 +18,24 @@ export class PetsComponent {
   loading = false;
   error: string | null = null;
 
-  model: Partial<Pet> = { name: '', breed: '', sex: 'M', age: undefined, weight: undefined, behavior: '', healthNotes: '', vaccinations: '', deworming: '', medicalConditions: '', lastGroomDate: '' };
+  model: Partial<Pet> = {
+    name: '',
+    breed: '',
+    sex: 'M',
+    age: undefined,
+    weight: undefined,
+    behavior: '',
+    healthNotes: '',
+    vaccinations: '',
+    deworming: '',
+    medicalConditions: '',
+    lastGroomDate: ''
+  };
 
-  // UI state (visual only)
+  // UI state
   showForm = false;
   expandedIds = new Set<number>();
+  submittedAdd = false;
 
   constructor(private petService: PetService, private toast: ToastService) {
     this.load();
@@ -32,26 +45,58 @@ export class PetsComponent {
     this.loading = true;
     this.error = null;
     this.petService.list().subscribe({
-      next: data => this.items = data,
-      error: err => this.error = err.error?.message || 'Error cargando mascotas',
-      complete: () => this.loading = false
+      next: (data) => (this.items = data),
+      error: (err) => (this.error = err?.error?.message || 'Error cargando mascotas'),
+      complete: () => (this.loading = false)
     });
   }
 
-  submittedAdd = false;\n\n  add() {\n    this.submittedAdd = true;\n    const nameOk = !!(this.model.name && String(this.model.name).trim().length >= 2);\n    const ageOk = this.model.age == null || (this.model.age >= 0 && this.model.age <= 30);\n    const weightOk = this.model.weight == null || (this.model.weight >= 0 && this.model.weight <= 100);\n    if (!(nameOk && ageOk && weightOk)) return;\n    this.petService.create(this.model).subscribe({\n      next: () => { this.model = { name: '', breed: '', sex: 'M' }; this.submittedAdd = false; this.load(); this.toast.created('Mascota'); },\n      error: err => { this.error = err.error?.message || 'Error creando mascota'; this.toast.errorFrom(err, 'Error'); }\n    });\n  }\n\n  remove(id: number) {
+  add() {
+    this.submittedAdd = true;
+    const nameOk = !!(this.model.name && String(this.model.name).trim().length >= 2);
+    const ageOk = this.model.age == null || (this.model.age >= 0 && this.model.age <= 30);
+    const weightOk = this.model.weight == null || (this.model.weight >= 0 && this.model.weight <= 100);
+    if (!(nameOk && ageOk && weightOk)) return;
+
+    this.petService.create(this.model).subscribe({
+      next: () => {
+        this.model = { name: '', breed: '', sex: 'M' };
+        this.submittedAdd = false;
+        this.load();
+        this.toast.created('Mascota');
+      },
+      error: (err) => {
+        this.error = err?.error?.message || 'Error creando mascota';
+        this.toast.errorFrom(err, 'Error');
+      }
+    });
+  }
+
+  remove(id: number) {
     this.petService.delete(id).subscribe({
-      next: () => { this.load(); this.toast.deleted('Mascota'); },
-      error: err => { this.error = err.error?.message || 'Error eliminando mascota'; this.toast.errorFrom(err, 'Error'); }
+      next: () => {
+        this.load();
+        this.toast.deleted('Mascota');
+      },
+      error: (err) => {
+        this.error = err?.error?.message || 'Error eliminando mascota';
+        this.toast.errorFrom(err, 'Error');
+      }
     });
   }
 
-  toggleForm() { this.showForm = !this.showForm; }
-  isExpanded(id?: number): boolean { return !!(id && this.expandedIds.has(id)); }
+  toggleForm() {
+    this.showForm = !this.showForm;
+  }
+
+  isExpanded(id?: number): boolean {
+    return !!(id && this.expandedIds.has(id));
+  }
+
   toggleExpand(id?: number) {
     if (!id) return;
-    if (this.expandedIds.has(id)) this.expandedIds.delete(id); else this.expandedIds.add(id);
+    if (this.expandedIds.has(id)) this.expandedIds.delete(id);
+    else this.expandedIds.add(id);
   }
 }
-
-
 
