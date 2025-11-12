@@ -38,7 +38,7 @@ export class ProfileComponent implements OnInit {
     const id = Number(idStr);
     // Teléfono es opcional al actualizar. Si viene no vacío, validar formato; si vacío, no enviar para mantener el valor actual.
     if (this.phone && !/^\+?[0-9]{7,20}$/.test(this.phone)) {
-      this.error = 'Ingresa un teléfono válido (incluye prefijo país, ej: +57)';
+      this.error = 'Ingresa un Teléfono válido (incluye prefijo país, ej: +57)';
       this.message = null;
       return;
     }

@@ -1,4 +1,4 @@
-﻿<div class="auth-wrapper">
+<div class="auth-wrapper">
   <div class="bg-decor">
     <div class="bubble b1"></div>
     <div class="bubble b2"></div>
@@ -20,16 +20,16 @@
 
     <div class="stack">
       <label class="label">Usuario</label>
-      <div class="input-wrap" [class.invalid]="username?.invalid && (username?.dirty || username?.touched)">
+      <div class="input-wrap" [class.invalid]="username?.invalid && (username?.dirty || username?.touched || submitted)">
         <span class="icon user"></span>
         <input id="username" type="text" class="input" formControlName="username" placeholder="Tu usuario" />
       </div>
-      <div *ngIf="username?.invalid && (username?.dirty || username?.touched)" class="error">El usuario es requerido.</div>
+      <div *ngIf="username?.invalid && (username?.dirty || username?.touched || submitted)" class="error">El usuario es requerido.</div>
     </div>
 
     <div class="stack">
-      <label class="label">Contraseña</label>
-      <div class="input-wrap" [class.invalid]="password?.invalid && (password?.dirty || password?.touched)">
+      <label class="label">contraseña</label>
+      <div class="input-wrap" [class.invalid]="password?.invalid && (password?.dirty || password?.touched || submitted)">
         <span class="icon lock"></span>
         <input [type]="showPassword ? 'text' : 'password'" id="password" class="input" formControlName="password" placeholder="Tu contraseña" />
         <button type="button" class="eye" (click)="togglePassword()" aria-label="Mostrar/Ocultar contraseña"></button>

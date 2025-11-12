@@ -1,4 +1,4 @@
-﻿import { Component } from '@angular/core';
+import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { PetService } from '../../core/services/pet.service';
@@ -38,15 +38,7 @@ export class PetsComponent {
     });
   }
 
-  add() {
-    if (!this.model.name) return;
-    this.petService.create(this.model).subscribe({
-      next: () => { this.model = { name: '', breed: '', sex: 'M' }; this.load(); this.toast.success('Mascota aÃ±adida'); },
-      error: err => { this.error = err.error?.message || 'Error creando mascota'; this.toast.errorFrom(err, 'Error'); }
-    });
-  }
-
-  remove(id: number) {
+  submittedAdd = false;\n\n  add() {\n    this.submittedAdd = true;\n    const nameOk = !!(this.model.name && String(this.model.name).trim().length >= 2);\n    const ageOk = this.model.age == null || (this.model.age >= 0 && this.model.age <= 30);\n    const weightOk = this.model.weight == null || (this.model.weight >= 0 && this.model.weight <= 100);\n    if (!(nameOk && ageOk && weightOk)) return;\n    this.petService.create(this.model).subscribe({\n      next: () => { this.model = { name: '', breed: '', sex: 'M' }; this.submittedAdd = false; this.load(); this.toast.created('Mascota'); },\n      error: err => { this.error = err.error?.message || 'Error creando mascota'; this.toast.errorFrom(err, 'Error'); }\n    });\n  }\n\n  remove(id: number) {
     this.petService.delete(id).subscribe({
       next: () => { this.load(); this.toast.deleted('Mascota'); },
       error: err => { this.error = err.error?.message || 'Error eliminando mascota'; this.toast.errorFrom(err, 'Error'); }

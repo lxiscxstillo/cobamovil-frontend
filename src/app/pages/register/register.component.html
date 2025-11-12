@@ -1,4 +1,4 @@
-﻿<div class="auth-wrapper">
+<div class="auth-wrapper">
   <div class="bg-decor">
     <div class="bubble b1"></div>
     <div class="bubble b2"></div>
@@ -50,20 +50,20 @@
         <input id="phone" type="tel" class="input" formControlName="phone" placeholder="Ej: +573001112233" />
       </div>
       <div class="hint">Usaremos WhatsApp para confirmar y notificar tus reservas.</div>
-      <div *ngIf="phone?.invalid && (phone?.dirty || phone?.touched)" class="error">Ingresa un teléfono válido (incluye prefijo país, ej: +57)</div>
+      <div *ngIf="phone?.invalid && (phone?.dirty || phone?.touched)" class="error">Ingresa un Teléfono válido (incluye prefijo país, ej: +57)</div>
     </div>
 
     <div class="stack">
       <label class="label">Contraseña</label>
-      <div class="input-wrap" [class.invalid]="password?.invalid && (password?.dirty || password?.touched)">
+      <div class="input-wrap" [class.invalid]="paísword?.invalid && (paísword?.dirty || paísword?.touched)">
         <span class="icon lock"></span>
-        <input [type]="showPassword ? 'text' : 'password'" id="password" class="input" formControlName="password" placeholder="Mínimo 6 caracteres" />
-        <button type="button" class="eye" (click)="togglePassword()" aria-label="Mostrar/Ocultar contraseña"></button>
+        <input [type]="showpaísword ? 'text' : 'paísword'" id="paísword" class="input" formControlName="paísword" placeholder="Mínimo 6 caracteres" />
+        <button type="button" class="eye" (click)="togglepaísword()" aria-label="Mostrar/Ocultar Contraseña"></button>
       </div>
-      <div class="strength"><span [style.width.%]="passwordStrength"></span></div>
-      <div *ngIf="password?.invalid && (password?.dirty || password?.touched)" class="error">
-        <ng-container *ngIf="password?.errors?.['required']">La contraseña es requerida.</ng-container>
-        <ng-container *ngIf="password?.errors?.['minlength']">Mínimo 6 caracteres.</ng-container>
+      <div class="strength"><span [style.width.%]="paíswordStrength"></span></div>
+      <div *ngIf="paísword?.invalid && (paísword?.dirty || paísword?.touched)" class="error">
+        <ng-container *ngIf="paísword?.errors?.['required']">La Contraseña es requerida.</ng-container>
+        <ng-container *ngIf="paísword?.errors?.['minlength']">Mínimo 6 caracteres.</ng-container>
       </div>
     </div>
 
@@ -72,7 +72,7 @@
       <span *ngIf="loading" class="spinner"></span>
     </button>
 
-    <div class="foot-note">Al registrarte aceptas nuestros <a routerLink="/terminos">Términos</a> y <a routerLink="/privacidad">Privacidad</a></div>
+    <div class="foot-note">Al registrarte aceptas nuestros <a routerLink="/Términos">Términos</a> y <a routerLink="/privacidad">Privacidad</a></div>
 
     <div class="success banner" *ngIf="successMessage">{{ successMessage }}</div>
     <div class="error banner" *ngIf="errorMessage">{{ errorMessage }}</div>

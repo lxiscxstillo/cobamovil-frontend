@@ -98,11 +98,26 @@ export class BookingComponent implements AfterViewInit {
     switch (step) {
       case 1: return !!this.form.get('petId')?.value;
       case 2: return !!this.form.get('serviceType')?.value;
-      case 3: return !!this.form.get('date')?.value && !!this.form.get('time')?.value;
+      case 3: {
+        const d = this.form.get('date')?.value;
+        const t = this.form.get('time')?.value;
+        return !!d && !!t && this.isFutureDate(d);
+      }
       case 4: return !!(this.form.get('address')?.value || (this.pickedLat && this.pickedLng));
       case 5: return true;
       default: return true;
     }
+  }
+
+  private isFutureDate(d: unknown): boolean {
+    try {
+      const str = typeof d === 'string' ? d : this.toIsoDate(d);
+      if (!str) return false;
+      const today = new Date();
+      const dt = new Date(str + 'T00:00:00');
+      // allow booking from today  (>= today). Change to > for strictly future
+      return dt.setHours(0,0,0,0) >= new Date(today.getFullYear(), today.getMonth(), today.getDate()).getTime();
+    } catch { return false; }
   }
 
   submit() {
