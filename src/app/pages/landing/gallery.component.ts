@@ -10,12 +10,12 @@ import { CommonModule } from '@angular/common';
 })
 export class GalleryComponent {
   images: { src: string; alt: string }[] = [
-    { src: 'https://place-puppy.com/800x600', alt: 'Perro feliz después del grooming' },
-    { src: 'https://place-puppy.com/800x601', alt: 'Perro con corte de pelaje' },
-    { src: 'https://place-puppy.com/800x602', alt: 'Perro durante el baño relajante' },
-    { src: 'https://place-puppy.com/800x603', alt: 'Perro recibiendo servicio a domicilio' },
-    { src: 'https://place-puppy.com/800x604', alt: 'Perro con pelaje brillante y sano' },
-    { src: 'https://place-puppy.com/800x605', alt: 'Perro luciendo pañoleta después del servicio' }
+    { src: '/gallery/dog-1.png', alt: 'Perro feliz después del grooming' },
+    { src: '/gallery/dog-2.png', alt: 'Perro durante el baño' },
+    { src: '/gallery/dog-3.png', alt: 'Perro con corte de pelaje' },
+    { src: '/gallery/dog-4.png', alt: 'Perro recibiendo servicio a domicilio' },
+    { src: '/gallery/dog-5.png', alt: 'Perro con pelaje brillante y sano' },
+    { src: '/gallery/dog-6.png', alt: 'Perro luciendo pañoleta después del servicio' }
   ];
 }
 
