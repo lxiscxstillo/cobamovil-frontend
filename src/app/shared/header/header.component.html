@@ -1,7 +1,9 @@
-﻿<nav class="navbar glass-nav">
+<nav class="navbar glass-nav">
   <div class="navbar-left">
-    <img [src]="logoSrc" (error)="onLogoError()" alt="Coba" style="height:28px; width:auto; display:block;" />
-    <span class="app-title">Coba Móvil</span>
+    <a routerLink="/" class="brand-link" aria-label="Ir al inicio">
+      <img [src]="logoSrc" (error)="onLogoError()" alt="Coba" style="height:28px; width:auto; display:block;" />
+      <span class="app-title">Coba Móvil</span>
+    </a>
   </div>
 
   <div class="navbar-right" *ngIf="!isLoggedIn()">
@@ -10,6 +12,7 @@
   </div>
 
   <div class="navbar-right" *ngIf="isLoggedIn()">
+    <a class="link" routerLink="/dashboard">Inicio</a>
     <!-- Agenda/Ruta visible para ADMIN y GROOMER -->
     <a class="link" routerLink="/administrador" *ngIf="isAdmin()">Agenda</a>
     <!-- Gestión de peluqueros y reportes solo para ADMIN -->
@@ -18,21 +21,12 @@
     <a class="link" routerLink="/reservar">Reservar cita</a>
     <a class="link" routerLink="/mis-reservas">Mis reservas</a>
     <a class="link" routerLink="/mis-mascotas">Mis mascotas</a>
-    <a class="link" routerLink="/mi-perfil">Mi perfil</a>
-    <span class="user-info">
+    <button class="user-info" type="button" routerLink="/mi-perfil">
       <span class="user-dot"></span>
       {{ username }}
-    </span>
+    </button>
     <button class="logout-btn" (click)="logout()">Cerrar sesión</button>
   </div>
 </nav>
 
-
-
-
-
-
-
-
 <app-breadcrumbs></app-breadcrumbs>
-

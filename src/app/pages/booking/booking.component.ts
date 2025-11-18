@@ -69,7 +69,7 @@ export class BookingComponent implements AfterViewInit {
       date: [null as unknown as string | Date | null, [Validators.required]],
       time: ['', [Validators.required]],
       address: [''],
-      notes: [''],
+      notes: ['', [Validators.required, Validators.maxLength(300)]],
       groomerId: [null]
     });
     this.loadPets();
@@ -100,12 +100,33 @@ export class BookingComponent implements AfterViewInit {
 
   next() { if (this.isStepValid(this.currentStep)) this.currentStep = Math.min(5, this.currentStep + 1); }
   back() { this.currentStep = Math.max(1, this.currentStep - 1); }
+
+  goToStep(target: number) {
+    if (target < 1 || target > 5) return;
+    if (target <= this.currentStep) {
+      this.currentStep = target;
+      return;
+    }
+    // Intento de ir hacia adelante: validamos pasos previos
+    this.submitted = true;
+    for (let step = 1; step < target; step++) {
+      if (!this.isStepValid(step)) {
+        return;
+      }
+    }
+    this.currentStep = target;
+  }
   isStepValid(step: number) {
     switch (step) {
       case 1: {
         const d = this.form.get('date')?.value;
         const t = this.form.get('time')?.value;
-        return !!d && !!t && this.isFutureDate(d) && this.availabilityOk !== false;
+        const hasDateTime = !!d && !!t;
+        const dateIso = hasDateTime ? (typeof d === 'string' ? d : this.toIsoDate(d)) : '';
+        const candidateIso = hasDateTime ? `${dateIso}T${t}` : '';
+        const nowIso = new Date().toISOString().slice(0, 16);
+        const notPast = hasDateTime && candidateIso >= nowIso;
+        return hasDateTime && notPast && this.availabilityOk !== false;
       }
       case 2: return !!this.form.get('petId')?.value;
       case 3: return !!this.form.get('serviceType')?.value;
@@ -151,7 +172,7 @@ export class BookingComponent implements AfterViewInit {
       address: v.address || undefined,
       latitude: this.pickedLat,
       longitude: this.pickedLng,
-      notes: v.notes || undefined,
+      notes: v.notes!,
     };
 
     this.bookingService.create(payload).subscribe({
@@ -203,6 +224,16 @@ export class BookingComponent implements AfterViewInit {
     return out;
   }
 
+  isTimeDisabled(t: string): boolean {
+    const d = this.form.get('date')?.value;
+    if (!d) return false;
+    const dateIso = typeof d === 'string' ? d : this.toIsoDate(d);
+    if (!dateIso) return false;
+    const candidateIso = `${dateIso}T${t}`;
+    const nowIso = new Date().toISOString().slice(0, 16);
+    return candidateIso < nowIso;
+  }
+
   onDateInputChange(value: string) {
     this.form.get('date')?.setValue(value);
     this.validateDateAndAvailability();
@@ -219,13 +250,15 @@ export class BookingComponent implements AfterViewInit {
     const d = this.form.get('date')?.value;
     const t = this.form.get('time')?.value;
     if (!d || !t) return;
-    if (!this.isFutureDate(d)) {
-      this.availabilityMessage = 'No puedes seleccionar una fecha anterior a la actual.';
+    const dateIso = typeof d === 'string' ? d : this.toIsoDate(d);
+    const candidateIso = `${dateIso}T${t}`;
+    const nowIso = new Date().toISOString().slice(0, 16);
+    if (candidateIso < nowIso) {
+      this.availabilityMessage = 'No puedes seleccionar una hora pasada del día de hoy.';
       this.availabilityOk = false;
       this.availableGroomerIds = null;
       return;
     }
-    const dateIso = typeof d === 'string' ? d : this.toIsoDate(d);
     this.bookingService.checkAvailability(dateIso, t, 'FULL_GROOMING').subscribe({
       next: (resp) => {
         this.availabilityMessage = resp.message;
@@ -256,4 +289,3 @@ export class BookingComponent implements AfterViewInit {
     this.groomerService.list().subscribe({ next: list => this.groomers = list, error: () => {} });
   }
 }
-

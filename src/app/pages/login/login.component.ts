@@ -53,7 +53,8 @@ export class LoginComponent {
       next: () => {
         localStorage.setItem('username', this.loginForm.value.username);
         this.toast.ok('Bienvenido');
-        this.router.navigate(['/dashboard']);
+        // Reemplaza la entrada de login en el historial para que "Atrás" vuelva a la landing (u origen), no al formulario.
+        this.router.navigate(['/dashboard'], { replaceUrl: true });
       },
       error: (err) => {
         this.errorMessage = err.error?.message || 'Usuario o contraseña incorrectos. Revisa tus datos e inténtalo de nuevo.';
@@ -81,4 +82,3 @@ export class LoginComponent {
     }
   }
 }
-

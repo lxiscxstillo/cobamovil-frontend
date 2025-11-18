@@ -6,6 +6,13 @@
   color: var(--text-100);
 
   .navbar-left { display: flex; align-items: center; gap: 10px; }
+  .brand-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    color: inherit;
+    text-decoration: none;
+  }
 
   .brand-mark {
     width: 20px; height: 20px; border-radius: 6px;
@@ -28,8 +35,20 @@
       border-radius: 999px;
       background: rgba(2,6,23,.35);
       border: 1px solid rgba(148,163,184,.18);
+      cursor: pointer;
+      border-width: 1px;
+      border-style: solid;
+      color: inherit;
+      font: inherit;
+      text-decoration: none;
+      outline: none;
+      transition: background var(--transition-fast), transform var(--transition-fast);
 
       .user-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent-500); box-shadow: 0 0 10px rgba(34,211,238,.7); }
+    }
+    .user-info:hover {
+      background: rgba(15,23,42,.7);
+      transform: translateY(-1px);
     }
 
     .logout-btn {

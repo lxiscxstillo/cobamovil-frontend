@@ -6,12 +6,12 @@
     <div class="wiz-sub">Sigue los pasos para agendar tu servicio</div>
   </div>
   <div class="wiz-stepper">
-    <div class="step" [class.active]="currentStep>=1">1<span>Fecha y hora</span></div>
+    <div class="step" [class.active]="currentStep>=1" (click)="goToStep(1)">1<span>Fecha y hora</span></div>
     <div class="bar" [style.width.%]="(currentStep-1)*25"></div>
-    <div class="step" [class.active]="currentStep>=2">2<span>Mascota</span></div>
-    <div class="step" [class.active]="currentStep>=3">3<span>Servicio</span></div>
-    <div class="step" [class.active]="currentStep>=4">4<span>Dirección</span></div>
-    <div class="step" [class.active]="currentStep>=5">5<span>Peluquero</span></div>
+    <div class="step" [class.active]="currentStep>=2" (click)="goToStep(2)">2<span>Mascota</span></div>
+    <div class="step" [class.active]="currentStep>=3" (click)="goToStep(3)">3<span>Servicio</span></div>
+    <div class="step" [class.active]="currentStep>=4" (click)="goToStep(4)">4<span>Dirección</span></div>
+    <div class="step" [class.active]="currentStep>=5" (click)="goToStep(5)">5<span>Peluquero</span></div>
   </div>
 
   <form class="wiz-card" [formGroup]="form" (ngSubmit)="submit()" novalidate>
@@ -31,6 +31,7 @@
               class="time"
               *ngFor="let t of availableTimes"
               [class.sel]="form.value.time===t"
+              [disabled]="isTimeDisabled(t)"
               (click)="selectTime(t)"
             >{{ t }}</button>
           </div>
@@ -129,6 +130,9 @@
         formControlName="notes"
         placeholder="Algo que debamos saber (máx. 300 caracteres)"
       ></textarea>
+      <div class="error" *ngIf="submitted && form.get('notes')?.invalid">
+        Las notas adicionales son obligatorias. Cuéntanos cualquier detalle importante del servicio.
+      </div>
     </section>
 
     <!-- Navegación -->

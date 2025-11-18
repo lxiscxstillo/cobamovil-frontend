@@ -8,7 +8,7 @@
 .wiz-sub{ color:#475569 }
 .wiz-stepper{ position:relative; display:flex; gap:10px; align-items:center; justify-content:space-between; margin:14px 0 18px }
 .wiz-stepper .bar{ position:absolute; left:56px; right:56px; height:4px; background:linear-gradient(90deg,#0ea5e9,#14b8a6); bottom:-2px; border-radius:9999px; transition:width .25s ease }
-.wiz-stepper .step{ position:relative; display:flex; flex-direction:column; align-items:center; gap:6px; color:#94a3b8 }
+.wiz-stepper .step{ position:relative; display:flex; flex-direction:column; align-items:center; gap:6px; color:#94a3b8; cursor:pointer }
 .wiz-stepper .step::before{ content:""; width:36px; height:36px; border-radius:9999px; background:#e2e8f0 }
 .wiz-stepper .step.active{ color:#0f172a }
 .wiz-stepper .step.active::before{ background: linear-gradient(135deg,#0ea5e9,#14b8a6) }
