@@ -22,7 +22,17 @@ declare const google: any;
 @Component({
   selector: 'app-booking',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, MatFormFieldModule, MatInputModule, MatSelectModule, MatDatepickerModule, MatNativeDateModule, HeaderComponent, MapPickerComponent],
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatSelectModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    HeaderComponent,
+    MapPickerComponent
+  ],
   templateUrl: './booking.component.html',
   styleUrls: ['./booking.component.scss']
 })
@@ -45,7 +55,7 @@ export class BookingComponent implements AfterViewInit {
     { label: 'Baño', value: 'BATH' },
     { label: 'Corte de pelo', value: 'HAIRCUT' },
     { label: 'Corte de uñas', value: 'NAIL_TRIM' },
-    { label: 'Servicio completo', value: 'FULL_GROOMING' },
+    { label: 'Servicio completo', value: 'FULL_GROOMING' }
   ];
 
   // Wizard state
@@ -82,7 +92,7 @@ export class BookingComponent implements AfterViewInit {
       this.mapsLoader.load().then(() => {
         const input = this.addressInput?.nativeElement;
         if (!input) return;
-        const autocomplete = new google.maps.places.Autocomplete(input, { fields: ['formatted_address','geometry'] });
+        const autocomplete = new google.maps.places.Autocomplete(input, { fields: ['formatted_address', 'geometry'] });
         autocomplete.addListener('place_changed', () => {
           const place = autocomplete.getPlace();
           const addr = place?.formatted_address;
@@ -91,15 +101,21 @@ export class BookingComponent implements AfterViewInit {
           if (loc) {
             const lat = loc.lat();
             const lng = loc.lng();
-            this.pickedLat = lat; this.pickedLng = lng;
+            this.pickedLat = lat;
+            this.pickedLng = lng;
           }
         });
       });
     } catch {}
   }
 
-  next() { if (this.isStepValid(this.currentStep)) this.currentStep = Math.min(5, this.currentStep + 1); }
-  back() { this.currentStep = Math.max(1, this.currentStep - 1); }
+  next() {
+    if (this.isStepValid(this.currentStep)) this.currentStep = Math.min(5, this.currentStep + 1);
+  }
+
+  back() {
+    this.currentStep = Math.max(1, this.currentStep - 1);
+  }
 
   goToStep(target: number) {
     if (target < 1 || target > 5) return;
@@ -116,23 +132,27 @@ export class BookingComponent implements AfterViewInit {
     }
     this.currentStep = target;
   }
+
   isStepValid(step: number) {
     switch (step) {
       case 1: {
         const d = this.form.get('date')?.value;
         const t = this.form.get('time')?.value;
         const hasDateTime = !!d && !!t;
-        const dateIso = hasDateTime ? (typeof d === 'string' ? d : this.toIsoDate(d)) : '';
-        const candidateIso = hasDateTime ? `${dateIso}T${t}` : '';
-        const nowIso = new Date().toISOString().slice(0, 16);
-        const notPast = hasDateTime && candidateIso >= nowIso;
+        const candidate = hasDateTime ? this.buildLocalDateTime(d, t) : null;
+        const notPast = !!candidate && candidate.getTime() >= Date.now();
         return hasDateTime && notPast && this.availabilityOk !== false;
       }
-      case 2: return !!this.form.get('petId')?.value;
-      case 3: return !!this.form.get('serviceType')?.value;
-      case 4: return !!(this.form.get('address')?.value || (this.pickedLat && this.pickedLng));
-      case 5: return true;
-      default: return true;
+      case 2:
+        return !!this.form.get('petId')?.value;
+      case 3:
+        return !!this.form.get('serviceType')?.value;
+      case 4:
+        return !!(this.form.get('address')?.value || (this.pickedLat && this.pickedLng));
+      case 5:
+        return true;
+      default:
+        return true;
     }
   }
 
@@ -143,8 +163,10 @@ export class BookingComponent implements AfterViewInit {
       const today = new Date();
       const dt = new Date(str + 'T00:00:00');
       // allow booking from today  (>= today). Change to > for strictly future
-      return dt.setHours(0,0,0,0) >= new Date(today.getFullYear(), today.getMonth(), today.getDate()).getTime();
-    } catch { return false; }
+      return dt.setHours(0, 0, 0, 0) >= new Date(today.getFullYear(), today.getMonth(), today.getDate()).getTime();
+    } catch {
+      return false;
+    }
   }
 
   submit() {
@@ -153,7 +175,9 @@ export class BookingComponent implements AfterViewInit {
       this.form.markAllAsTouched();
       const firstInvalid = Object.keys(this.form.controls).find(key => this.form.get(key)?.invalid);
       if (firstInvalid) {
-        const el = document.querySelector<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>(`[formControlName="${firstInvalid}"]`);
+        const el = document.querySelector<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>(
+          `[formControlName="${firstInvalid}"]`
+        );
         if (el) el.focus();
       }
       return;
@@ -172,7 +196,7 @@ export class BookingComponent implements AfterViewInit {
       address: v.address || undefined,
       latitude: this.pickedLat,
       longitude: this.pickedLng,
-      notes: v.notes!,
+      notes: v.notes!
     };
 
     this.bookingService.create(payload).subscribe({
@@ -181,7 +205,7 @@ export class BookingComponent implements AfterViewInit {
         this.toast.created('Reserva');
         this.form.reset();
       },
-      error: (err) => {
+      error: err => {
         this.errorMessage = err.error?.message || 'Error al crear la reserva. Inténtalo de nuevo.';
         this.toast.errorFrom(err, 'Error al crear la reserva');
         this.submitting = false;
@@ -209,6 +233,20 @@ export class BookingComponent implements AfterViewInit {
     return '';
   }
 
+  private buildLocalDateTime(d: unknown, t: string): Date | null {
+    const dateStr = typeof d === 'string' ? d : this.toIsoDate(d);
+    if (!dateStr || !t) return null;
+    const [yearStr, monthStr, dayStr] = dateStr.split('-');
+    const [hourStr, minuteStr] = t.split(':');
+    const year = Number(yearStr);
+    const month = Number(monthStr);
+    const day = Number(dayStr);
+    const hour = Number(hourStr);
+    const minute = Number(minuteStr);
+    if (!year || !month || !day || isNaN(hour) || isNaN(minute)) return null;
+    return new Date(year, month - 1, day, hour, minute, 0, 0);
+  }
+
   onMapPositionChange(pos: { lat: number; lng: number }) {
     this.pickedLat = pos.lat;
     this.pickedLng = pos.lng;
@@ -218,7 +256,7 @@ export class BookingComponent implements AfterViewInit {
     const out: string[] = [];
     for (let h = 9; h <= 18; h++) {
       for (const m of [0, 30]) {
-        out.push(`${('0'+h).slice(-2)}:${('0'+m).slice(-2)}`);
+        out.push(`${('0' + h).slice(-2)}:${('0' + m).slice(-2)}`);
       }
     }
     return out;
@@ -227,11 +265,9 @@ export class BookingComponent implements AfterViewInit {
   isTimeDisabled(t: string): boolean {
     const d = this.form.get('date')?.value;
     if (!d) return false;
-    const dateIso = typeof d === 'string' ? d : this.toIsoDate(d);
-    if (!dateIso) return false;
-    const candidateIso = `${dateIso}T${t}`;
-    const nowIso = new Date().toISOString().slice(0, 16);
-    return candidateIso < nowIso;
+    const candidate = this.buildLocalDateTime(d, t);
+    if (!candidate) return false;
+    return candidate.getTime() < Date.now();
   }
 
   onDateInputChange(value: string) {
@@ -250,17 +286,17 @@ export class BookingComponent implements AfterViewInit {
     const d = this.form.get('date')?.value;
     const t = this.form.get('time')?.value;
     if (!d || !t) return;
-    const dateIso = typeof d === 'string' ? d : this.toIsoDate(d);
-    const candidateIso = `${dateIso}T${t}`;
-    const nowIso = new Date().toISOString().slice(0, 16);
-    if (candidateIso < nowIso) {
+    const candidate = this.buildLocalDateTime(d, t);
+    if (!candidate) return;
+    if (candidate.getTime() < Date.now()) {
       this.availabilityMessage = 'No puedes seleccionar una hora pasada del día de hoy.';
       this.availabilityOk = false;
       this.availableGroomerIds = null;
       return;
     }
+    const dateIso = typeof d === 'string' ? d : this.toIsoDate(d);
     this.bookingService.checkAvailability(dateIso, t, 'FULL_GROOMING').subscribe({
-      next: (resp) => {
+      next: resp => {
         this.availabilityMessage = resp.message;
         this.availabilityOk = resp.available;
         this.availableGroomerIds = resp.groomerIds || [];
@@ -281,11 +317,17 @@ export class BookingComponent implements AfterViewInit {
           this.noPetsMessage = 'Aún no tienes mascotas registradas. Agrega una antes de continuar.';
         }
       },
-      error: () => { this.noPetsMessage = 'No pudimos cargar tus mascotas.'; }
+      error: () => {
+        this.noPetsMessage = 'No pudimos cargar tus mascotas.';
+      }
     });
   }
 
   private loadGroomers() {
-    this.groomerService.list().subscribe({ next: list => this.groomers = list, error: () => {} });
+    this.groomerService.list().subscribe({
+      next: list => (this.groomers = list),
+      error: () => {}
+    });
   }
 }
+
