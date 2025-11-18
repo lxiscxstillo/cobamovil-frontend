@@ -8,9 +8,6 @@
     <div class="row g-4">
       <div class="col" *ngFor="let b of benefits; let i = index">
         <div class="benefit-card text-center h-100" [class]="'animate-delay-' + (i + 1)">
-          <div class="benefit-image mb-3">
-            <img [src]="b.image" [alt]="b.imageAlt" loading="lazy" />
-          </div>
           <div class="benefit-icon mb-3">
             <i [class]="b.icon"></i>
           </div>
