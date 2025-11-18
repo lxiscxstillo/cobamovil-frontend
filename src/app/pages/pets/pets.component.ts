@@ -41,7 +41,7 @@ export class PetsComponent {
   expandedIds = new Set<number>();
   submittedAdd = false;
   confirmOpen = false;
-  private pendingDelete?: Pet;
+  pendingDelete?: Pet;
   private lastDeleted?: Pet;
 
   @ViewChild('nameInput') nameInput?: ElementRef<HTMLInputElement>;

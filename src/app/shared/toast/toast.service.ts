@@ -65,4 +65,5 @@ export class ToastService {
   reprogrammed(entity: string) { this.success(`${entity} reprogramada`); }
   action(type: ToastType, msg: string, label: string, cb: () => void) { this.push(type, msg, label, cb); }
 
+}
 
