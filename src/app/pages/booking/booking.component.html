@@ -33,7 +33,7 @@
               [class.sel]="form.value.time===t"
               [disabled]="isTimeDisabled(t)"
               (click)="selectTime(t)"
-            >{{ t }}</button>
+            >{{ formatTime12h(t) }}</button>
           </div>
         </div>
       </div>
@@ -163,4 +163,3 @@
     <div class="success" *ngIf="successMessage">{{ successMessage }}</div>
   </form>
 </div>
-

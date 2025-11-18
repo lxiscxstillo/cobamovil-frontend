@@ -262,6 +262,15 @@ export class BookingComponent implements AfterViewInit {
     return out;
   }
 
+  formatTime12h(t: string): string {
+    const [hStr, mStr] = t.split(':');
+    let h = Number(hStr);
+    const suffix = h >= 12 ? 'p. m.' : 'a. m.';
+    if (h === 0) h = 12;
+    if (h > 12) h = h - 12;
+    return `${h}:${mStr} ${suffix}`;
+  }
+
   isTimeDisabled(t: string): boolean {
     const d = this.form.get('date')?.value;
     if (!d) return false;
@@ -330,4 +339,3 @@ export class BookingComponent implements AfterViewInit {
     });
   }
 }
-
