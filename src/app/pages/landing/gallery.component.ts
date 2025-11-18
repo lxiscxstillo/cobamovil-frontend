@@ -10,12 +10,12 @@ import { CommonModule } from '@angular/common';
 })
 export class GalleryComponent {
   images: { src: string; alt: string }[] = [
-    { src: 'https://images.unsplash.com/photo-1518020382113-a7e8fc38eac9?q=80&w=800&auto=format&fit=crop', alt: 'Perro feliz después del grooming' },
-    { src: 'https://images.unsplash.com/photo-1568640347023-a6161c59b98e?q=80&w=800&auto=format&fit=crop', alt: 'Corte cuidando el manto' },
-    { src: 'https://images.unsplash.com/photo-1619980296991-0f19042c1cdf?q=80&w=800&auto=format&fit=crop', alt: 'Baño relajante en casa' },
-    { src: 'https://images.unsplash.com/photo-1598133894008-7c6a58d1b82b?q=80&w=800&auto=format&fit=crop', alt: 'Peluquería a domicilio' },
-    { src: 'https://images.unsplash.com/photo-1543466835-00a7907e9de1?q=80&w=800&auto=format&fit=crop', alt: 'Manto brillante y sano' },
-    { src: 'https://images.unsplash.com/photo-1593134257782-e89567b7718a?q=80&w=800&auto=format&fit=crop', alt: 'Perro con pañoleta' }
+    { src: 'https://placehold.co/800x600/FEE2E2/7F1D1D?text=Antes+y+despu%C3%A9s', alt: 'Perro feliz después del grooming' },
+    { src: 'https://placehold.co/800x600/EEF2FF/1E1B4B?text=Corte+de+pelaje', alt: 'Corte cuidando el manto' },
+    { src: 'https://placehold.co/800x600/DCFCE7/166534?text=Ba%C3%B1o+relajante', alt: 'Baño relajante en casa' },
+    { src: 'https://placehold.co/800x600/FEF3C7/92400E?text=Servicio+a+domicilio', alt: 'Peluquería a domicilio' },
+    { src: 'https://placehold.co/800x600/E0F2FE/0F172A?text=Manto+brillante', alt: 'Manto brillante y sano' },
+    { src: 'https://placehold.co/800x600/FDF2FF/4A044E?text=Look+con+pa%C3%B1oleta', alt: 'Perro con pañoleta' }
   ];
 }
 
