@@ -139,6 +139,7 @@ export class BookingComponent implements AfterViewInit {
         const d = this.form.get('date')?.value;
         const t = this.form.get('time')?.value;
         const hasDateTime = !!d && !!t;
+        // FIX: combinamos fecha + hora en un Date local para comparar correctamente contra "ahora"
         const candidate = hasDateTime ? this.buildLocalDateTime(d, t) : null;
         const notPast = !!candidate && candidate.getTime() >= Date.now();
         return hasDateTime && notPast && this.availabilityOk !== false;
@@ -234,6 +235,7 @@ export class BookingComponent implements AfterViewInit {
   }
 
   private buildLocalDateTime(d: unknown, t: string): Date | null {
+    // FIX: evitamos construir Date desde string ISO (UTC); usamos componentes locales año/mes/día/hora/minuto
     const dateStr = typeof d === 'string' ? d : this.toIsoDate(d);
     if (!dateStr || !t) return null;
     const [yearStr, monthStr, dayStr] = dateStr.split('-');
@@ -274,6 +276,7 @@ export class BookingComponent implements AfterViewInit {
   isTimeDisabled(t: string): boolean {
     const d = this.form.get('date')?.value;
     if (!d) return false;
+    // FIX: deshabilitar horas pasadas usando la combinación fecha+hora en horario local
     const candidate = this.buildLocalDateTime(d, t);
     if (!candidate) return false;
     return candidate.getTime() < Date.now();
@@ -295,6 +298,7 @@ export class BookingComponent implements AfterViewInit {
     const d = this.form.get('date')?.value;
     const t = this.form.get('time')?.value;
     if (!d || !t) return;
+    // FIX: validamos que la fecha+hora completas no estén en el pasado antes de consultar disponibilidad
     const candidate = this.buildLocalDateTime(d, t);
     if (!candidate) return;
     if (candidate.getTime() < Date.now()) {
