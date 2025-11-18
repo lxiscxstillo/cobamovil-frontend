@@ -1,9 +1,10 @@
-﻿import { Component } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { CommonModule, NgIf } from '@angular/common';
 import { AuthService } from '../../core/services/auth.service';
 import { environment } from '../../../environments/environment';
+import { ToastService } from '../../shared/toast/toast.service';
 
 @Component({
   selector: 'app-register',
@@ -17,6 +18,7 @@ export class RegisterComponent {
   errorMessage: string | null = null;
   successMessage: string | null = null;
   loading = false;
+  submitted = false;
   showPassword = false;
   passwordStrength = 0;
   logoSrc: string = environment.logoUrl || '/logo.png';
@@ -26,7 +28,8 @@ export class RegisterComponent {
   constructor(
     private fb: FormBuilder,
     private authService: AuthService,
-    private router: Router
+    private router: Router,
+    private toast: ToastService
   ) {
     this.registerForm = this.fb.group({
       username: ['', [Validators.required, Validators.minLength(3), Validators.pattern(/^[a-zA-Z0-9_-]+$/)]],
@@ -41,7 +44,16 @@ export class RegisterComponent {
   }
 
   onSubmit() {
-    if (this.registerForm.invalid) return;
+    this.submitted = true;
+    if (this.registerForm.invalid) {
+      this.registerForm.markAllAsTouched();
+      const firstInvalid = Object.keys(this.registerForm.controls).find(k => this.registerForm.get(k)?.invalid);
+      if (firstInvalid) {
+        const el = document.getElementById(firstInvalid);
+        if (el) el.focus();
+      }
+      return;
+    }
 
     this.loading = true;
     this.errorMessage = null;
@@ -55,11 +67,13 @@ export class RegisterComponent {
     };
     this.authService.register(payload).subscribe({
       next: () => {
-        this.successMessage = 'Â¡Registro exitoso! Redirigiendo para iniciar sesiÃ³n...';
+        this.successMessage = 'Registro exitoso. Te redirigiremos para iniciar sesión.';
+        this.toast.created('Cuenta');
         setTimeout(() => this.router.navigate(['/iniciar-sesion']), 1500);
       },
       error: (err) => {
-        this.errorMessage = err.error?.message || 'Registro fallido. Intenta de nuevo.';
+        this.errorMessage = err.error?.message || 'No pudimos completar el registro. Revisa los datos e inténtalo de nuevo.';
+        this.toast.errorFrom(err, 'No pudimos completar el registro.');
         this.loading = false;
       },
       complete: () => {

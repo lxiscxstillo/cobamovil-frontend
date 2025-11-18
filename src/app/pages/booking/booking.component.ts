@@ -1,4 +1,4 @@
-﻿import { Component, ElementRef, AfterViewInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, AfterViewInit, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, ReactiveFormsModule, Validators, FormGroup } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -35,6 +35,11 @@ export class BookingComponent implements AfterViewInit {
   groomers: GroomerProfile[] = [];
   pickedLat?: number;
   pickedLng?: number;
+  submitted = false;
+  noPetsMessage: string | null = null;
+  availabilityMessage: string | null = null;
+  availabilityOk: boolean | null = null;
+  availableGroomerIds: number[] | null = null;
 
   services: { label: string; value: ServiceType }[] = [
     { label: 'Baño', value: 'BATH' },
@@ -44,7 +49,8 @@ export class BookingComponent implements AfterViewInit {
   ];
 
   // Wizard state
-  currentStep = 1; // 1 Mascota, 2 Servicio, 3 Fecha/hora, 4 Dirección, 5 Peluquero
+  // 1 Fecha/hora, 2 Mascota, 3 Servicio, 4 Dirección, 5 Peluquero
+  currentStep = 1;
 
   form: FormGroup;
 
@@ -96,13 +102,13 @@ export class BookingComponent implements AfterViewInit {
   back() { this.currentStep = Math.max(1, this.currentStep - 1); }
   isStepValid(step: number) {
     switch (step) {
-      case 1: return !!this.form.get('petId')?.value;
-      case 2: return !!this.form.get('serviceType')?.value;
-      case 3: {
+      case 1: {
         const d = this.form.get('date')?.value;
         const t = this.form.get('time')?.value;
-        return !!d && !!t && this.isFutureDate(d);
+        return !!d && !!t && this.isFutureDate(d) && this.availabilityOk !== false;
       }
+      case 2: return !!this.form.get('petId')?.value;
+      case 3: return !!this.form.get('serviceType')?.value;
       case 4: return !!(this.form.get('address')?.value || (this.pickedLat && this.pickedLng));
       case 5: return true;
       default: return true;
@@ -121,7 +127,16 @@ export class BookingComponent implements AfterViewInit {
   }
 
   submit() {
-    if (this.form.invalid) return;
+    this.submitted = true;
+    if (this.form.invalid) {
+      this.form.markAllAsTouched();
+      const firstInvalid = Object.keys(this.form.controls).find(key => this.form.get(key)?.invalid);
+      if (firstInvalid) {
+        const el = document.querySelector<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>(`[formControlName="${firstInvalid}"]`);
+        if (el) el.focus();
+      }
+      return;
+    }
     this.submitting = true;
     this.errorMessage = null;
     this.successMessage = null;
@@ -188,10 +203,52 @@ export class BookingComponent implements AfterViewInit {
     return out;
   }
 
+  onDateInputChange(value: string) {
+    this.form.get('date')?.setValue(value);
+    this.validateDateAndAvailability();
+  }
+
+  selectTime(value: string) {
+    this.form.get('time')?.setValue(value);
+    this.validateDateAndAvailability();
+  }
+
+  private validateDateAndAvailability() {
+    this.availabilityMessage = null;
+    this.availabilityOk = null;
+    const d = this.form.get('date')?.value;
+    const t = this.form.get('time')?.value;
+    if (!d || !t) return;
+    if (!this.isFutureDate(d)) {
+      this.availabilityMessage = 'No puedes seleccionar una fecha anterior a la actual.';
+      this.availabilityOk = false;
+      this.availableGroomerIds = null;
+      return;
+    }
+    const dateIso = typeof d === 'string' ? d : this.toIsoDate(d);
+    this.bookingService.checkAvailability(dateIso, t, 'FULL_GROOMING').subscribe({
+      next: (resp) => {
+        this.availabilityMessage = resp.message;
+        this.availabilityOk = resp.available;
+        this.availableGroomerIds = resp.groomerIds || [];
+      },
+      error: () => {
+        this.availabilityMessage = 'No pudimos validar la disponibilidad. Intenta de nuevo.';
+        this.availabilityOk = false;
+        this.availableGroomerIds = null;
+      }
+    });
+  }
+
   private loadPets() {
     this.http.get<Pet[]>(`${environment.apiUrl}/pets`).subscribe({
-      next: data => this.pets = data,
-      error: () => {}
+      next: data => {
+        this.pets = data;
+        if (!data.length) {
+          this.noPetsMessage = 'Aún no tienes mascotas registradas. Agrega una antes de continuar.';
+        }
+      },
+      error: () => { this.noPetsMessage = 'No pudimos cargar tus mascotas.'; }
     });
   }
 
@@ -199,8 +256,4 @@ export class BookingComponent implements AfterViewInit {
     this.groomerService.list().subscribe({ next: list => this.groomers = list, error: () => {} });
   }
 }
-
-
-
-
 

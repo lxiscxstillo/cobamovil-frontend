@@ -11,9 +11,21 @@
   .grid { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 10px; }
   @media (min-width: 768px) { .grid { grid-template-columns: repeat(3, minmax(0,1fr)); gap: 12px; } }
 
-  .tile { position: relative; overflow: hidden; border-radius: 12px; border: 1px solid rgba(155,132,75,.22); box-shadow: var(--shadow-md); background: #f8fafc; }
-  .tile img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform var(--transition), filter var(--transition); }
+  .tile {
+    position: relative;
+    overflow: hidden;
+    border-radius: 12px;
+    border: 1px solid rgba(155,132,75,.22);
+    box-shadow: var(--shadow-md);
+    background: #f8fafc;
+    aspect-ratio: 4 / 3;
+  }
+  .tile img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform var(--transition), filter var(--transition);
+  }
   .tile:hover img { transform: scale(1.03); filter: saturate(1.05); }
-  .tile .ph { padding-bottom: 75%; }
 }
-

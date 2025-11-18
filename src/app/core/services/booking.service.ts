@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
-import { Booking, BookingCreateRequest, BookingStatus } from '../models/booking.model';
+import { Booking, BookingCreateRequest, BookingStatus, ServiceType } from '../models/booking.model';
 
 @Injectable({ providedIn: 'root' })
 export class BookingService {
@@ -53,5 +53,10 @@ export class BookingService {
   saveRoute(dateIso: string, bookingIdsInOrder: number[]) {
     const body = { date: dateIso, bookingIdsInOrder } as { date: string; bookingIdsInOrder: number[] };
     return this.http.put<void>(`${this.baseUrl}/admin/route`, body);
+  }
+
+  checkAvailability(dateIso: string, time: string, serviceType: ServiceType) {
+    let params = new HttpParams().set('date', dateIso).set('time', time).set('serviceType', serviceType);
+    return this.http.get<{ available: boolean; message: string; groomerIds: number[] }>(`${this.baseUrl}/availability`, { params });
   }
 }

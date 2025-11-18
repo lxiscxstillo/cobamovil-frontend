@@ -62,7 +62,7 @@ export class ToastService {
   saved(entity: string) { this.success(`${entity} guardada`); }
   started(entity: string) { this.success(`${entity} iniciada`); }
   canceled(entity: string) { this.success(`${entity} cancelada`); }
-  reprogrammed(entity: string) { this.success(`${entity} reprogramada`); }
+  reprogrammed(entity: string) { this.success(`${entity} reprogramada y pendiente de aprobación`); }
   action(type: ToastType, msg: string, label: string, cb: () => void) { this.push(type, msg, label, cb); }
 
 }

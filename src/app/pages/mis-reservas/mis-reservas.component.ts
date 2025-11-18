@@ -20,6 +20,7 @@ export class MisReservasComponent {
   expanded = new Set<number>();
   editing = new Set<number>();
   reschedule: Record<number, { date?: string; time?: string }> = {};
+  rescheduleError: Record<number, string | null> = {};
 
   constructor(private bookingService: BookingService, private toast: ToastService) {
     this.load();
@@ -29,7 +30,11 @@ export class MisReservasComponent {
     this.loading = true;
     this.error = null;
     this.bookingService.myBookings().subscribe({
-      next: d => this.items = d,
+      next: d => {
+        const now = new Date();
+        const nowIso = now.toISOString().slice(0, 16);
+        this.items = d.filter(b => (b.date + 'T' + b.time) >= nowIso);
+      },
       error: e => this.error = e.error?.message || 'Error cargando reservas',
       complete: () => this.loading = false
     });
@@ -60,10 +65,40 @@ export class MisReservasComponent {
 
   doReschedule(b: Booking) {
     const r = this.reschedule[b.id] || {};
-    if (!r.date || !r.time) { this.toast.warn('Selecciona fecha y hora'); return; }
-    this.bookingService.reschedule(b.id, r.date, r.time, b.serviceType).subscribe({
-      next: () => { this.toast.reprogrammed('Reserva'); this.load(); this.editing.delete(b.id); },
-      error: e => this.toast.errorFrom(e, 'Error al reprogramar')
+    this.rescheduleError[b.id] = null;
+    if (!r.date || !r.time) {
+      this.rescheduleError[b.id] = 'Selecciona fecha y hora para reprogramar.';
+      this.toast.warn('Selecciona fecha y hora');
+      return;
+    }
+    const nowIso = new Date().toISOString().slice(0, 16);
+    const candidateIso = `${r.date}T${r.time}`;
+    if (candidateIso < nowIso) {
+      this.rescheduleError[b.id] = 'No puedes seleccionar una fecha anterior a la actual.';
+      this.toast.warn(this.rescheduleError[b.id]!);
+      return;
+    }
+    this.bookingService.checkAvailability(r.date, r.time, b.serviceType).subscribe({
+      next: (resp) => {
+        if (!resp.available) {
+          this.rescheduleError[b.id] = resp.message || 'Ese horario no está disponible. Elige otro.';
+          this.toast.warn(this.rescheduleError[b.id]!);
+          return;
+        }
+        this.bookingService.reschedule(b.id, r.date!, r.time!, b.serviceType).subscribe({
+          next: () => {
+            this.toast.reprogrammed('Reserva');
+            this.load();
+            this.editing.delete(b.id);
+            this.rescheduleError[b.id] = null;
+          },
+          error: e => this.toast.errorFrom(e, 'Error al reprogramar')
+        });
+      },
+      error: (e) => {
+        this.rescheduleError[b.id] = 'No pudimos validar la disponibilidad. Intenta de nuevo.';
+        this.toast.errorFrom(e, 'Error al validar disponibilidad');
+      }
     });
   }
 }

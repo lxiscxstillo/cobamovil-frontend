@@ -1,26 +1,30 @@
-﻿<app-header></app-header>
+<app-header></app-header>
 
 <div class="users-container">
   <h2>Agenda diaria</h2>
 
   <div class="stack" style="max-width: 420px; margin: 0 auto 16px;">
-    <label class="label">Fecha</label>
-    <input class="input" type="date" [(ngModel)]="date" (change)="load()" />
+    <label class="label" for="date">Fecha</label>
+    <input id="date" class="input" type="date" [(ngModel)]="date" (change)="load()" />
+
     <label class="label">Orden</label>
     <label style="display:flex;gap:8px;align-items:center;color:var(--text-300)">
       <input type="checkbox" [(ngModel)]="useOptimized" (change)="load()" /> Usar ruta optimizada
     </label>
-    <label class="label">Peluquero</label>
-    <select class="input" [(ngModel)]="selectedGroomerId" (change)="load()">
+
+    <label class="label" for="groomer">Peluquero</label>
+    <select id="groomer" class="input" [(ngModel)]="selectedGroomerId" (change)="load()">
       <option [ngValue]="null">Todos</option>
       <option *ngFor="let g of groomers" [ngValue]="g.userId">{{ g.username }}</option>
     </select>
   </div>
 
-  <div class="loading" *ngIf="loading">Cargando…</div>
+  <div class="loading" *ngIf="loading">
+    Cargando agenda para la fecha seleccionada…
+  </div>
   <div class="error" *ngIf="error">{{ error }}</div>
 
-  <table class="table" *ngIf="!loading && !error">
+  <table class="table" *ngIf="!loading && !error && items.length">
     <thead>
       <tr>
         <th>Hora</th>
@@ -36,16 +40,28 @@
       <tr *ngFor="let b of items; index as i">
         <td>{{ b.time }}</td>
         <td>{{ b.petName }}</td>
-        <td>{{ b.serviceType }}</td>
-        <td>{{ b.address || '—' }}</td>
-        <td>{{ etas[b.id] || '—' }}</td>
-        <td>{{ b.status }}</td>
+        <td>{{ b.serviceType | titlecase }}</td>
+        <td>{{ b.address || '-' }}</td>
+        <td>{{ etas[b.id] || '-' }}</td>
+        <td>{{ b.status | titlecase }}</td>
         <td>
           <div style="display:flex; gap:6px;">
-            <button class="btn" style="padding:6px 10px;" (click)="changeStatus(b, 'APPROVED')">Aceptar</button>
-            <button class="btn" style="padding:6px 10px; background: linear-gradient(135deg,#ef4444,#f59e0b);" (click)="changeStatus(b, 'REJECTED')">Rechazar</button>
-            <button class="btn" style="padding:6px 10px;" (click)="changeStatus(b, 'ON_ROUTE')">En camino</button>
-            <button class="btn" style="padding:6px 10px;" (click)="changeStatus(b, 'COMPLETED')">Completada</button>
+            <button class="btn" style="padding:6px 10px;" (click)="changeStatus(b, 'APPROVED')">
+              Aceptar
+            </button>
+            <button
+              class="btn"
+              style="padding:6px 10px; background: linear-gradient(135deg,#ef4444,#f59e0b);"
+              (click)="changeStatus(b, 'REJECTED')"
+            >
+              Rechazar
+            </button>
+            <button class="btn" style="padding:6px 10px;" (click)="changeStatus(b, 'ON_ROUTE')">
+              En camino
+            </button>
+            <button class="btn" style="padding:6px 10px;" (click)="changeStatus(b, 'COMPLETED')">
+              Completada
+            </button>
             <button class="btn" style="padding:6px 10px;" (click)="moveUp(i)">&uarr;</button>
             <button class="btn" style="padding:6px 10px;" (click)="moveDown(i)">&darr;</button>
           </div>
@@ -54,6 +70,10 @@
     </tbody>
   </table>
 
+  <div *ngIf="!loading && !error && !items.length" class="muted" style="text-align:center; margin-top:16px;">
+    No hay reservas para la fecha seleccionada.
+  </div>
+
   <div style="margin-top:16px" *ngIf="routePoints.length">
     <app-map-route [points]="routePoints"></app-map-route>
   </div>
@@ -61,6 +81,7 @@
   <div style="display:flex; justify-content:center; margin-top: 12px; gap: 8px;" *ngIf="items.length">
     <button class="btn" (click)="startRoute()" [disabled]="savingRoute">Iniciar ruta</button>
     <button class="btn" (click)="saveRoute()" [disabled]="savingRoute">Guardar ruta</button>
-    <span *ngIf="savingRoute">Guardando…</span>
+    <span *ngIf="savingRoute">Guardando ruta…</span>
   </div>
 </div>
+

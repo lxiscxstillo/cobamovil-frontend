@@ -31,3 +31,17 @@
 
 .edit { margin-top: 12px; padding-top: 10px; border-top: 1px dashed rgba(2,132,199,.2); }
 .edit-actions { margin-top: 10px; }
+
+.empty {
+  margin-top: 16px;
+  text-align: center;
+}
+.empty-title {
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+.empty-text {
+  color: var(--text-300);
+  font-size: 14px;
+  margin-bottom: 10px;
+}

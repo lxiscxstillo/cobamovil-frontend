@@ -9,6 +9,15 @@
   animation: fadeIn .2s var(--ease-smooth);
 }
 .sheet-header { margin-bottom: 8px; }
+.sheet .input.invalid {
+  border-color: #f87171;
+  background: #fef2f2;
+}
+.sheet .error {
+  color: #b91c1c;
+  font-size: 12px;
+  margin-top: 4px;
+}
 
 .pets-grid {
   display: grid;

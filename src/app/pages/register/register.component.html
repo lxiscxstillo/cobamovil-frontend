@@ -19,50 +19,63 @@
     </div>
 
     <div class="stack">
-      <label class="label">Usuario</label>
-      <div class="input-wrap" [class.invalid]="username?.invalid && (username?.dirty || username?.touched)">
+      <label class="label" for="username">Usuario</label>
+      <div class="input-wrap" [class.invalid]="username?.invalid && (username?.dirty || username?.touched || submitted)">
         <span class="icon user"></span>
         <input id="username" type="text" class="input" formControlName="username" placeholder="Tu usuario" />
       </div>
-      <div *ngIf="username?.invalid && (username?.dirty || username?.touched)" class="error">
-        <ng-container *ngIf="username?.errors?.['required']">El usuario es requerido.</ng-container>
+      <div *ngIf="username?.invalid && (username?.dirty || username?.touched || submitted)" class="error">
+        <ng-container *ngIf="username?.errors?.['required']">El usuario es obligatorio.</ng-container>
         <ng-container *ngIf="username?.errors?.['minlength']">Mínimo 3 caracteres.</ng-container>
         <ng-container *ngIf="username?.errors?.['pattern']">Solo letras, números, guiones y guiones bajos.</ng-container>
       </div>
     </div>
 
     <div class="stack">
-      <label class="label">Email</label>
-      <div class="input-wrap" [class.invalid]="email?.invalid && (email?.dirty || email?.touched)">
+      <label class="label" for="email">Email</label>
+      <div class="input-wrap" [class.invalid]="email?.invalid && (email?.dirty || email?.touched || submitted)">
         <span class="icon mail"></span>
         <input id="email" type="email" class="input" formControlName="email" placeholder="tu@email.com" />
       </div>
-      <div *ngIf="email?.invalid && (email?.dirty || email?.touched)" class="error">
-        <ng-container *ngIf="email?.errors?.['required']">El email es requerido.</ng-container>
+      <div *ngIf="email?.invalid && (email?.dirty || email?.touched || submitted)" class="error">
+        <ng-container *ngIf="email?.errors?.['required']">El email es obligatorio.</ng-container>
         <ng-container *ngIf="email?.errors?.['email']">Ingresa un email válido.</ng-container>
       </div>
     </div>
 
     <div class="stack">
-      <label class="label">Teléfono (WhatsApp)</label>
-      <div class="input-wrap" [class.invalid]="phone?.invalid && (phone?.dirty || phone?.touched)">
+      <label class="label" for="phone">Teléfono (WhatsApp)</label>
+      <div class="input-wrap" [class.invalid]="phone?.invalid && (phone?.dirty || phone?.touched || submitted)">
         <span class="icon phone"></span>
         <input id="phone" type="tel" class="input" formControlName="phone" placeholder="Ej: +573001112233" />
       </div>
       <div class="hint">Usaremos WhatsApp para confirmar y notificar tus reservas.</div>
-      <div *ngIf="phone?.invalid && (phone?.dirty || phone?.touched)" class="error">Ingresa un teléfono válido (incluye prefijo país, ej: +57)</div>
+      <div *ngIf="phone?.invalid && (phone?.dirty || phone?.touched || submitted)" class="error">
+        Ingresa un teléfono válido (incluye prefijo país, ej: +57).
+      </div>
     </div>
 
     <div class="stack">
-      <label class="label">Contraseña</label>
-      <div class="input-wrap" [class.invalid]="password?.invalid && (password?.dirty || password?.touched)">
+      <label class="label" for="password">Contraseña</label>
+      <div class="input-wrap" [class.invalid]="password?.invalid && (password?.dirty || password?.touched || submitted)">
         <span class="icon lock"></span>
-        <input [type]="showPassword ? 'text' : 'password'" id="password" class="input" formControlName="password" placeholder="Mínimo 6 caracteres" />
-        <button type="button" class="eye" (click)="togglePassword()" aria-label="Mostrar/Ocultar Contraseña"></button>
+        <input
+          [type]="showPassword ? 'text' : 'password'"
+          id="password"
+          class="input"
+          formControlName="password"
+          placeholder="Mínimo 6 caracteres"
+        />
+        <button
+          type="button"
+          class="eye"
+          (click)="togglePassword()"
+          aria-label="Mostrar u ocultar contraseña"
+        ></button>
       </div>
       <div class="strength"><span [style.width.%]="passwordStrength"></span></div>
-      <div *ngIf="password?.invalid && (password?.dirty || password?.touched)" class="error">
-        <ng-container *ngIf="password?.errors?.['required']">La Contraseña es requerida.</ng-container>
+      <div *ngIf="password?.invalid && (password?.dirty || password?.touched || submitted)" class="error">
+        <ng-container *ngIf="password?.errors?.['required']">La contraseña es obligatoria.</ng-container>
         <ng-container *ngIf="password?.errors?.['minlength']">Mínimo 6 caracteres.</ng-container>
       </div>
     </div>
@@ -72,7 +85,11 @@
       <span *ngIf="loading" class="spinner"></span>
     </button>
 
-    <div class="foot-note">Al registrarte aceptas nuestros <a routerLink="/terminos">Términos</a> y <a routerLink="/privacidad">Privacidad</a></div>
+    <div class="foot-note">
+      Al registrarte aceptas nuestros
+      <a routerLink="/terminos">Términos</a> y
+      <a routerLink="/privacidad">Privacidad</a>
+    </div>
 
     <div class="success banner" *ngIf="successMessage">{{ successMessage }}</div>
     <div class="error banner" *ngIf="errorMessage">{{ errorMessage }}</div>

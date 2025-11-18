@@ -22,6 +22,13 @@ export class PetsComponent {
   loading = false;
   error: string | null = null;
 
+  private readonly NAME_MIN = 2;
+  private readonly NAME_MAX = 40;
+  private readonly AGE_MIN = 0;
+  private readonly AGE_MAX = 30;
+  private readonly WEIGHT_MIN = 0;
+  private readonly WEIGHT_MAX = 100;
+
   model: Partial<Pet> = {
     name: '',
     breed: '',
@@ -66,9 +73,10 @@ export class PetsComponent {
 
   add() {
     this.submittedAdd = true;
-    const nameOk = !!(this.model.name && String(this.model.name).trim().length >= 2);
-    const ageOk = this.model.age == null || (this.model.age >= 0 && this.model.age <= 30);
-    const weightOk = this.model.weight == null || (this.model.weight >= 0 && this.model.weight <= 100);
+    const nameLen = this.model.name ? String(this.model.name).trim().length : 0;
+    const nameOk = !!(this.model.name && nameLen >= this.NAME_MIN && nameLen <= this.NAME_MAX);
+    const ageOk = this.model.age == null || (this.model.age >= this.AGE_MIN && this.model.age <= this.AGE_MAX);
+    const weightOk = this.model.weight == null || (this.model.weight >= this.WEIGHT_MIN && this.model.weight <= this.WEIGHT_MAX);
     if (!(nameOk && ageOk && weightOk)) {
       if (!nameOk) this.nameInput?.nativeElement?.focus();
       else if (!ageOk) this.ageInput?.nativeElement?.focus();
@@ -89,6 +97,21 @@ export class PetsComponent {
         this.toast.errorFrom(err, 'Error');
       }
     });
+  }
+
+  get nameInvalid(): boolean {
+    const len = this.model.name ? String(this.model.name).trim().length : 0;
+    return !(this.model.name && len >= this.NAME_MIN && len <= this.NAME_MAX);
+  }
+
+  get ageInvalid(): boolean {
+    if (this.model.age == null || this.model.age === undefined) return false;
+    return !(this.model.age >= this.AGE_MIN && this.model.age <= this.AGE_MAX);
+  }
+
+  get weightInvalid(): boolean {
+    if (this.model.weight == null || this.model.weight === undefined) return false;
+    return !(this.model.weight >= this.WEIGHT_MIN && this.model.weight <= this.WEIGHT_MAX);
   }
 
   openDelete(p: Pet){ this.pendingDelete = p; this.confirmOpen = true; }

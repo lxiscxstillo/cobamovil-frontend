@@ -9,17 +9,20 @@
       </div>
     </header>
 
-    <div class="loading" *ngIf="loading">Cargando…</div>
+    <div class="loading" *ngIf="loading">Cargando tus reservas próximas…</div>
     <div class="error" *ngIf="error">{{ error }}</div>
 
-    <div class="reservas-grid" *ngIf="!loading && !error">
+    <div class="reservas-grid" *ngIf="!loading && !error && items.length">
       <article class="reserva" *ngFor="let b of items">
         <div class="top">
           <div>
             <h3>{{ b.petName }}</h3>
             <p class="muted">{{ b.serviceType }} · {{ b.date }} · {{ b.time }}</p>
           </div>
-          <div class="status" [attr.data-status]="b.status">{{ b.status }}</div>
+          <div class="status" [attr.data-status]="b.status">
+            {{ b.status }}
+            <span *ngIf="b.status === 'PENDING'" class="status-note"> · Pendiente de aprobación</span>
+          </div>
         </div>
 
         <div class="actions">
@@ -47,12 +50,18 @@
               <input class="input" type="time" step="1800" [(ngModel)]="reschedule[b.id].time" />
             </div>
           </div>
+          <div class="error" *ngIf="rescheduleError[b.id]">{{ rescheduleError[b.id] }}</div>
           <div class="edit-actions">
             <button class="btn" style="width:auto;padding:10px 14px" (click)="doReschedule(b)">Guardar cambios</button>
           </div>
         </div>
       </article>
     </div>
+
+    <div class="empty" *ngIf="!loading && !error && !items.length">
+      <p class="empty-title">No tienes reservas próximas</p>
+      <p class="empty-text">Cuando agendes una cita futura, la verás aquí para consultarla, reprogramarla o cancelarla.</p>
+      <a routerLink="/reservar" class="btn">Agendar nueva reserva</a>
+    </div>
   </div>
 </div>
-

@@ -23,10 +23,27 @@
       </div>
       <div class="stack">
         <label class="label">Nombre</label>
-        <input #nameInput class="input" [(ngModel)]="model.name" (ngModelChange)="persistDraft()" placeholder="Nombre de la mascota" />
+        <input
+          #nameInput
+          class="input"
+          [class.invalid]="submittedAdd && nameInvalid"
+          [(ngModel)]="model.name"
+          (ngModelChange)="persistDraft()"
+          placeholder="Nombre de la mascota"
+          maxlength="40"
+        />
+        <div class="error" *ngIf="submittedAdd && nameInvalid">
+          El nombre es obligatorio y debe tener entre 2 y 40 caracteres.
+        </div>
 
         <label class="label">Raza</label>
-        <input class="input" [(ngModel)]="model.breed" (ngModelChange)="persistDraft()" placeholder="Raza" />
+        <input
+          class="input"
+          [(ngModel)]="model.breed"
+          (ngModelChange)="persistDraft()"
+          placeholder="Raza"
+          maxlength="60"
+        />
 
         <label class="label">Sexo</label>
         <select class="input" [(ngModel)]="model.sex" (ngModelChange)="persistDraft()">
@@ -37,31 +54,93 @@
         <div class="grid-2">
           <div>
             <label class="label">Edad (años)</label>
-            <input #ageInput class="input" type="number" [(ngModel)]="model.age" (ngModelChange)="persistDraft()" placeholder="Edad" />
+            <input
+              #ageInput
+              class="input"
+              type="number"
+              min="0"
+              max="30"
+              [class.invalid]="submittedAdd && ageInvalid"
+              [(ngModel)]="model.age"
+              (ngModelChange)="persistDraft()"
+              placeholder="Edad en años (0 a 30)"
+            />
+            <div class="error" *ngIf="submittedAdd && ageInvalid">
+              La edad debe estar entre 0 y 30 años.
+            </div>
           </div>
           <div>
             <label class="label">Peso (kg)</label>
-            <input #weightInput class="input" type="number" step="0.1" [(ngModel)]="model.weight" (ngModelChange)="persistDraft()" placeholder="Peso" />
+            <input
+              #weightInput
+              class="input"
+              type="number"
+              step="0.1"
+              min="0"
+              max="100"
+              [class.invalid]="submittedAdd && weightInvalid"
+              [(ngModel)]="model.weight"
+              (ngModelChange)="persistDraft()"
+              placeholder="Peso aproximado (0 a 100 kg)"
+            />
+            <div class="error" *ngIf="submittedAdd && weightInvalid">
+              El peso debe estar entre 0 y 100 kg.
+            </div>
           </div>
         </div>
 
         <label class="label">Comportamiento</label>
-        <input class="input" [(ngModel)]="model.behavior" (ngModelChange)="persistDraft()" placeholder="Tranquilo, nervioso, juguetón..." />
+        <input
+          class="input"
+          [(ngModel)]="model.behavior"
+          (ngModelChange)="persistDraft()"
+          placeholder="Tranquilo, nervioso, juguetón..."
+          maxlength="120"
+        />
 
         <label class="label">Salud y cuidados especiales</label>
-        <textarea class="input" [(ngModel)]="model.healthNotes" (ngModelChange)="persistDraft()" placeholder="Alergias, condiciones médicas, vacunas, desparasitaciones"></textarea>
+        <textarea
+          class="input"
+          [(ngModel)]="model.healthNotes"
+          (ngModelChange)="persistDraft()"
+          placeholder="Alergias, condiciones médicas, vacunas, desparasitaciones"
+          maxlength="400"
+        ></textarea>
 
         <label class="label">Vacunas</label>
-        <textarea class="input" [(ngModel)]="model.vaccinations" (ngModelChange)="persistDraft()" placeholder="Ej: Rabia (2025-01-10), Polivalente (2024-08-12)"></textarea>
+        <textarea
+          class="input"
+          [(ngModel)]="model.vaccinations"
+          (ngModelChange)="persistDraft()"
+          placeholder="Ej: Rabia (2025-01-10), Polivalente (2024-08-12)"
+          maxlength="300"
+        ></textarea>
 
         <label class="label">Desparasitación</label>
-        <textarea class="input" [(ngModel)]="model.deworming" (ngModelChange)="persistDraft()" placeholder="Ej: Interna (2024-11-01), Externa (2024-09-15)"></textarea>
+        <textarea
+          class="input"
+          [(ngModel)]="model.deworming"
+          (ngModelChange)="persistDraft()"
+          placeholder="Ej: Interna (2024-11-01), Externa (2024-09-15)"
+          maxlength="300"
+        ></textarea>
 
         <label class="label">Condiciones médicas</label>
-        <textarea class="input" [(ngModel)]="model.medicalConditions" (ngModelChange)="persistDraft()" placeholder="Ej: alergia a pulgas, piel sensible"></textarea>
+        <textarea
+          class="input"
+          [(ngModel)]="model.medicalConditions"
+          (ngModelChange)="persistDraft()"
+          placeholder="Ej: alergia a pulgas, piel sensible"
+          maxlength="300"
+        ></textarea>
 
         <label class="label">Último servicio de peluquería</label>
-        <input class="input" type="date" [(ngModel)]="model.lastGroomDate" (ngModelChange)="persistDraft()" />
+        <input
+          class="input"
+          type="date"
+          [(ngModel)]="model.lastGroomDate"
+          (ngModelChange)="persistDraft()"
+        />
 
         <button class="btn" (click)="add()">Añadir mascota</button>
       </div>
@@ -81,10 +160,29 @@
             </div>
             <div class="actions">
               <button class="icon-btn" (click)="toggleExpand(p.id)">
-                <svg [class.rotate]="isExpanded(p.id)" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                <svg
+                  [class.rotate]="isExpanded(p.id)"
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                ><polyline points="6 9 12 15 18 9"></polyline></svg>
               </button>
               <button class="icon-btn danger" (click)="openDelete(p)">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+                <svg
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                ><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
               </button>
             </div>
           </div>
@@ -121,16 +219,19 @@
       <app-empty-state
         title="Sin mascotas"
         description="Agrega tu primera mascota para agilizar tus reservas."
-        [action]="toggleForm.bind(this)"
-        actionLabel="Añadir mascota">
+      >
       </app-empty-state>
     </ng-template>
 
-    <app-modal [open]="confirmOpen" title="Eliminar mascota" [message]="'¿Eliminar ' + (pendingDelete?.name || 'esta mascota') + '?'" confirmLabel="Eliminar" cancelLabel="Cancelar" (confirm)="confirmDelete()" (cancel)="cancelDelete()"></app-modal>
+    <app-modal
+      [open]="confirmOpen"
+      title="Eliminar mascota"
+      [message]="'¿Eliminar ' + (pendingDelete?.name || 'esta mascota') + '?'"
+      confirmLabel="Eliminar"
+      cancelLabel="Cancelar"
+      (confirm)="confirmDelete()"
+      (cancel)="cancelDelete()"
+    ></app-modal>
   </div>
-
-  <!-- Floating action button -->
-  <button class="fab" (click)="toggleForm()" aria-label="Añadir mascota">
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
-  </button>
 </div>
+

@@ -6,11 +6,9 @@
     </div>
 
     <div class="grid">
-      <div class="tile" *ngFor="let img of images">
-        <div class="ph"></div>
+      <figure class="tile" *ngFor="let img of images">
         <img [src]="img.src" [alt]="img.alt" loading="lazy" />
-      </div>
+      </figure>
     </div>
   </div>
 </section>
-

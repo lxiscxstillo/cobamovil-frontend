@@ -4,6 +4,7 @@ import { Router, RouterLink } from '@angular/router';
 import { CommonModule, NgIf } from '@angular/common';
 import { AuthService } from '../../core/services/auth.service';
 import { environment } from '../../../environments/environment';
+import { ToastService } from '../../shared/toast/toast.service';
 
 @Component({
   selector: 'app-login',
@@ -25,7 +26,8 @@ export class LoginComponent {
   constructor(
     private fb: FormBuilder,
     private authService: AuthService,
-    private router: Router
+    private router: Router,
+    private toast: ToastService
   ) {
     this.loginForm = this.fb.group({
       username: ['', [Validators.required]],
@@ -48,14 +50,14 @@ export class LoginComponent {
     this.errorMessage = null;
 
     this.authService.login(this.loginForm.value).subscribe({
-      next: (response) => {
-        // Guardar username junto con el token
+      next: () => {
         localStorage.setItem('username', this.loginForm.value.username);
-
+        this.toast.ok('Bienvenido');
         this.router.navigate(['/dashboard']);
       },
       error: (err) => {
-        this.errorMessage = err.error?.message || 'Login failed. Please try again.';
+        this.errorMessage = err.error?.message || 'Usuario o contraseña incorrectos. Revisa tus datos e inténtalo de nuevo.';
+        this.toast.errorFrom(err, 'No pudimos iniciar sesión. Revisa usuario y contraseña.');
         this.loading = false;
       },
       complete: () => {
@@ -79,3 +81,4 @@ export class LoginComponent {
     }
   }
 }
+

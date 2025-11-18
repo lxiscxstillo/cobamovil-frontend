@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HeaderComponent } from '../../shared/header/header.component';
 import { UserService } from '../../core/services/user.service';
+import { ToastService } from '../../shared/toast/toast.service';
 
 @Component({
   selector: 'app-profile',
@@ -19,7 +20,7 @@ export class ProfileComponent implements OnInit {
   emailTouched = false;
   phoneTouched = false;
 
-  constructor(private userService: UserService) {}
+  constructor(private userService: UserService, private toast: ToastService) {}
 
   ngOnInit(): void {
     const idStr = typeof window !== 'undefined' ? localStorage.getItem('userId') : null;
@@ -40,7 +41,7 @@ export class ProfileComponent implements OnInit {
     const id = Number(idStr);
     // Teléfono es opcional al actualizar. Si viene no vacío, validar formato; si vacío, no enviar para mantener el valor actual.
     if (this.phone && !/^\+?[0-9]{7,20}$/.test(this.phone)) {
-      this.error = 'Ingresa un Teléfono válido (incluye prefijo país, ej: +57)';
+      this.error = 'Ingresa un teléfono válido (incluye prefijo país, ej: +57).';
       this.message = null;
       return;
     }
@@ -48,8 +49,16 @@ export class ProfileComponent implements OnInit {
     if (this.phone) payload.phone = this.phone;
     this.userService.updateUser(id, payload)
       .subscribe({
-        next: () => { this.message = 'Datos actualizados'; this.error = null; },
-        error: err => { this.error = err.error?.message || 'Error al actualizar'; this.message = null; }
+        next: () => {
+          this.message = 'Datos actualizados correctamente.';
+          this.error = null;
+          this.toast.saved('Información de perfil');
+        },
+        error: err => {
+          this.error = err.error?.message || 'Error al actualizar tus datos. Inténtalo de nuevo.';
+          this.message = null;
+          this.toast.errorFrom(err, 'Error al actualizar tu perfil');
+        }
       });
   }
 
@@ -62,3 +71,4 @@ export class ProfileComponent implements OnInit {
     return !!(this.phone && !/^\+?[0-9]{7,20}$/.test(this.phone));
   }
 }
+
