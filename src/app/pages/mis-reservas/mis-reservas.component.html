@@ -27,12 +27,33 @@
 
         <div class="actions">
           <a class="link" [href]="mapsUrl(b)" target="_blank" rel="noopener">Ver en mapa</a>
-          <button class="btn secondary" style="width:auto;padding:8px 12px" (click)="toggleEdit(b.id)">{{ isEditing(b.id) ? 'Cerrar' : 'Reprogramar' }}</button>
-          <button class="btn danger" style="width:auto;padding:8px 12px" (click)="doCancel(b.id)">Cancelar</button>
+          <button
+            class="btn secondary"
+            style="width:auto;padding:8px 12px"
+            *ngIf="canModify(b)"
+            (click)="toggleEdit(b.id)"
+          >
+            {{ isEditing(b.id) ? 'Cerrar' : 'Reprogramar' }}
+          </button>
+          <button
+            class="btn danger"
+            style="width:auto;padding:8px 12px"
+            *ngIf="canModify(b)"
+            (click)="doCancel(b)"
+          >
+            Cancelar
+          </button>
           <button class="icon" (click)="toggleExpand(b.id)" aria-label="Detalles">
             <svg [class.rotate]="isExpanded(b.id)" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
           </button>
         </div>
+
+        <p class="muted" *ngIf="canModify(b)">
+          La cita todavía no ha sido aceptada. Puedes cancelarla o reprogramarla sin problema.
+        </p>
+        <p class="muted" *ngIf="!canModify(b)">
+          Esta cita ya fue aceptada por el peluquero, por lo tanto ya no puede ser modificada.
+        </p>
 
         <div class="details" [class.open]="isExpanded(b.id)">
           <div class="kv"><span>Dirección</span><b>{{ b.address || '—' }}</b></div>

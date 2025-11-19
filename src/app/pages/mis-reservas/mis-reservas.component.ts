@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+﻿import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HeaderComponent } from '../../shared/header/header.component';
 import { BookingService } from '../../core/services/booking.service';
@@ -50,20 +50,33 @@ export class MisReservasComponent {
   }
   isEditing(id: number) { return this.editing.has(id); }
 
+  canModify(b: Booking): boolean {
+    // Solo se pueden cancelar o reprogramar citas que aún están pendientes
+    return b.status === 'PENDING';
+  }
+
   mapsUrl(b: Booking): string {
     if (b.latitude && b.longitude) return `https://maps.google.com/?q=${b.latitude},${b.longitude}`;
     if (b.address) return `https://maps.google.com/?q=${encodeURIComponent(b.address)}`;
     return 'https://maps.google.com/';
   }
 
-  doCancel(id: number) {
-    this.bookingService.cancel(id).subscribe({
+  doCancel(b: Booking) {
+    if (!this.canModify(b)) {
+      this.toast.warn('Esta cita ya fue aceptada por el peluquero, por lo tanto ya no puede ser modificada.');
+      return;
+    }
+    this.bookingService.cancel(b.id).subscribe({
       next: () => { this.toast.canceled('Reserva'); this.load(); },
-      error: e => this.toast.errorFrom(e, 'Error al cancelar')
+      error: e => this.toast.errorFrom(e, 'No pudimos cancelar la reserva. Inténtalo de nuevo.')
     });
   }
 
   doReschedule(b: Booking) {
+    if (!this.canModify(b)) {
+      this.toast.warn('Esta cita ya fue aceptada por el peluquero, por lo tanto ya no puede ser modificada.');
+      return;
+    }
     const r = this.reschedule[b.id] || {};
     this.rescheduleError[b.id] = null;
     if (!r.date || !r.time) {
@@ -81,7 +94,7 @@ export class MisReservasComponent {
     this.bookingService.checkAvailability(r.date, r.time, b.serviceType).subscribe({
       next: (resp) => {
         if (!resp.available) {
-          this.rescheduleError[b.id] = resp.message || 'Ese horario no est� disponible. Elige otro.';
+          this.rescheduleError[b.id] = resp.message || 'Ese horario no est� disponible. Elige otro.';
           this.toast.warn(this.rescheduleError[b.id]!);
           return;
         }
@@ -102,6 +115,7 @@ export class MisReservasComponent {
     });
   }
 }
+
 
 
 
