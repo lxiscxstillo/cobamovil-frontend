@@ -1,5 +1,7 @@
-﻿import { Routes } from '@angular/router';
+import { Routes } from '@angular/router';
 import { authGuard } from './core/guards/auth.guard';
+import { adminGuard } from './core/guards/admin.guard';
+import { staffGuard } from './core/guards/staff.guard';
 
 export const routes: Routes = [
   {
@@ -13,8 +15,8 @@ export const routes: Routes = [
   { path: 'reservar', loadComponent: () => import('./pages/booking/booking.component').then(m => m.BookingComponent), canActivate: [authGuard] },
   { path: 'mis-mascotas', loadComponent: () => import('./pages/pets/pets.component').then(m => m.PetsComponent), canActivate: [authGuard] },
   { path: 'mi-perfil', loadComponent: () => import('./pages/profile/profile.component').then(m => m.ProfileComponent), canActivate: [authGuard] },
-  { path: 'administrador', loadComponent: () => import('./pages/admin/admin-bookings.component').then(m => m.AdminBookingsComponent), canActivate: [authGuard] },
-  { path: 'administrador-peluqueros', loadComponent: () => import('./pages/admin/groomers/admin-groomers.component').then(m => m.AdminGroomersComponent), canActivate: [authGuard] },
+  { path: 'administrador', loadComponent: () => import('./pages/admin/admin-bookings.component').then(m => m.AdminBookingsComponent), canActivate: [authGuard, staffGuard] },
+  { path: 'administrador-peluqueros', loadComponent: () => import('./pages/admin/groomers/admin-groomers.component').then(m => m.AdminGroomersComponent), canActivate: [authGuard, adminGuard] },
   { path: 'mis-reservas', loadComponent: () => import('./pages/mis-reservas/mis-reservas.component').then(m => m.MisReservasComponent), canActivate: [authGuard] },
   {
     path: 'faq',
@@ -48,13 +50,13 @@ export const routes: Routes = [
     path: 'admin',
     loadComponent: () =>
       import('./pages/admin/admin-bookings.component').then(m => m.AdminBookingsComponent),
-    canActivate: [authGuard]
+    canActivate: [authGuard, staffGuard]
   },
   {
     path: 'reports',
     loadComponent: () =>
       import('./pages/reports/reports.component').then(m => m.ReportsComponent),
-    canActivate: [authGuard]
+    canActivate: [authGuard, adminGuard]
   },
   {
     path: 'pets',
@@ -71,7 +73,7 @@ export const routes: Routes = [
     path: 'users',
     loadComponent: () =>
       import('./pages/users/users.component').then(m => m.UsersComponent),
-    canActivate: [authGuard]
+    canActivate: [authGuard, adminGuard]
   },
   // Legacy redirects to Spanish slugs
   { path: 'profile', redirectTo: 'mi-perfil', pathMatch: 'full' },
@@ -83,5 +85,4 @@ export const routes: Routes = [
   { path: '500', loadComponent: () => import('./pages/system/error.component').then(m => m.ErrorComponent) },
   { path: '**', loadComponent: () => import('./pages/system/not-found.component').then(m => m.NotFoundComponent) }
 ];
-
 

@@ -69,15 +69,14 @@ export class AuthService {
     return localStorage.getItem('role');
   }
 
-  /** True when role is ADMIN or GROOMER */
+  /** True only for ADMIN */
   isAdmin(): boolean {
-    const role = this.getRole();
-    return role === 'ADMIN' || role === 'GROOMER';
+    return this.getRole() === 'ADMIN';
   }
 
-  /** True only for ADMIN */
+  /** Alias para ADMIN estricto (retrocompatibilidad) */
   isAdminStrict(): boolean {
-    return this.getRole() === 'ADMIN';
+    return this.isAdmin();
   }
 
   /** True only for GROOMER */
