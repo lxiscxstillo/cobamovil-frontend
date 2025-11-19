@@ -3,10 +3,10 @@
 <section class="hero">
   <div class="hero-inner">
     <div>
-      <h1>Bienvenido a Coba M��vil</h1>
+      <h1>Bienvenido a Coba Móvil</h1>
       <p class="muted" *ngIf="isClient()">Gestiona tus reservas, mascotas y perfil desde un solo lugar.</p>
       <p class="muted" *ngIf="!isClient() && (isAdmin() || isGroomer())">
-        Revisa la agenda del d��a y organiza tus servicios de peluquer��a a domicilio.
+        Revisa la agenda del día y organiza tus servicios de peluquería a domicilio.
       </p>
       <div class="cta" *ngIf="isClient()">
         <a class="btn" routerLink="/reservar">Reservar ahora</a>
@@ -18,7 +18,7 @@
     </div>
 
     <div class="next" *ngIf="isClient() || isGroomer()">
-      <h3>Pr��xima reserva</h3>
+      <h3>Próxima reserva</h3>
 
       <div *ngIf="loadingNext" class="next-card next-card--loading">
         <div class="row skeleton"></div>
@@ -32,13 +32,13 @@
       </div>
 
       <div *ngIf="!loadingNext && !errorNext && !nextBooking" class="next-empty">
-        Aǧn no tienes reservas pr��ximas. ��Quieres agendar una?
+        Aún no tienes reservas próximas. ¿Quieres agendar una?
       </div>
 
       <div class="next-card" *ngIf="!loadingNext && !errorNext && nextBooking as nb">
         <div class="row"><span>Mascota</span><b>{{ nb.petName }}</b></div>
         <div class="row"><span>Servicio</span><b>{{ serviceLabel(nb.serviceType) }}</b></div>
-        <div class="row"><span>Fecha y hora</span><b>{{ nb.date }} �� {{ nb.time }}</b></div>
+        <div class="row"><span>Fecha y hora</span><b>{{ nb.date }} · {{ nb.time }}</b></div>
         <div class="row"><span>Estado</span><b>{{ statusLabel(nb.status) }}</b></div>
       </div>
     </div>
@@ -51,7 +51,7 @@
       <i class="fas fa-paw" aria-hidden="true"></i>
     </div>
     <h4>Mis Mascotas</h4>
-    <p>Registra y edita la informaci��n de tus mascotas.</p>
+    <p>Registra y edita la información de tus mascotas.</p>
   </a>
   <a class="tile" routerLink="/reservar">
     <div class="icon">
@@ -81,7 +81,7 @@
     <div class="icon">
       <i class="fas fa-calendar-check" aria-hidden="true"></i>
     </div>
-    <h4>Agenda del d��a</h4>
+    <h4>Agenda del día</h4>
     <p>Consulta y actualiza las citas programadas.</p>
   </a>
   <a class="tile" routerLink="/administrador-peluqueros" *ngIf="isAdmin()">

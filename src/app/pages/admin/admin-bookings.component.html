@@ -20,7 +20,7 @@
   </div>
 
   <div class="loading" *ngIf="loading">
-    Cargando agenda para la fecha seleccionada…
+    Cargando la agenda para la fecha seleccionada...
   </div>
   <div class="error" *ngIf="error">{{ error }}</div>
 
@@ -81,7 +81,7 @@
   <div style="display:flex; justify-content:center; margin-top: 12px; gap: 8px;" *ngIf="items.length">
     <button class="btn" (click)="startRoute()" [disabled]="savingRoute">Iniciar ruta</button>
     <button class="btn" (click)="saveRoute()" [disabled]="savingRoute">Guardar ruta</button>
-    <span *ngIf="savingRoute">Guardando ruta…</span>
+    <span *ngIf="savingRoute">Guardando ruta...</span>
   </div>
 </div>
 

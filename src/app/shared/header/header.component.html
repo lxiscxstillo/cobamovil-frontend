@@ -2,12 +2,12 @@
   <div class="navbar-left">
     <a routerLink="/" class="brand-link" aria-label="Ir al inicio">
       <img [src]="logoSrc" (error)="onLogoError()" alt="Coba" style="height:28px; width:auto; display:block;" />
-      <span class="app-title">Coba M��vil</span>
+      <span class="app-title">Coba Móvil</span>
     </a>
   </div>
 
   <div class="navbar-right" *ngIf="!isLoggedIn()">
-    <a class="link" routerLink="/iniciar-sesion">Iniciar sesi��n</a>
+    <a class="link" routerLink="/iniciar-sesion">Iniciar sesión</a>
     <a class="link" routerLink="/registrarse">Registrarse</a>
   </div>
 
@@ -15,7 +15,7 @@
     <a class="link" routerLink="/dashboard">Inicio</a>
     <!-- Agenda/Ruta visible para ADMIN y PELUQUERO -->
     <a class="link" routerLink="/administrador" *ngIf="isAdmin() || isGroomer()">Agenda</a>
-    <!-- Gesti��n de peluqueros y reportes solo para ADMIN -->
+    <!-- Gestión de peluqueros y reportes solo para ADMIN -->
     <a class="link" routerLink="/administrador-peluqueros" *ngIf="isAdminStrict()">Peluqueros</a>
     <a class="link" routerLink="/reports" *ngIf="isAdminStrict()">Reportes</a>
     <!-- Flujos propios del cliente final (no ADMIN/PELUQUERO) -->
@@ -26,9 +26,8 @@
       <span class="user-dot"></span>
       {{ username }}
     </button>
-    <button class="logout-btn" (click)="logout()">Cerrar sesi��n</button>
+    <button class="logout-btn" (click)="logout()">Cerrar sesión</button>
   </div>
 </nav>
 
 <app-breadcrumbs></app-breadcrumbs>
-
