@@ -33,7 +33,8 @@ export class MisReservasComponent {
       next: d => {
         const now = new Date();
         const nowIso = now.toISOString().slice(0, 16);
-        this.items = d.filter(b => (b.date + 'T' + b.time) >= nowIso);
+        // Solo mostramos reservas futuras que no estén canceladas
+        this.items = d.filter(b => (b.date + 'T' + b.time) >= nowIso && b.status !== 'REJECTED');
       },
       error: e => this.error = e.error?.message || 'Error cargando reservas',
       complete: () => this.loading = false
