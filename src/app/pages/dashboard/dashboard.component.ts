@@ -26,9 +26,15 @@ export class DashboardComponent {
     this.errorNext = null;
     this.bookingService.myBookings().subscribe({
       next: (list) => {
-        const sorted = [...list].sort((a, b) => (a.date + 'T' + a.time).localeCompare(b.date + 'T' + b.time));
+        // Filtramos reservas futuras que no estén canceladas ni completadas
         const nowIso = new Date().toISOString().slice(0, 16);
-        this.nextBooking = sorted.find(b => (b.date + 'T' + b.time) >= nowIso) || null;
+        const upcoming = list.filter(b =>
+          (b.date + 'T' + b.time) >= nowIso &&
+          b.status !== 'REJECTED' &&
+          b.status !== 'COMPLETED'
+        );
+        const sorted = [...upcoming].sort((a, b) => (a.date + 'T' + a.time).localeCompare(b.date + 'T' + b.time));
+        this.nextBooking = sorted[0] || null;
         this.loadingNext = false;
       },
       error: () => {
@@ -60,4 +66,3 @@ export class DashboardComponent {
     }
   }
 }
-
