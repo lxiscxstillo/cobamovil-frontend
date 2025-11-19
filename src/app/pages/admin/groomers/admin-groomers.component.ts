@@ -19,11 +19,32 @@ export class AdminGroomersComponent {
   constructor(private service: GroomerService) { this.load(); }
 
   load() {
-    this.service.list().subscribe({ next: d => this.items = d, error: e => this.error = e.error?.message || 'Error cargando peluqueros' });
+    this.error = null;
+    this.service.list().subscribe({
+      next: d => this.items = d,
+      error: e => this.error = e.error?.message || 'No pudimos cargar la lista de peluqueros. Inténtalo de nuevo.'
+    });
   }
 
   create() {
-    this.service.create(this.model).subscribe({ next: () => { this.model = { username: '', email: '', password: '', phone: '', avatarUrl: '', bio: '', specialties: '' }; this.load(); }, error: e => this.error = e.error?.message || 'Error creando peluquero' });
+    this.error = null;
+    this.service.create(this.model).subscribe({
+      next: () => {
+        this.model = { username: '', email: '', password: '', phone: '', avatarUrl: '', bio: '', specialties: '' };
+        this.load();
+      },
+      error: e => this.error = e.error?.message || 'No pudimos crear el peluquero. Revisa los datos e inténtalo de nuevo.'
+    });
+  }
+
+  delete(g: GroomerProfile) {
+    if (!confirm(`¿Seguro que quieres eliminar al peluquero "${g.username}"? Esta acción no se puede deshacer.`)) {
+      return;
+    }
+    this.error = null;
+    this.service.delete(g.userId).subscribe({
+      next: () => this.load(),
+      error: e => this.error = e.error?.message || 'No pudimos eliminar el peluquero. Inténtalo de nuevo.'
+    });
   }
 }
-

@@ -17,7 +17,7 @@
       </div>
     </div>
 
-    <div class="next">
+    <div class="next" *ngIf="isClient() || isGroomer()">
       <h3>Pr��xima reserva</h3>
 
       <div *ngIf="loadingNext" class="next-card next-card--loading">
@@ -99,4 +99,3 @@
     <p>Revisa el resumen de reservas y actividad.</p>
   </a>
 </section>
-

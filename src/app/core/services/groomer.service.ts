@@ -21,5 +21,5 @@ export class GroomerService {
   history(userId: number): Observable<any[]> { return this.http.get<any[]>(`${this.baseUrl}/${userId}/history`); }
   create(data: any): Observable<GroomerProfile> { return this.http.post<GroomerProfile>(`${this.baseUrl}/admin`, data); }
   update(userId: number, data: GroomerProfile): Observable<GroomerProfile> { return this.http.put<GroomerProfile>(`${this.baseUrl}/${userId}/admin`, data); }
+  delete(userId: number): Observable<void> { return this.http.delete<void>(`${this.baseUrl}/${userId}/admin`); }
 }
-
