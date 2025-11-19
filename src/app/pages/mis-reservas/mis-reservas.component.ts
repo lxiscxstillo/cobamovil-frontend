@@ -1,4 +1,4 @@
-﻿import { Component } from '@angular/core';
+import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HeaderComponent } from '../../shared/header/header.component';
 import { BookingService } from '../../core/services/booking.service';
@@ -81,7 +81,7 @@ export class MisReservasComponent {
     this.bookingService.checkAvailability(r.date, r.time, b.serviceType).subscribe({
       next: (resp) => {
         if (!resp.available) {
-          this.rescheduleError[b.id] = resp.message || 'Ese horario no está disponible. Elige otro.';
+          this.rescheduleError[b.id] = resp.message || 'Ese horario no est� disponible. Elige otro.';
           this.toast.warn(this.rescheduleError[b.id]!);
           return;
         }
@@ -102,5 +102,6 @@ export class MisReservasComponent {
     });
   }
 }
+
 
 
