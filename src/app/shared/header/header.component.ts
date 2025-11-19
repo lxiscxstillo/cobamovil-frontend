@@ -59,4 +59,8 @@ export class HeaderComponent {
   isGroomer(): boolean {
     return this.authService.isGroomer();
   }
+
+  isClient(): boolean {
+    return this.authService.isClient();
+  }
 }

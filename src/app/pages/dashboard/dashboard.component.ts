@@ -4,6 +4,7 @@ import { RouterLink } from '@angular/router';
 import { HeaderComponent } from '../../shared/header/header.component';
 import { BookingService } from '../../core/services/booking.service';
 import { Booking, ServiceType, BookingStatus } from '../../core/models/booking.model';
+import { AuthService } from '../../core/services/auth.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -17,7 +18,7 @@ export class DashboardComponent {
   loadingNext = false;
   errorNext: string | null = null;
 
-  constructor(private bookingService: BookingService) {
+  constructor(private bookingService: BookingService, private auth: AuthService) {
     this.loadNext();
   }
 
@@ -64,5 +65,17 @@ export class DashboardComponent {
       case 'REJECTED': return 'Rechazada';
       default: return String(status);
     }
+  }
+
+  isClient(): boolean {
+    return this.auth.isClient();
+  }
+
+  isAdmin(): boolean {
+    return this.auth.isAdmin();
+  }
+
+  isGroomer(): boolean {
+    return this.auth.isGroomer();
   }
 }

@@ -84,4 +84,10 @@ export class AuthService {
   isGroomer(): boolean {
     return this.getRole() === 'GROOMER';
   }
+
+  /** True when the user is a cliente final (sin rol especial) */
+  isClient(): boolean {
+    const role = this.getRole();
+    return !role || role === 'USER';
+  }
 }

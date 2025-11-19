@@ -16,6 +16,7 @@ import { MapPickerComponent } from '../../shared/map-picker/map-picker.component
 import { MapsLoaderService } from '../../core/services/maps-loader.service';
 import { GroomerService, GroomerProfile } from '../../core/services/groomer.service';
 import { ToastService } from '../../shared/toast/toast.service';
+import { Router } from '@angular/router';
 
 declare const google: any;
 
@@ -70,7 +71,8 @@ export class BookingComponent implements AfterViewInit {
     private http: HttpClient,
     private mapsLoader: MapsLoaderService,
     private groomerService: GroomerService,
-    private toast: ToastService
+    private toast: ToastService,
+    private router: Router
   ) {
     this.form = this.fb.group({
       petId: [null, [Validators.required]],
@@ -215,6 +217,12 @@ export class BookingComponent implements AfterViewInit {
         this.submitting = false;
       }
     });
+    // FIX: si la reserva se crea correctamente, redirigimos al dashboard
+    setTimeout(() => {
+      if (this.successMessage) {
+        this.router.navigate(['/dashboard']);
+      }
+    }, 0);
   }
 
   private toIsoDate(d: unknown): string {

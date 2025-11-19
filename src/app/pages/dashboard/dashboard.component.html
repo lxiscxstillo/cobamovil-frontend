@@ -3,16 +3,22 @@
 <section class="hero">
   <div class="hero-inner">
     <div>
-      <h1>Bienvenido a Coba Móvil</h1>
-      <p class="muted">Gestiona tus reservas, mascotas y perfil desde un solo lugar.</p>
-      <div class="cta">
+      <h1>Bienvenido a Coba M��vil</h1>
+      <p class="muted" *ngIf="isClient()">Gestiona tus reservas, mascotas y perfil desde un solo lugar.</p>
+      <p class="muted" *ngIf="!isClient() && (isAdmin() || isGroomer())">
+        Revisa la agenda del d��a y organiza tus servicios de peluquer��a a domicilio.
+      </p>
+      <div class="cta" *ngIf="isClient()">
         <a class="btn" routerLink="/reservar">Reservar ahora</a>
         <a class="btn secondary" routerLink="/mis-reservas">Ver mis reservas</a>
+      </div>
+      <div class="cta" *ngIf="!isClient() && (isAdmin() || isGroomer())">
+        <a class="btn" routerLink="/administrador">Ver agenda de hoy</a>
       </div>
     </div>
 
     <div class="next">
-      <h3>Próxima reserva</h3>
+      <h3>Pr��xima reserva</h3>
 
       <div *ngIf="loadingNext" class="next-card next-card--loading">
         <div class="row skeleton"></div>
@@ -26,26 +32,26 @@
       </div>
 
       <div *ngIf="!loadingNext && !errorNext && !nextBooking" class="next-empty">
-        Aún no tienes reservas próximas. ¿Quieres agendar una?
+        Aǧn no tienes reservas pr��ximas. ��Quieres agendar una?
       </div>
 
       <div class="next-card" *ngIf="!loadingNext && !errorNext && nextBooking as nb">
         <div class="row"><span>Mascota</span><b>{{ nb.petName }}</b></div>
         <div class="row"><span>Servicio</span><b>{{ serviceLabel(nb.serviceType) }}</b></div>
-        <div class="row"><span>Fecha y hora</span><b>{{ nb.date }} · {{ nb.time }}</b></div>
+        <div class="row"><span>Fecha y hora</span><b>{{ nb.date }} �� {{ nb.time }}</b></div>
         <div class="row"><span>Estado</span><b>{{ statusLabel(nb.status) }}</b></div>
       </div>
     </div>
   </div>
 </section>
 
-<section class="tiles">
+<section class="tiles" *ngIf="isClient()">
   <a class="tile" routerLink="/mis-mascotas">
     <div class="icon">
       <i class="fas fa-paw" aria-hidden="true"></i>
     </div>
     <h4>Mis Mascotas</h4>
-    <p>Registra y edita la información de tus mascotas.</p>
+    <p>Registra y edita la informaci��n de tus mascotas.</p>
   </a>
   <a class="tile" routerLink="/reservar">
     <div class="icon">
@@ -67,6 +73,30 @@
     </div>
     <h4>Mi Perfil</h4>
     <p>Actualiza tus datos personales y de contacto.</p>
+  </a>
+</section>
+
+<section class="tiles" *ngIf="!isClient() && (isAdmin() || isGroomer())">
+  <a class="tile" routerLink="/administrador">
+    <div class="icon">
+      <i class="fas fa-calendar-check" aria-hidden="true"></i>
+    </div>
+    <h4>Agenda del d��a</h4>
+    <p>Consulta y actualiza las citas programadas.</p>
+  </a>
+  <a class="tile" routerLink="/administrador-peluqueros" *ngIf="isAdmin()">
+    <div class="icon">
+      <i class="fas fa-user-friends" aria-hidden="true"></i>
+    </div>
+    <h4>Gestionar peluqueros</h4>
+    <p>Crea y administra los perfiles de peluquero.</p>
+  </a>
+  <a class="tile" routerLink="/reports" *ngIf="isAdmin()">
+    <div class="icon">
+      <i class="fas fa-chart-line" aria-hidden="true"></i>
+    </div>
+    <h4>Reportes</h4>
+    <p>Revisa el resumen de reservas y actividad.</p>
   </a>
 </section>
 
