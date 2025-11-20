@@ -1,74 +1,113 @@
-<div class="relative flex min-h-screen flex-col bg-[#fcfbf8] overflow-x-hidden" style='font-family: "Plus Jakarta Sans", "Noto Sans", sans-serif;'>
-  <div class="layout-container flex h-full grow flex-col">
-    <header class="flex items-center justify-between border-b border-b-[#f3f0e7] px-10 py-3">
-      <div class="flex items-center gap-4 text-[#1c170d]">
-        <div class="size-4">
-          <img src="/logo.png" onerror="this.onerror=null;this.src='/logo-fallback.svg'" alt="Coba" style="height:24px; width:auto; display:block;" />
+<div class="landing-root">
+  <div class="layout-container">
+    <!-- Header responsive específico de la landing -->
+    <header class="landing-header">
+      <div class="landing-header-inner">
+        <div class="landing-brand">
+          <a routerLink="/" class="landing-brand-link" aria-label="Ir al inicio">
+            <img
+              src="/logo.png"
+              onerror="this.onerror=null;this.src='/logo-fallback.svg'"
+              alt="Coba"
+              class="landing-logo"
+            />
+            <span class="landing-title">Coba Móvil</span>
+          </a>
         </div>
-        <h2 class="text-[#1c170d] text-lg font-bold leading-tight tracking-[-0.015em]">Coba Móvil</h2>
-      </div>
-      <div class="flex flex-1 justify-end gap-8">
-        <nav class="flex items-center gap-9" aria-label="Navegación principal">
-          <a class="text-[#1c170d] text-sm font-medium leading-normal" href="#inicio">Inicio</a>
-          <a class="text-[#1c170d] text-sm font-medium leading-normal" href="#beneficios">Beneficios</a>
-          <a class="text-[#1c170d] text-sm font-medium leading-normal" href="#servicios">Servicios</a>
-          <a class="text-[#1c170d] text-sm font-medium leading-normal" href="#galeria">Galería</a>
-          <a class="text-[#1c170d] text-sm font-medium leading-normal" href="#testimonios">Testimonios</a>
-          <a class="text-[#1c170d] text-sm font-medium leading-normal" routerLink="/iniciar-sesion">Iniciar sesión</a>
+
+        <!-- Navegación escritorio/tablet -->
+        <nav class="landing-nav" aria-label="Navegación principal">
+          <a href="#inicio">Inicio</a>
+          <a href="#beneficios">Beneficios</a>
+          <a href="#servicios">Servicios</a>
+          <a href="#galeria">Galería</a>
+          <a href="#testimonios">Testimonios</a>
+          <a routerLink="/iniciar-sesion">Iniciar sesión</a>
         </nav>
-        <button class="flex min-w-[84px] items-center justify-center rounded-lg h-10 px-4 bg-[#f4c653] text-[#1c170d] text-sm font-bold" [routerLink]="['/reservar']">
-          <span class="truncate">Reservar cita</span>
+
+        <div class="landing-cta-desktop">
+          <button class="btn-landing-primary" [routerLink]="['/reservar']">
+            <span class="truncate">Reservar cita</span>
+          </button>
+        </div>
+
+        <!-- Botón hamburguesa solo en móviles -->
+        <button
+          type="button"
+          class="landing-burger"
+          (click)="isMenuOpen = !isMenuOpen"
+          aria-label="Abrir o cerrar menú de navegación"
+        >
+          <span></span>
+          <span></span>
+          <span></span>
         </button>
       </div>
+
+      <!-- Menú móvil -->
+      <!-- Ajuste responsivo: en móviles el menú se apila vertical y ocupa todo el ancho -->
+      <nav class="landing-nav-mobile" *ngIf="isMenuOpen">
+        <a href="#inicio" (click)="isMenuOpen = false">Inicio</a>
+        <a href="#beneficios" (click)="isMenuOpen = false">Beneficios</a>
+        <a href="#servicios" (click)="isMenuOpen = false">Servicios</a>
+        <a href="#galeria" (click)="isMenuOpen = false">Galería</a>
+        <a href="#testimonios" (click)="isMenuOpen = false">Testimonios</a>
+        <a routerLink="/iniciar-sesion" (click)="isMenuOpen = false">Iniciar sesión</a>
+        <button
+          class="btn-landing-primary full-width"
+          [routerLink]="['/reservar']"
+          (click)="isMenuOpen = false"
+        >
+          Reservar cita
+        </button>
+      </nav>
     </header>
 
-    <!-- Hero -->
-    <section id="inicio" class="px-6 md:px-40 py-5">
-      <div
-        class="flex min-h-[480px] flex-col gap-6 bg-cover bg-center bg-no-repeat rounded-lg items-start justify-end px-4 pb-10 md:px-10"
-        style="background-image: linear-gradient(rgba(0, 0, 0, 0.1) 0%, rgba(0, 0, 0, 0.4) 100%), url('/hero-perro.png');"
-      >
-        <div class="flex flex-col gap-2 text-left">
-          <h1 class="text-white text-4xl md:text-5xl font-black leading-tight tracking-[-0.033em]">
-            Peluquería canina a domicilio
-          </h1>
-          <h2 class="text-white text-sm md:text-base">
-            Comodidad, confianza y amor para tu mascota sin salir de casa.
-          </h2>
+    <!-- Hero principal -->
+    <section id="inicio" class="landing-hero">
+      <div class="landing-hero-card">
+        <div class="landing-hero-text">
+          <h1>Peluquería canina a domicilio</h1>
+          <p>Comodidad, confianza y amor para tu mascota sin salir de casa.</p>
         </div>
-        <button class="flex min-w-[120px] items-center justify-center rounded-lg h-12 px-5 bg-[#f4c653] text-[#1c170d] text-base font-bold" [routerLink]="['/reservar']">
-          <span class="truncate">Reservar cita</span>
-        </button>
+        <div class="landing-hero-actions">
+          <button class="btn-landing-primary" [routerLink]="['/reservar']">
+            Reservar cita
+          </button>
+          <button
+            class="btn-landing-secondary"
+            type="button"
+            (click)="document.getElementById('beneficios')?.scrollIntoView({ behavior: 'smooth' })"
+          >
+            Ver cómo funciona
+          </button>
+        </div>
       </div>
     </section>
 
-    <!-- Sections -->
+    <!-- Secciones de beneficios, servicios, galería y testimonios -->
     <app-benefits></app-benefits>
     <app-services></app-services>
     <app-gallery></app-gallery>
     <app-testimonials></app-testimonials>
 
-    <!-- CTA -->
-    <section id="cta" class="px-4 py-10">
-      <div class="flex flex-col gap-2 text-center">
-        <h1 class="text-[#1c170d] text-3xl md:text-4xl font-bold">
-          ¿Listo para consentir a tu mascota? Agenda tu cita hoy mismo.
-        </h1>
-      </div>
-      <div class="flex justify-center mt-4">
-        <button class="flex min-w-[120px] items-center justify-center rounded-lg h-12 px-5 bg-[#f4c653] text-[#1c170d] text-base font-bold" [routerLink]="['/reservar']">
-          <span class="truncate">Reservar ahora</span>
+    <!-- CTA inferior -->
+    <section id="cta" class="landing-cta">
+      <div class="landing-cta-inner">
+        <h2>¿Listo para consentir a tu mascota? Agenda tu cita hoy mismo.</h2>
+        <button class="btn-landing-primary" [routerLink]="['/reservar']">
+          Reservar ahora
         </button>
       </div>
     </section>
 
-    <footer class="flex flex-col gap-6 px-5 py-10 text-center">
-      <div class="flex flex-wrap items-center justify-center gap-6">
-        <a class="text-[#9b844b] text-base" href="#">Contacto</a>
-        <a class="text-[#9b844b] text-base" routerLink="/faq">Preguntas frecuentes</a>
-        <a class="text-[#9b844b] text-base" href="#">Política de privacidad</a>
+    <footer class="landing-footer">
+      <div class="landing-footer-links">
+        <a href="#">Contacto</a>
+        <a routerLink="/faq">Preguntas frecuentes</a>
+        <a href="#">Política de privacidad</a>
       </div>
-      <p class="text-[#9b844b] text-base">© 2025 Coba Móvil - Todos los derechos reservados</p>
+      <p>© 2025 Coba Móvil - Todos los derechos reservados</p>
     </footer>
   </div>
 </div>

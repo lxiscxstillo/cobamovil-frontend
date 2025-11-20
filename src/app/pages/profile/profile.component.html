@@ -1,7 +1,8 @@
 <app-header></app-header>
 
 <div class="page-center">
-  <div class="card stack-lg" style="max-width:560px;">
+  <!-- Ajuste responsivo: card centrada con ancho máximo cómodo -->
+  <div class="card stack-lg profile-card">
     <header>
       <div>
         <h2>Mi perfil</h2>
@@ -32,6 +33,4 @@
     <div class="success" *ngIf="message">{{ message }}</div>
     <div class="error" *ngIf="error">{{ error }}</div>
   </div>
-  
 </div>
-

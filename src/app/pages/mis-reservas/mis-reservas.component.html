@@ -1,7 +1,7 @@
 <app-header></app-header>
 
 <div class="page-center">
-  <div class="card stack-lg" style="max-width:980px;">
+  <div class="card stack-lg mis-reservas-card">
     <header>
       <div>
         <h2>Mis reservas</h2>
@@ -21,7 +21,7 @@
           </div>
           <div class="status" [attr.data-status]="b.status">
             {{ b.status }}
-            <span *ngIf="b.status === 'PENDING'" class="status-note"> · Pendiente de aprobación</span>
+            <span *ngIf="b.status === 'PENDING'" class="status-note">· Pendiente de aprobación</span>
           </div>
         </div>
 
@@ -43,7 +43,7 @@
           >
             Cancelar
           </button>
-          <button class="icon" (click)="toggleExpand(b.id)" aria-label="Detalles">
+          <button class="icon" (click)="toggleExpand(b.id)" aria-label="Detalles de la reserva">
             <svg [class.rotate]="isExpanded(b.id)" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
           </button>
         </div>
@@ -52,11 +52,11 @@
           La cita todavía no ha sido aceptada. Puedes cancelarla o reprogramarla sin problema.
         </p>
         <p class="muted" *ngIf="!canModify(b)">
-          Esta cita ya fue aceptada por el peluquero, por lo tanto ya no puede ser modificada.
+          Esta cita ya fue aceptada por el peluquero y ya no puede modificarse.
         </p>
 
         <div class="details" [class.open]="isExpanded(b.id)">
-          <div class="kv"><span>Dirección</span><b>{{ b.address || '—' }}</b></div>
+          <div class="kv"><span>Dirección</span><b>{{ b.address || 'Sin dirección registrada' }}</b></div>
           <div class="kv" *ngIf="b.notes"><span>Notas</span><b>{{ b.notes }}</b></div>
         </div>
 

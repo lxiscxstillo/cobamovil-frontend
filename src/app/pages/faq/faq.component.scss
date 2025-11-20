@@ -2,3 +2,39 @@
   display: block;
 }
 
+.faq-card {
+  max-width: 960px;
+  width: 100%;
+  margin-inline: auto;
+}
+
+.faq-item {
+  border: 1px solid #e8e1cf;
+  border-radius: 10px;
+  padding: 12px;
+  margin-bottom: 8px;
+  background: #fcfbf8;
+}
+
+.faq-question {
+  margin: 0 0 6px;
+  font-weight: 600;
+}
+
+.faq-answer {
+  margin: 0;
+  color: var(--text-300);
+  font-size: 14px;
+}
+
+.faq-footnote {
+  margin-top: 12px;
+  font-size: 14px;
+  color: var(--text-300);
+}
+
+@media (max-width: 576px) {
+  .faq-card {
+    padding-inline: 16px;
+  }
+}

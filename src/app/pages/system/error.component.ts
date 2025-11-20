@@ -10,7 +10,7 @@ import { RouterLink } from '@angular/router';
   <div class="page-center">
     <div class="card stack-lg" style="max-width:560px; text-align:center;">
       <h2>Ocurrió un error</h2>
-      <p class="muted">Intenta nuevamente más tarde.</p>
+      <p class="muted">Ha ocurrido un error inesperado. Intenta nuevamente más tarde.</p>
       <a class="btn" style="width:auto" routerLink="/">Volver al inicio</a>
     </div>
   </div>

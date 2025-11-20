@@ -82,3 +82,30 @@
 .fab:hover { transform: translateY(-2px) scale(1.02); box-shadow: 0 16px 30px rgba(2,132,199,.35); }
 
 @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+
+/* Responsive: tarjetas a ancho completo en móviles */
+@media (max-width: 576px) {
+  .sheet {
+    padding: 12px;
+  }
+
+  .pets-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .pet-header {
+    grid-template-columns: auto 1fr;
+    grid-auto-flow: row;
+    row-gap: 8px;
+  }
+
+  .actions {
+    justify-content: flex-start;
+    flex-wrap: wrap;
+  }
+
+  .fab {
+    right: 16px;
+    bottom: 16px;
+  }
+}

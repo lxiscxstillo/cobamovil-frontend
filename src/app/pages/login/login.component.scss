@@ -63,3 +63,44 @@
 .foot-note a:hover { text-decoration: underline }
 
 .error.banner { margin: 8px 28px 18px; padding: 10px 12px; background:#fef2f2; border:1px solid #fecaca; color:#ef4444; border-radius: 12px; font-size: 13px }
+
+/* Responsive */
+
+@media (max-width: 576px) {
+  .auth-wrapper {
+    align-items: flex-start;
+    padding: 16px 12px 32px;
+  }
+
+  .auth-card {
+    max-width: 100%;
+    border-radius: 20px;
+  }
+
+  .auth-header {
+    padding: 28px 20px;
+  }
+
+  .tabs {
+    padding-inline: 20px;
+  }
+
+  .stack {
+    padding-inline: 20px;
+  }
+
+  .cta {
+    width: calc(100% - 40px);
+    margin-inline: 20px;
+  }
+}
+
+@media (min-width: 577px) and (max-width: 768px) {
+  .auth-wrapper {
+    padding: 24px;
+  }
+
+  .auth-card {
+    max-width: 480px;
+  }
+}

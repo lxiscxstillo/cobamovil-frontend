@@ -1,2 +1,28 @@
-/* Uses global tokens */
+/* Admin Groomers: layout responsive usando estilos globales */
+
+.admin-groomers-card {
+  max-width: 820px;
+  width: 100%;
+  margin-inline: auto;
+}
+
+.admin-groomers-form {
+  display: grid;
+  gap: 10px;
+}
+
+.admin-groomers-table-wrapper {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.admin-groomers-table {
+  min-width: 560px;
+}
+
+@media (max-width: 576px) {
+  .admin-groomers-card {
+    padding-inline: 16px;
+  }
+}
 

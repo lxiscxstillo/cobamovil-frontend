@@ -1,34 +1,93 @@
 <nav class="navbar glass-nav">
-  <div class="navbar-left">
-    <a routerLink="/" class="brand-link" aria-label="Ir al inicio">
-      <img [src]="logoSrc" (error)="onLogoError()" alt="Coba" style="height:28px; width:auto; display:block;" />
-      <span class="app-title">Coba Móvil</span>
-    </a>
-  </div>
+  <div class="navbar-inner">
+    <div class="navbar-left">
+      <a routerLink="/" class="brand-link" aria-label="Ir al inicio">
+        <img [src]="logoSrc" (error)="onLogoError()" alt="Coba" class="brand-logo" />
+        <span class="app-title">Coba Móvil</span>
+      </a>
+    </div>
 
-  <div class="navbar-right" *ngIf="!isLoggedIn()">
-    <a class="link" routerLink="/iniciar-sesion">Iniciar sesión</a>
-    <a class="link" routerLink="/registrarse">Registrarse</a>
-  </div>
-
-  <div class="navbar-right" *ngIf="isLoggedIn()">
-    <a class="link" routerLink="/dashboard">Inicio</a>
-    <!-- Agenda/Ruta visible para ADMIN y PELUQUERO -->
-    <a class="link" routerLink="/administrador" *ngIf="isAdmin() || isGroomer()">Agenda</a>
-    <!-- Gestión de peluqueros y reportes solo para ADMIN -->
-    <a class="link" routerLink="/administrador-peluqueros" *ngIf="isAdminStrict()">Peluqueros</a>
-    <a class="link" routerLink="/reports" *ngIf="isAdminStrict()">Reportes</a>
-    <!-- Flujos propios del cliente final (no ADMIN/PELUQUERO) -->
-    <a class="link" routerLink="/reservar" *ngIf="isClient()">Reservar cita</a>
-    <a class="link" routerLink="/mis-reservas" *ngIf="isClient()">Mis reservas</a>
-    <a class="link" routerLink="/mis-mascotas" *ngIf="isClient()">Mis mascotas</a>
-    <button class="user-info" type="button" routerLink="/mi-perfil">
-      <span class="user-dot"></span>
-      {{ username }}
+    <!-- Toggle hamburguesa solo visible en pantallas pequeñas -->
+    <button
+      type="button"
+      class="navbar-toggle"
+      (click)="toggleMenu()"
+      aria-label="Abrir o cerrar menú de navegación"
+    >
+      <span class="bar"></span>
+      <span class="bar"></span>
+      <span class="bar"></span>
     </button>
-    <button class="logout-btn" (click)="logout()">Cerrar sesión</button>
+
+    <!-- Navegación principal (desktop / tablet) -->
+    <div class="navbar-right navbar-links" *ngIf="!isLoggedIn()">
+      <a class="link" routerLink="/iniciar-sesion">Iniciar sesión</a>
+      <a class="link" routerLink="/registrarse">Registrarse</a>
+    </div>
+
+    <div class="navbar-right navbar-links" *ngIf="isLoggedIn()">
+      <a class="link" routerLink="/dashboard">Inicio</a>
+      <!-- Agenda/Ruta visible para ADMIN y PELUQUERO -->
+      <a class="link" routerLink="/administrador" *ngIf="isAdmin() || isGroomer()">Agenda</a>
+      <!-- Gestión de peluqueros y reportes solo para ADMIN -->
+      <a class="link" routerLink="/administrador-peluqueros" *ngIf="isAdminStrict()">Peluqueros</a>
+      <a class="link" routerLink="/reports" *ngIf="isAdminStrict()">Reportes</a>
+      <!-- Flujos propios del cliente final (no ADMIN/PELUQUERO) -->
+      <a class="link" routerLink="/reservar" *ngIf="isClient()">Reservar cita</a>
+      <a class="link" routerLink="/mis-reservas" *ngIf="isClient()">Mis reservas</a>
+      <a class="link" routerLink="/mis-mascotas" *ngIf="isClient()">Mis mascotas</a>
+      <button class="user-info" type="button" routerLink="/mi-perfil">
+        <span class="user-dot"></span>
+        {{ username }}
+      </button>
+      <button class="logout-btn" (click)="logout()">Cerrar sesión</button>
+    </div>
+  </div>
+
+  <!-- Menú desplegable para móviles -->
+  <!-- Ajuste responsivo: en móviles el menú se apila y ocupa todo el ancho -->
+  <div class="navbar-menu-mobile" *ngIf="isMenuOpen">
+    <ng-container *ngIf="!isLoggedIn(); else loggedMenu">
+      <a class="link" routerLink="/iniciar-sesion" (click)="toggleMenu()">Iniciar sesión</a>
+      <a class="link" routerLink="/registrarse" (click)="toggleMenu()">Registrarse</a>
+    </ng-container>
+    <ng-template #loggedMenu>
+      <a class="link" routerLink="/dashboard" (click)="toggleMenu()">Inicio</a>
+      <a
+        class="link"
+        routerLink="/administrador"
+        *ngIf="isAdmin() || isGroomer()"
+        (click)="toggleMenu()"
+      >
+        Agenda
+      </a>
+      <a
+        class="link"
+        routerLink="/administrador-peluqueros"
+        *ngIf="isAdminStrict()"
+        (click)="toggleMenu()"
+      >
+        Peluqueros
+      </a>
+      <a class="link" routerLink="/reports" *ngIf="isAdminStrict()" (click)="toggleMenu()">
+        Reportes
+      </a>
+      <a class="link" routerLink="/reservar" *ngIf="isClient()" (click)="toggleMenu()">
+        Reservar cita
+      </a>
+      <a class="link" routerLink="/mis-reservas" *ngIf="isClient()" (click)="toggleMenu()">
+        Mis reservas
+      </a>
+      <a class="link" routerLink="/mis-mascotas" *ngIf="isClient()" (click)="toggleMenu()">
+        Mis mascotas
+      </a>
+      <button class="user-info" type="button" routerLink="/mi-perfil" (click)="toggleMenu()">
+        <span class="user-dot"></span>
+        {{ username }}
+      </button>
+      <button class="logout-btn" (click)="logout(); toggleMenu()">Cerrar sesión</button>
+    </ng-template>
   </div>
 </nav>
 
 <app-breadcrumbs></app-breadcrumbs>
-

@@ -24,6 +24,9 @@ export class HeaderComponent {
     private router: Router
   ) {}
 
+  // Estado UI: menú responsive en móviles
+  isMenuOpen = false;
+
   ngOnInit() {
     if (typeof window !== 'undefined') {
       this.username = localStorage.getItem('username');
@@ -62,5 +65,10 @@ export class HeaderComponent {
 
   isClient(): boolean {
     return this.authService.isClient();
+  }
+
+  // Toggle del menú para vista móvil
+  toggleMenu() {
+    this.isMenuOpen = !this.isMenuOpen;
   }
 }

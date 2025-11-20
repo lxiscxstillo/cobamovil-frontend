@@ -197,11 +197,12 @@
     <h3>Mapa de ruta</h3>
     <p class="muted">
       Visualiza el orden de las visitas para optimizar tus traslados.
+      La ruta solo incluye reservas <strong>aprobadas</strong> con ubicación registrada.
     </p>
     <app-map-route [points]="routePoints"></app-map-route>
   </section>
 
-  <!-- Acciones para iniciar y guardar la ruta del día -->
+  <!-- Acciones para iniciar, guardar y abrir la ruta del día -->
   <section class="agenda-footer-actions" *ngIf="items.length">
     <div class="agenda-footer-buttons">
       <button class="btn" (click)="startRoute()" [disabled]="savingRoute">
@@ -210,7 +211,17 @@
       <button class="btn btn-secondary" (click)="saveRoute()" [disabled]="savingRoute">
         Guardar ruta
       </button>
+      <button
+        class="btn btn-ghost"
+        (click)="openInGoogleMaps()"
+        [disabled]="!routePoints.length"
+      >
+        Abrir en Google Maps
+      </button>
     </div>
     <span class="muted" *ngIf="savingRoute">Guardando ruta…</span>
+    <span class="muted" *ngIf="routePoints.length && !savingRoute">
+      La ruta y Google Maps usan únicamente reservas aprobadas con ubicación.
+    </span>
   </section>
 </div>

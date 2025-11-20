@@ -57,7 +57,8 @@ export class AdminBookingsComponent {
 
   get routePoints() {
     return this.items
-      .filter(b => (b as any).latitude != null && (b as any).longitude != null)
+      // Solo incluimos reservas aprobadas con coordenadas para la ruta visual / Google Maps
+      .filter(b => (b as any).status === 'APPROVED' && (b as any).latitude != null && (b as any).longitude != null)
       .map(b => ({ lat: (b as any).latitude as number, lng: (b as any).longitude as number, label: `${b.time} - ${b.petName}` }));
   }
 
@@ -124,6 +125,46 @@ export class AdminBookingsComponent {
 
   loadGroomers() {
     this.groomerService.list().subscribe({ next: list => this.groomers = list, error: () => {} });
+  }
+
+  // Abre la ruta del día en Google Maps usando el orden actual de puntos
+  openInGoogleMaps() {
+    const points = this.routePoints;
+    if (!points.length) {
+      this.toast.error('No hay reservas con ubicación para abrir la ruta en Google Maps.');
+      return;
+    }
+
+    // Navegación disponible solo en entorno de navegador
+    if (typeof window === 'undefined') {
+      this.toast.error('Esta acción solo está disponible desde el navegador.');
+      return;
+    }
+
+    // Un solo punto: abre la búsqueda del lugar en Google Maps
+    if (points.length === 1) {
+      const single = `${points[0].lat},${points[0].lng}`;
+      const urlSingle = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(single)}`;
+      window.open(urlSingle, '_blank');
+      return;
+    }
+
+    const coords = points.map(p => `${p.lat},${p.lng}`);
+    const origin = coords[0];
+    const destination = coords[coords.length - 1];
+    const waypointsRaw = coords.slice(1, -1);
+
+    let url = `https://www.google.com/maps/dir/?api=1&travelmode=driving&origin=${encodeURIComponent(origin)}&destination=${encodeURIComponent(destination)}`;
+    if (waypointsRaw.length) {
+      const waypoints = waypointsRaw.join('|');
+      url += `&waypoints=${encodeURIComponent(waypoints)}`;
+    }
+
+    try {
+      window.open(url, '_blank');
+    } catch {
+      this.toast.error('No se pudo abrir Google Maps. Inténtalo de nuevo desde un navegador compatible.');
+    }
   }
 
   private applyEtas(idsInOrder: number[], etasMinutes?: number[]) {

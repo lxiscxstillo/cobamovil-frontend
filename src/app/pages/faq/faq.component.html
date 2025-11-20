@@ -1,13 +1,28 @@
-﻿<app-header></app-header>
-<div class="container" style="max-width: 960px; margin: 16px auto; padding: 0 16px;">
-  <h1 style="margin: 16px 0;">Preguntas Frecuentes</h1>
-  <div *ngIf="loading">Cargando...</div>
-  <div *ngIf="error" style="color:#b00020;">{{ error }}</div>
-  <div *ngIf="!loading && !error">
-    <div *ngFor="let f of items" style="border:1px solid #e8e1cf; border-radius:8px; padding:12px; margin-bottom:8px; background:#fcfbf8;">
-      <strong>{{ f.question }}</strong>
-      <p style="margin: 6px 0 0 0;">{{ f.answer }}</p>
-    </div>
+<app-header></app-header>
+<div class="page-center">
+  <div class="card stack-lg faq-card">
+    <header>
+      <div>
+        <h2>Preguntas frecuentes</h2>
+        <div class="muted">Encuentra respuestas rápidas a las dudas más comunes.</div>
+      </div>
+    </header>
+
+    <div *ngIf="loading">Cargando…</div>
+    <div class="error" *ngIf="error">{{ error }}</div>
+
+    <section *ngIf="!loading && !error">
+      <article
+        class="faq-item"
+        *ngFor="let f of items"
+      >
+        <h3 class="faq-question">{{ f.question }}</h3>
+        <p class="faq-answer">{{ f.answer }}</p>
+      </article>
+    </section>
+
+    <p class="faq-footnote">
+      ¿Aún tienes dudas? Contáctanos desde esta página o revisa nuevamente las preguntas más frecuentes.
+    </p>
   </div>
-  <p style="margin-top:16px;">¿Aún tienes dudas? Contáctanos desde esta página o revisa las preguntas más frecuentes.</p>
 </div>

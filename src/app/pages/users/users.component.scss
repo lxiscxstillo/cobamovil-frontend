@@ -1,13 +1,41 @@
 .users-container {
   padding: 24px;
+}
 
-  h2 {
-    color: var(--text-100);
-    margin-bottom: 16px;
-    text-align: center;
-    font-weight: 600;
+.users-card {
+  max-width: 980px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+.users-card h2 {
+  color: var(--text-100);
+  margin-bottom: 4px;
+  text-align: left;
+  font-weight: 600;
+}
+
+.loading {
+  text-align: center;
+  color: var(--text-300);
+}
+.error {
+  text-align: center;
+  color: var(--danger-500);
+  font-weight: 600;
+}
+
+.users-table-wrapper {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.users-table {
+  min-width: 480px;
+}
+
+@media (max-width: 576px) {
+  .users-container {
+    padding-inline: 16px;
   }
-
-  .loading { text-align: center; color: var(--text-300); }
-  .error { text-align: center; color: var(--danger-500); font-weight: 600; }
 }

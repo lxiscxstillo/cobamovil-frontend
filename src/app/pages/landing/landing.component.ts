@@ -15,6 +15,9 @@ import { TestimonialsComponent } from './testimonials.component';
   styleUrls: ['./landing.component.scss']
 })
 export class LandingComponent implements OnInit {
+  // Estado UI: menú hamburguesa en landing mobile
+  isMenuOpen = false;
+
   constructor(private title: Title, private meta: Meta) {}
 
   ngOnInit(): void {
@@ -31,4 +34,3 @@ export class LandingComponent implements OnInit {
     this.meta.updateTag({ name: 'twitter:description', content: description });
   }
 }
-

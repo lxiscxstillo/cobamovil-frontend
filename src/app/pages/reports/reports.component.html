@@ -1,32 +1,42 @@
-﻿<app-header></app-header>
-<div class="container" style="max-width: 980px; margin: 16px auto; padding: 0 16px;">
-  <h1 style="margin: 16px 0;">Reportes</h1>
+<app-header></app-header>
+<div class="page-center">
+  <div class="card stack-lg reports-card">
+    <header>
+      <div>
+        <h2>Reportes</h2>
+        <div class="muted">Visualiza el resumen de servicios completados por rango de fechas.</div>
+      </div>
+    </header>
 
-  <div style="display:flex; gap: 8px; align-items:center; margin-bottom: 12px; flex-wrap: wrap;">
-    <label>Desde</label>
-    <input type="date" [(ngModel)]="from" />
-    <label>Hasta</label>
-    <input type="date" [(ngModel)]="to" />
-    <button class="btn" (click)="load()">Actualizar</button>
-  </div>
-
-  <div *ngIf="loading">Cargandoâ€¦</div>
-  <div *ngIf="error" style="color:#b00020">{{ error }}</div>
-
-    <div *ngIf="!loading && !error && data">
-    <h3>Total de servicios completados: {{ data.totalCompleted }}</h3>
-    <h4>Por tipo de servicio</h4>
-    <div class="bars">
-      <div class="bar" *ngFor="let kv of (data.byServiceType | keyvalue)">
-        <span class="label">{{ kv.key }}</span>
-        <div class="track">
-          <div class="fill" [style.width.%]="widthPercent(kv.value)"></div>
-        </div>
-        <span class="value">{{ kv.value }}</span>
+    <div class="reports-filters">
+      <div class="field">
+        <label class="label" for="from">Desde</label>
+        <input id="from" type="date" class="input" [(ngModel)]="from" />
+      </div>
+      <div class="field">
+        <label class="label" for="to">Hasta</label>
+        <input id="to" type="date" class="input" [(ngModel)]="to" />
+      </div>
+      <div class="field reports-filters-action">
+        <button class="btn" type="button" (click)="load()">Actualizar</button>
       </div>
     </div>
-  </div></div>
 
+    <div *ngIf="loading">Cargando…</div>
+    <div class="error" *ngIf="error">{{ error }}</div>
 
-
-
+    <div *ngIf="!loading && !error && data">
+      <h3>Total de servicios completados: {{ data.totalCompleted }}</h3>
+      <h4>Por tipo de servicio</h4>
+      <div class="bars">
+        <div class="bar" *ngFor="let kv of (data.byServiceType | keyvalue)">
+          <span class="label">{{ kv.key }}</span>
+          <div class="track">
+            <div class="fill" [style.width.%]="widthPercent(kv.value)"></div>
+          </div>
+          <span class="value">{{ kv.value }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
