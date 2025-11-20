@@ -1,2 +1,363 @@
-/* Reuse users-container/table styles */
+/* Contenedor principal de la agenda del administrador (maquetación limpia y aireada) */
+.admin-agenda-container {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 24px 16px 40px;
+}
 
+.admin-agenda-container h2 {
+  margin: 0;
+  font-weight: 600;
+}
+
+/* Cabecera de agenda con título y resumen de reservas */
+.agenda-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.agenda-title {
+  max-width: 520px;
+}
+
+.agenda-summary {
+  align-self: center;
+}
+
+.agenda-pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 12px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 500;
+  background: rgba(14, 165, 233, 0.1);
+  color: var(--primary-600);
+  border: 1px solid rgba(14, 165, 233, 0.3);
+}
+
+/* Tarjeta de filtros principales */
+.agenda-filters-card {
+  margin-bottom: 24px;
+}
+
+.agenda-filters {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.agenda-toggle {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+
+.toggle-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  color: var(--text-300);
+  font-size: 14px;
+}
+
+.toggle-label input {
+  display: none;
+}
+
+.toggle-visual {
+  width: 38px;
+  height: 22px;
+  border-radius: 999px;
+  background: rgba(148, 163, 184, 0.4);
+  position: relative;
+  transition: background var(--transition-fast);
+}
+
+.toggle-visual::after {
+  content: '';
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 16px;
+  height: 16px;
+  border-radius: 999px;
+  background: #fff;
+  box-shadow: 0 2px 6px rgba(15, 23, 42, 0.25);
+  transition: transform var(--transition-fast);
+}
+
+.toggle-label input:checked + .toggle-visual {
+  background: linear-gradient(135deg, var(--primary-600), var(--primary-500));
+}
+
+.toggle-label input:checked + .toggle-visual::after {
+  transform: translateX(14px);
+}
+
+.toggle-text {
+  font-weight: 500;
+}
+
+/* Estados de carga y error */
+.agenda-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  margin: 16px 0;
+  color: var(--text-300);
+  font-size: 14px;
+}
+
+.spinner {
+  width: 22px;
+  height: 22px;
+  border-radius: 999px;
+  border: 3px solid rgba(148, 163, 184, 0.3);
+  border-top-color: var(--primary-600);
+  animation: spin 700ms linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.agenda-error {
+  margin: 16px 0;
+  padding: 10px 14px;
+  border-radius: 10px;
+  background: rgba(248, 113, 113, 0.06);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  color: var(--danger-500);
+  font-size: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.agenda-error strong {
+  font-weight: 600;
+}
+
+/* Tabla de reservas dentro de tarjeta */
+.agenda-table-card {
+  margin-bottom: 24px;
+}
+
+.agenda-table-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 12px;
+}
+
+.agenda-table-header h3 {
+  margin: 0 0 2px;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.agenda-table-wrapper {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.agenda-table {
+  min-width: 780px;
+}
+
+.agenda-table thead th {
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.agenda-table tbody tr {
+  transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.agenda-table tbody tr:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 22px rgba(15, 23, 42, 0.12);
+}
+
+.agenda-cell-main {
+  display: flex;
+  flex-direction: column;
+}
+
+.agenda-time {
+  font-weight: 600;
+}
+
+.agenda-pet,
+.agenda-service,
+.agenda-address,
+.agenda-eta {
+  font-size: 14px;
+}
+
+.agenda-address {
+  color: var(--text-300);
+}
+
+.th-actions {
+  text-align: right;
+}
+
+/* Acciones compactas por reserva */
+.agenda-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 6px;
+}
+
+.btn-compact {
+  padding: 6px 10px;
+  font-size: 13px;
+  min-width: 0;
+}
+
+.btn-secondary {
+  background: linear-gradient(135deg, #64748b, #334155);
+}
+
+.btn-success {
+  background: linear-gradient(135deg, #16a34a, #15803d);
+}
+
+.btn-danger-light {
+  background: linear-gradient(135deg, #ef4444, #f59e0b);
+}
+
+.btn-ghost {
+  background: transparent;
+  color: var(--text-300);
+  box-shadow: none;
+  border: 1px solid rgba(148, 163, 184, 0.6);
+}
+
+.btn-ghost:hover {
+  background: rgba(148, 163, 184, 0.06);
+}
+
+/* Píldoras de estado de reserva */
+.status-pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 500;
+  background: rgba(148, 163, 184, 0.16);
+  color: var(--text-300);
+}
+
+.status-pill--pending {
+  background: rgba(245, 158, 11, 0.08);
+  color: var(--warning-500);
+}
+
+.status-pill--approved {
+  background: rgba(34, 197, 94, 0.08);
+  color: var(--success-500);
+}
+
+.status-pill--rejected {
+  background: rgba(248, 113, 113, 0.08);
+  color: var(--danger-500);
+}
+
+.status-pill--on-route {
+  background: rgba(14, 165, 233, 0.08);
+  color: var(--primary-600);
+}
+
+.status-pill--completed {
+  background: rgba(34, 197, 94, 0.08);
+  color: var(--success-500);
+}
+
+/* Estado vacío de agenda */
+.agenda-empty {
+  text-align: center;
+}
+
+.agenda-empty h3 {
+  margin-top: 0;
+  margin-bottom: 4px;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+/* Sección de mapa */
+.agenda-map-section {
+  margin-top: 12px;
+}
+
+.agenda-map-section h3 {
+  margin: 0 0 4px;
+  font-size: 18px;
+}
+
+.agenda-map-section app-map-route {
+  display: block;
+  margin-top: 12px;
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+
+/* Acciones del pie para la ruta del día */
+.agenda-footer-actions {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  text-align: center;
+}
+
+.agenda-footer-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+}
+
+/* Responsivo básico para pantallas más estrechas */
+@media (max-width: 900px) {
+  .agenda-filters {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .agenda-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+@media (max-width: 640px) {
+  .admin-agenda-container {
+    padding-inline: 12px;
+  }
+
+  .agenda-filters {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .agenda-table {
+    min-width: 640px;
+  }
+
+  .agenda-actions {
+    justify-content: flex-start;
+  }
+}

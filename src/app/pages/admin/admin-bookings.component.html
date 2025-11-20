@@ -1,87 +1,216 @@
 <app-header></app-header>
 
-<div class="users-container">
-  <h2>Agenda diaria</h2>
+<!-- Contenedor principal de la agenda del administrador -->
+<div class="users-container admin-agenda-container">
+  <header class="agenda-header">
+    <div class="agenda-title">
+      <h2>Agenda diaria</h2>
+      <!-- Texto guía para contextualizar rápidamente la agenda del día -->
+      <p class="muted">
+        Revisa y organiza las reservas del día de forma clara y rápida.
+      </p>
+    </div>
+    <div class="agenda-summary" *ngIf="items.length">
+      <span class="agenda-pill">
+        {{ items.length }} {{ items.length === 1 ? 'reserva' : 'reservas' }}
+      </span>
+    </div>
+  </header>
 
-  <div class="stack" style="max-width: 420px; margin: 0 auto 16px;">
-    <label class="label" for="date">Fecha</label>
-    <input id="date" class="input" type="date" [(ngModel)]="date" (change)="load()" />
+  <!-- Filtros principales de la agenda -->
+  <section class="card agenda-filters-card">
+    <div class="agenda-filters">
+      <div class="field">
+        <label class="label" for="date">Fecha</label>
+        <div class="control">
+          <input
+            id="date"
+            class="input"
+            type="date"
+            [(ngModel)]="date"
+            (change)="load()"
+          />
+        </div>
+      </div>
 
-    <label class="label">Orden</label>
-    <label style="display:flex;gap:8px;align-items:center;color:var(--text-300)">
-      <input type="checkbox" [(ngModel)]="useOptimized" (change)="load()" /> Usar ruta optimizada
-    </label>
+      <div class="field">
+        <label class="label" for="groomer">Peluquero</label>
+        <div class="control">
+          <select
+            id="groomer"
+            class="input"
+            [(ngModel)]="selectedGroomerId"
+            (change)="load()"
+          >
+            <option [ngValue]="null">Todos</option>
+            <option *ngFor="let g of groomers" [ngValue]="g.userId">
+              {{ g.username }}
+            </option>
+          </select>
+        </div>
+      </div>
 
-    <label class="label" for="groomer">Peluquero</label>
-    <select id="groomer" class="input" [(ngModel)]="selectedGroomerId" (change)="load()">
-      <option [ngValue]="null">Todos</option>
-      <option *ngFor="let g of groomers" [ngValue]="g.userId">{{ g.username }}</option>
-    </select>
+      <div class="field agenda-toggle">
+        <span class="label">Orden de ruta</span>
+        <label class="toggle-label">
+          <input
+            type="checkbox"
+            [(ngModel)]="useOptimized"
+            (change)="load()"
+          />
+          <span class="toggle-visual"></span>
+          <span class="toggle-text">Usar ruta optimizada</span>
+        </label>
+      </div>
+    </div>
+  </section>
+
+  <!-- Estado de carga con feedback visual amable -->
+  <div class="agenda-loading" *ngIf="loading">
+    <div class="spinner"></div>
+    <p>Cargando la agenda para la fecha seleccionada…</p>
   </div>
 
-  <div class="loading" *ngIf="loading">
-    Cargando la agenda para la fecha seleccionada...
-  </div>
-  <div class="error" *ngIf="error">{{ error }}</div>
-
-  <table class="table" *ngIf="!loading && !error && items.length">
-    <thead>
-      <tr>
-        <th>Hora</th>
-        <th>Mascota</th>
-        <th>Servicio</th>
-        <th>Dirección</th>
-        <th>ETA</th>
-        <th>Estado</th>
-        <th>Acciones</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let b of items; index as i">
-        <td>{{ b.time }}</td>
-        <td>{{ b.petName }}</td>
-        <td>{{ b.serviceType | titlecase }}</td>
-        <td>{{ b.address || '-' }}</td>
-        <td>{{ etas[b.id] || '-' }}</td>
-        <td>{{ b.status | titlecase }}</td>
-        <td>
-          <div style="display:flex; gap:6px;">
-            <button class="btn" style="padding:6px 10px;" (click)="changeStatus(b, 'APPROVED')">
-              Aceptar
-            </button>
-            <button
-              class="btn"
-              style="padding:6px 10px; background: linear-gradient(135deg,#ef4444,#f59e0b);"
-              (click)="changeStatus(b, 'REJECTED')"
-            >
-              Rechazar
-            </button>
-            <button class="btn" style="padding:6px 10px;" (click)="changeStatus(b, 'ON_ROUTE')">
-              En camino
-            </button>
-            <button class="btn" style="padding:6px 10px;" (click)="changeStatus(b, 'COMPLETED')">
-              Completada
-            </button>
-            <button class="btn" style="padding:6px 10px;" (click)="moveUp(i)">&uarr;</button>
-            <button class="btn" style="padding:6px 10px;" (click)="moveDown(i)">&darr;</button>
-          </div>
-        </td>
-      </tr>
-    </tbody>
-  </table>
-
-  <div *ngIf="!loading && !error && !items.length" class="muted" style="text-align:center; margin-top:16px;">
-    No hay reservas para la fecha seleccionada.
+  <!-- Estado de error -->
+  <div class="agenda-error" *ngIf="error">
+    <strong>No se pudo cargar la agenda.</strong>
+    <span>{{ error }}</span>
   </div>
 
-  <div style="margin-top:16px" *ngIf="routePoints.length">
+  <!-- Contenido principal de reservas -->
+  <section *ngIf="!loading && !error">
+    <div class="card agenda-table-card" *ngIf="items.length">
+      <div class="agenda-table-header">
+        <div>
+          <h3>Reservas del día</h3>
+          <p class="muted">
+            Visualiza la hora, mascota, servicio, dirección y estado de cada reserva.
+          </p>
+        </div>
+      </div>
+
+      <div class="agenda-table-wrapper">
+        <table class="table agenda-table">
+          <thead>
+            <tr>
+              <th>Hora</th>
+              <th>Mascota</th>
+              <th>Servicio</th>
+              <th>Dirección</th>
+              <th>ETA</th>
+              <th>Estado</th>
+              <th class="th-actions">Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let b of items; index as i">
+              <td>
+                <div class="agenda-cell-main">
+                  <span class="agenda-time">{{ b.time }}</span>
+                </div>
+              </td>
+              <td>
+                <span class="agenda-pet">{{ b.petName }}</span>
+              </td>
+              <td>
+                <span class="agenda-service">{{ b.serviceType | titlecase }}</span>
+              </td>
+              <td>
+                <span class="agenda-address">{{ b.address || '-' }}</span>
+              </td>
+              <td>
+                <span class="agenda-eta">{{ etas[b.id] || '-' }}</span>
+              </td>
+              <td>
+                <span
+                  class="status-pill"
+                  [ngClass]="{
+                    'status-pill--pending': b.status === 'PENDING',
+                    'status-pill--approved': b.status === 'APPROVED',
+                    'status-pill--rejected': b.status === 'REJECTED',
+                    'status-pill--on-route': b.status === 'ON_ROUTE',
+                    'status-pill--completed': b.status === 'COMPLETED'
+                  }"
+                >
+                  {{ b.status | titlecase }}
+                </span>
+              </td>
+              <td>
+                <div class="agenda-actions">
+                  <button
+                    class="btn btn-compact"
+                    (click)="changeStatus(b, 'APPROVED')"
+                  >
+                    Aceptar
+                  </button>
+                  <button
+                    class="btn btn-compact btn-danger-light"
+                    (click)="changeStatus(b, 'REJECTED')"
+                  >
+                    Rechazar
+                  </button>
+                  <button
+                    class="btn btn-compact btn-secondary"
+                    (click)="changeStatus(b, 'ON_ROUTE')"
+                  >
+                    En camino
+                  </button>
+                  <button
+                    class="btn btn-compact btn-success"
+                    (click)="changeStatus(b, 'COMPLETED')"
+                  >
+                    Completada
+                  </button>
+                  <button
+                    class="btn btn-compact btn-ghost"
+                    (click)="moveUp(i)"
+                    aria-label="Mover reserva hacia arriba"
+                  >
+                    &uarr;
+                  </button>
+                  <button
+                    class="btn btn-compact btn-ghost"
+                    (click)="moveDown(i)"
+                    aria-label="Mover reserva hacia abajo"
+                  >
+                    &darr;
+                  </button>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Estado vacío de la agenda con mensaje claro -->
+    <div *ngIf="!items.length" class="card agenda-empty">
+      <h3>Sin reservas para esta fecha</h3>
+      <p class="muted">
+        No hay reservas programadas para la fecha seleccionada.
+      </p>
+    </div>
+  </section>
+
+  <!-- Mapa de ruta optimizada -->
+  <section class="agenda-map-section" *ngIf="routePoints.length">
+    <h3>Mapa de ruta</h3>
+    <p class="muted">
+      Visualiza el orden de las visitas para optimizar tus traslados.
+    </p>
     <app-map-route [points]="routePoints"></app-map-route>
-  </div>
+  </section>
 
-  <div style="display:flex; justify-content:center; margin-top: 12px; gap: 8px;" *ngIf="items.length">
-    <button class="btn" (click)="startRoute()" [disabled]="savingRoute">Iniciar ruta</button>
-    <button class="btn" (click)="saveRoute()" [disabled]="savingRoute">Guardar ruta</button>
-    <span *ngIf="savingRoute">Guardando ruta...</span>
-  </div>
+  <!-- Acciones para iniciar y guardar la ruta del día -->
+  <section class="agenda-footer-actions" *ngIf="items.length">
+    <div class="agenda-footer-buttons">
+      <button class="btn" (click)="startRoute()" [disabled]="savingRoute">
+        Iniciar ruta
+      </button>
+      <button class="btn btn-secondary" (click)="saveRoute()" [disabled]="savingRoute">
+        Guardar ruta
+      </button>
+    </div>
+    <span class="muted" *ngIf="savingRoute">Guardando ruta…</span>
+  </section>
 </div>
-
