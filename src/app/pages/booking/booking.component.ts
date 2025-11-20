@@ -81,7 +81,8 @@ export class BookingComponent implements AfterViewInit {
       date: [null as unknown as string | Date | null, [Validators.required]],
       time: ['', [Validators.required]],
       address: [''],
-      notes: ['', [Validators.required, Validators.maxLength(300)]],
+      // Notas opcionales: solo limitamos longitud máxima
+      notes: ['', [Validators.maxLength(300)]],
       groomerId: [null]
     });
     this.loadPets();

@@ -128,10 +128,16 @@
         rows="3"
         maxlength="300"
         formControlName="notes"
-        placeholder="Algo que debamos saber (máx. 300 caracteres)"
+        placeholder="Ej: comportamiento de tu perro, acceso al edificio, referencias adicionales (máx. 300 caracteres, opcional)"
       ></textarea>
-      <div class="error" *ngIf="submitted && form.get('notes')?.invalid">
-        Las notas adicionales son obligatorias. Cuéntanos cualquier detalle importante del servicio.
+      <div
+        class="error"
+        *ngIf="
+          form.get('notes')?.errors?.['maxlength'] &&
+          (form.get('notes')?.dirty || form.get('notes')?.touched || submitted)
+        "
+      >
+        Máximo 300 caracteres en las notas adicionales.
       </div>
     </section>
 
