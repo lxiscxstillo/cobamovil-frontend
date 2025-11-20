@@ -22,7 +22,7 @@ export class LandingComponent implements OnInit {
 
   ngOnInit(): void {
     const title = 'Coba Móvil | Peluquería canina a domicilio';
-    const description = 'Servicio profesional de Peluquería canina a domicilio. Agenda en línea, ruta optimizada, atención personalizada y notificaciones por WhatsApp y correo.';
+    const description = 'Servicio profesional de peluquería canina a domicilio. Agenda en línea, ruta optimizada, atención personalizada y notificaciones por WhatsApp y correo.';
 
     this.title.setTitle(title);
     this.meta.updateTag({ name: 'description', content: description });
@@ -33,4 +33,13 @@ export class LandingComponent implements OnInit {
     this.meta.updateTag({ name: 'twitter:title', content: title });
     this.meta.updateTag({ name: 'twitter:description', content: description });
   }
+
+  scrollTo(sectionId: string) {
+    if (typeof document === 'undefined') return;
+    const el = document.getElementById(sectionId);
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth' });
+    }
+  }
 }
+
