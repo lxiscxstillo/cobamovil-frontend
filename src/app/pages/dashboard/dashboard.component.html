@@ -41,6 +41,22 @@
         <div class="row"><span>Fecha y hora</span><b>{{ nb.date }} · {{ nb.time }}</b></div>
         <div class="row"><span>Estado</span><b>{{ statusLabel(nb.status) }}</b></div>
       </div>
+
+      <div class="care-plan" *ngIf="isClient()">
+        <button class="btn secondary" type="button" (click)="generateWeeklyCarePlan()" [disabled]="carePlanLoading">
+          <ng-container *ngIf="!carePlanLoading; else loadingPlan">
+            Generar plan semanal de cuidado con IA
+          </ng-container>
+        </button>
+        <ng-template #loadingPlan>
+          Generando plan semanal...
+        </ng-template>
+
+        <div class="care-plan-box" *ngIf="carePlanText">
+          <h3>Plan semanal de cuidado</h3>
+          <p>{{ carePlanText }}</p>
+        </div>
+      </div>
     </div>
   </div>
 </section>
@@ -99,3 +115,4 @@
     <p>Revisa el resumen de reservas y actividad.</p>
   </a>
 </section>
+

@@ -5,6 +5,8 @@ import { HeaderComponent } from '../../shared/header/header.component';
 import { BookingService } from '../../core/services/booking.service';
 import { Booking, ServiceType, BookingStatus } from '../../core/models/booking.model';
 import { AuthService } from '../../core/services/auth.service';
+import { AiService } from '../../core/services/ai.service';
+import { ToastService } from '../../shared/toast/toast.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -17,8 +19,15 @@ export class DashboardComponent {
   nextBooking: Booking | null = null;
   loadingNext = false;
   errorNext: string | null = null;
+  carePlanLoading = false;
+  carePlanText: string | null = null;
 
-  constructor(private bookingService: BookingService, private auth: AuthService) {
+  constructor(
+    private bookingService: BookingService,
+    private auth: AuthService,
+    private ai: AiService,
+    private toast: ToastService
+  ) {
     this.loadNext();
   }
 
@@ -77,5 +86,20 @@ export class DashboardComponent {
 
   isGroomer(): boolean {
     return this.auth.isGroomer();
+  }
+
+  generateWeeklyCarePlan() {
+    this.carePlanLoading = true;
+    this.carePlanText = null;
+    this.ai.getWeeklyCarePlan().subscribe({
+      next: (res) => {
+        this.carePlanText = res.planText;
+        this.carePlanLoading = false;
+      },
+      error: (err) => {
+        this.carePlanLoading = false;
+        this.toast.errorFrom(err, 'No se pudo generar el plan semanal de cuidado.');
+      }
+    });
   }
 }

@@ -1,4 +1,4 @@
-﻿import { Component } from '@angular/core';
+import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { PetService } from '../../core/services/pet.service';
@@ -53,6 +53,10 @@ export class PetsComponent {
   private lastDeleted?: Pet;
   recommendations: { [petId: number]: PetAiRecommendation } = {};
   aiLoading: { [petId: number]: boolean } = {};
+  overviewLoading = false;
+  petsOverviewText: string | null = null;
+  normalizeHealthLoading = false;
+  normalizeBehaviorLoading = false;
 
   @ViewChild('nameInput') nameInput?: ElementRef<HTMLInputElement>;
   @ViewChild('ageInput') ageInput?: ElementRef<HTMLInputElement>;
@@ -61,7 +65,10 @@ export class PetsComponent {
   constructor(private petService: PetService, private aiService: AiService, private toast: ToastService) {
     this.load();
     // Load draft
-    try { const raw = localStorage.getItem('pets.formDraft'); if (raw) this.model = JSON.parse(raw); } catch {}
+    try {
+      const raw = localStorage.getItem('pets.formDraft');
+      if (raw) this.model = JSON.parse(raw);
+    } catch {}
   }
 
   load() {
@@ -93,7 +100,9 @@ export class PetsComponent {
         this.submittedAdd = false;
         this.load();
         this.toast.created('Mascota');
-        try { localStorage.removeItem('pets.formDraft'); } catch {}
+        try {
+          localStorage.removeItem('pets.formDraft');
+        } catch {}
       },
       error: (err) => {
         this.error = err?.error?.message || 'Error creando mascota';
@@ -117,8 +126,9 @@ export class PetsComponent {
     return !(this.model.weight >= this.WEIGHT_MIN && this.model.weight <= this.WEIGHT_MAX);
   }
 
-  openDelete(p: Pet){ this.pendingDelete = p; this.confirmOpen = true; }
-  confirmDelete(){
+  openDelete(p: Pet) { this.pendingDelete = p; this.confirmOpen = true; }
+
+  confirmDelete() {
     const p = this.pendingDelete; this.confirmOpen = false; if (!p) return;
     this.lastDeleted = { ...p };
     this.petService.delete(p.id!).subscribe({
@@ -136,14 +146,17 @@ export class PetsComponent {
       }
     });
   }
-  cancelDelete(){ this.confirmOpen = false; this.pendingDelete = undefined; }
+
+  cancelDelete() { this.confirmOpen = false; this.pendingDelete = undefined; }
 
   toggleForm() {
     this.showForm = !this.showForm;
   }
 
-  persistDraft(){
-    try { localStorage.setItem('pets.formDraft', JSON.stringify(this.model)); } catch {}
+  persistDraft() {
+    try {
+      localStorage.setItem('pets.formDraft', JSON.stringify(this.model));
+    } catch {}
   }
 
   isExpanded(id?: number): boolean {
@@ -173,6 +186,61 @@ export class PetsComponent {
       error: () => {
         this.aiLoading[petId] = false;
         this.toast.error('No se pudo obtener la recomendación en este momento. Inténtalo más tarde.');
+      }
+    });
+  }
+
+  generatePetsOverview() {
+    this.overviewLoading = true;
+    this.petsOverviewText = null;
+    this.aiService.getPetsOverview().subscribe({
+      next: (res) => {
+        this.petsOverviewText = res.overviewText;
+        this.overviewLoading = false;
+      },
+      error: (err) => {
+        this.overviewLoading = false;
+        this.toast.errorFrom(err, 'No se pudo generar el resumen de tus mascotas.');
+      }
+    });
+  }
+
+  normalizeHealthNotesWithAI() {
+    const raw = this.model.healthNotes || '';
+    if (!raw.trim()) {
+      this.toast.warn('Escribe primero algo en las notas de salud.');
+      return;
+    }
+    this.normalizeHealthLoading = true;
+    this.aiService.normalizeNotes(raw, 'SALUD').subscribe({
+      next: (res) => {
+        this.normalizeHealthLoading = false;
+        this.model.healthNotes = res.normalizedText;
+        this.persistDraft();
+      },
+      error: (err) => {
+        this.normalizeHealthLoading = false;
+        this.toast.errorFrom(err, 'No se pudo mejorar la descripción de salud.');
+      }
+    });
+  }
+
+  normalizeBehaviorNotesWithAI() {
+    const raw = this.model.behavior || '';
+    if (!raw.trim()) {
+      this.toast.warn('Escribe primero algo en el comportamiento.');
+      return;
+    }
+    this.normalizeBehaviorLoading = true;
+    this.aiService.normalizeNotes(raw, 'COMPORTAMIENTO').subscribe({
+      next: (res) => {
+        this.normalizeBehaviorLoading = false;
+        this.model.behavior = res.normalizedText;
+        this.persistDraft();
+      },
+      error: (err) => {
+        this.normalizeBehaviorLoading = false;
+        this.toast.errorFrom(err, 'No se pudo mejorar la descripción del comportamiento.');
       }
     });
   }
