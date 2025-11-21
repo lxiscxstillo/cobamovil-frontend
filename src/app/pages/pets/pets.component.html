@@ -263,7 +263,8 @@
           <div class="ai-recommendation-box" *ngIf="recommendations[p.id] as rec">
             <h4>Recomendación para {{ rec.petName }}</h4>
             <p *ngIf="rec.recommendedServiceType">
-              <strong>Servicio sugerido:</strong> {{ rec.recommendedServiceType }}
+              <strong>Servicio recomendado:</strong>
+              {{ rec.recommendedServiceType | nombreServicioBonito }}
             </p>
             <p *ngIf="rec.recommendedFrequency">
               <strong>Frecuencia recomendada:</strong> {{ rec.recommendedFrequency }}
@@ -295,4 +296,3 @@
     ></app-modal>
   </div>
 </div>
-

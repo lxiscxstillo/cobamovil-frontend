@@ -37,6 +37,9 @@
           </div>
         </div>
       </div>
+      <div class="error" *ngIf="dateErrorMessage">
+        {{ dateErrorMessage }}
+      </div>
       <div class="error" *ngIf="submitted && (!form.value.date || !form.value.time)">
         Selecciona una fecha y una hora para continuar.
       </div>

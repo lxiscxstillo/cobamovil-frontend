@@ -29,6 +29,20 @@ export class UserService {
     return this.apiService.put<User>(`/users/${id}`, user);
   }
 
+  /**
+   * Perfil del usuario autenticado (basado en el token JWT)
+   */
+  getCurrentUserProfile(): Observable<User> {
+    return this.apiService.get<User>('/auth/me');
+  }
+
+  /**
+   * Actualizar perfil del usuario autenticado (email / teléfono, etc.)
+   */
+  updateCurrentUserProfile(user: Partial<User>): Observable<User> {
+    return this.apiService.put<User>('/auth/me', user);
+  }
+
   deleteUser(id: number): Observable<void> {
     return this.apiService.delete<void>(`/users/${id}`);
   }

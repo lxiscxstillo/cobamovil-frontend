@@ -39,18 +39,27 @@ declare const google: any;
 })
 export class BookingComponent implements AfterViewInit {
   @ViewChild('addressInput') addressInput!: ElementRef<HTMLInputElement>;
+
   submitting = false;
   successMessage: string | null = null;
   errorMessage: string | null = null;
+
   pets: Pet[] = [];
   groomers: GroomerProfile[] = [];
+
   pickedLat?: number;
   pickedLng?: number;
+
   submitted = false;
+
   noPetsMessage: string | null = null;
+
   availabilityMessage: string | null = null;
   availabilityOk: boolean | null = null;
   availableGroomerIds: number[] | null = null;
+
+  isPastDate = false;
+  dateErrorMessage: string | null = null;
 
   services: { label: string; value: ServiceType }[] = [
     { label: 'Baño', value: 'BATH' },
@@ -77,7 +86,7 @@ export class BookingComponent implements AfterViewInit {
     this.form = this.fb.group({
       petId: [null, [Validators.required]],
       serviceType: [null as ServiceType | null, [Validators.required]],
-      // For <input type="date"> the control value is a string "YYYY-MM-DD"
+      // Para <input type="date"> el valor es un string "YYYY-MM-DD" o un Date
       date: [null as unknown as string | Date | null, [Validators.required]],
       time: ['', [Validators.required]],
       address: [''],
@@ -85,6 +94,7 @@ export class BookingComponent implements AfterViewInit {
       notes: ['', [Validators.maxLength(300)]],
       groomerId: [null]
     });
+
     this.loadPets();
     this.loadGroomers();
   }
@@ -95,7 +105,9 @@ export class BookingComponent implements AfterViewInit {
       this.mapsLoader.load().then(() => {
         const input = this.addressInput?.nativeElement;
         if (!input) return;
-        const autocomplete = new google.maps.places.Autocomplete(input, { fields: ['formatted_address', 'geometry'] });
+        const autocomplete = new google.maps.places.Autocomplete(input, {
+          fields: ['formatted_address', 'geometry']
+        });
         autocomplete.addListener('place_changed', () => {
           const place = autocomplete.getPlace();
           const addr = place?.formatted_address;
@@ -109,18 +121,22 @@ export class BookingComponent implements AfterViewInit {
           }
         });
       });
-    } catch {}
+    } catch {
+      // ignoramos errores de mapas en SSR o si Google falla
+    }
   }
 
-  next() {
-    if (this.isStepValid(this.currentStep)) this.currentStep = Math.min(5, this.currentStep + 1);
+  next(): void {
+    if (this.isStepValid(this.currentStep)) {
+      this.currentStep = Math.min(5, this.currentStep + 1);
+    }
   }
 
-  back() {
+  back(): void {
     this.currentStep = Math.max(1, this.currentStep - 1);
   }
 
-  goToStep(target: number) {
+  goToStep(target: number): void {
     if (target < 1 || target > 5) return;
     if (target <= this.currentStep) {
       this.currentStep = target;
@@ -136,16 +152,25 @@ export class BookingComponent implements AfterViewInit {
     this.currentStep = target;
   }
 
-  isStepValid(step: number) {
+  isStepValid(step: number): boolean {
     switch (step) {
       case 1: {
         const d = this.form.get('date')?.value;
         const t = this.form.get('time')?.value;
-        const hasDateTime = !!d && !!t;
-        // FIX: combinamos fecha + hora en un Date local para comparar correctamente contra "ahora"
-        const candidate = hasDateTime ? this.buildLocalDateTime(d, t) : null;
-        const notPast = !!candidate && candidate.getTime() >= Date.now();
-        return hasDateTime && notPast && this.availabilityOk !== false;
+        if (!d || !t) {
+          return false;
+        }
+        if (this.isDateInPast(d)) {
+          return false;
+        }
+        if (this.isDateToday(d)) {
+          const candidate = this.buildLocalDateTime(d, t);
+          if (!candidate || candidate.getTime() < Date.now()) {
+            return false;
+          }
+        }
+        // availabilityOk === false implica que backend dijo que no hay disponibilidad
+        return this.availabilityOk !== false;
       }
       case 2:
         return !!this.form.get('petId')?.value;
@@ -154,38 +179,29 @@ export class BookingComponent implements AfterViewInit {
       case 4:
         return !!(this.form.get('address')?.value || (this.pickedLat && this.pickedLng));
       case 5:
-        return true;
       default:
         return true;
     }
   }
 
-  private isFutureDate(d: unknown): boolean {
-    try {
-      const str = typeof d === 'string' ? d : this.toIsoDate(d);
-      if (!str) return false;
-      const today = new Date();
-      const dt = new Date(str + 'T00:00:00');
-      // allow booking from today  (>= today). Change to > for strictly future
-      return dt.setHours(0, 0, 0, 0) >= new Date(today.getFullYear(), today.getMonth(), today.getDate()).getTime();
-    } catch {
-      return false;
-    }
-  }
-
-  submit() {
+  submit(): void {
     this.submitted = true;
     if (this.form.invalid) {
       this.form.markAllAsTouched();
-      const firstInvalid = Object.keys(this.form.controls).find(key => this.form.get(key)?.invalid);
+      const firstInvalid = Object.keys(this.form.controls).find(
+        key => this.form.get(key)?.invalid
+      );
       if (firstInvalid) {
-        const el = document.querySelector<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>(
-          `[formControlName="${firstInvalid}"]`
-        );
-        if (el) el.focus();
+        const el = document.querySelector<
+          HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
+        >(`[formControlName="${firstInvalid}"]`);
+        if (el) {
+          el.focus();
+        }
       }
       return;
     }
+
     this.submitting = true;
     this.errorMessage = null;
     this.successMessage = null;
@@ -210,7 +226,8 @@ export class BookingComponent implements AfterViewInit {
         this.form.reset();
       },
       error: err => {
-        this.errorMessage = err.error?.message || 'Error al crear la reserva. Inténtalo de nuevo.';
+        this.errorMessage =
+          err.error?.message || 'Error al crear la reserva. Inténtalo de nuevo.';
         this.toast.errorFrom(err, 'Error al crear la reserva');
         this.submitting = false;
       },
@@ -218,7 +235,8 @@ export class BookingComponent implements AfterViewInit {
         this.submitting = false;
       }
     });
-    // FIX: si la reserva se crea correctamente, redirigimos al dashboard
+
+    // Si la reserva se crea correctamente, redirigimos al dashboard
     setTimeout(() => {
       if (this.successMessage) {
         this.router.navigate(['/dashboard']);
@@ -227,7 +245,7 @@ export class BookingComponent implements AfterViewInit {
   }
 
   private toIsoDate(d: unknown): string {
-    // If already a string from <input type="date">, pass through (YYYY-MM-DD)
+    // Si ya es string de <input type="date">, lo devolvemos tal cual (YYYY-MM-DD)
     if (typeof d === 'string') return d;
     const pad = (n: number) => (n < 10 ? `0${n}` : String(n));
     if (d instanceof Date) {
@@ -238,13 +256,41 @@ export class BookingComponent implements AfterViewInit {
       if (!isNaN(dt.getTime())) {
         return `${dt.getFullYear()}-${pad(dt.getMonth() + 1)}-${pad(dt.getDate())}`;
       }
-    } catch {}
-    // Fallback: empty string to avoid crashing; caller validates form required
+    } catch {
+      // ignoramos errores de parseo
+    }
+    // Fallback: vacío para evitar crashes; el formulario ya valida required
     return '';
   }
 
+  private getDateOnly(d: unknown): Date | null {
+    const dateStr = typeof d === 'string' ? d : this.toIsoDate(d);
+    if (!dateStr) return null;
+    const [yearStr, monthStr, dayStr] = dateStr.split('-');
+    const year = Number(yearStr);
+    const month = Number(monthStr);
+    const day = Number(dayStr);
+    if (!year || !month || !day) return null;
+    return new Date(year, month - 1, day, 0, 0, 0, 0);
+  }
+
+  private isDateInPast(d: unknown): boolean {
+    const selected = this.getDateOnly(d);
+    if (!selected) return false;
+    const today = new Date();
+    const todayOnly = new Date(today.getFullYear(), today.getMonth(), today.getDate(), 0, 0, 0, 0);
+    return selected.getTime() < todayOnly.getTime();
+  }
+
+  private isDateToday(d: unknown): boolean {
+    const selected = this.getDateOnly(d);
+    if (!selected) return false;
+    const today = new Date();
+    const todayOnly = new Date(today.getFullYear(), today.getMonth(), today.getDate(), 0, 0, 0, 0);
+    return selected.getTime() === todayOnly.getTime();
+  }
+
   private buildLocalDateTime(d: unknown, t: string): Date | null {
-    // FIX: evitamos construir Date desde string ISO (UTC); usamos componentes locales año/mes/día/hora/minuto
     const dateStr = typeof d === 'string' ? d : this.toIsoDate(d);
     if (!dateStr || !t) return null;
     const [yearStr, monthStr, dayStr] = dateStr.split('-');
@@ -258,7 +304,7 @@ export class BookingComponent implements AfterViewInit {
     return new Date(year, month - 1, day, hour, minute, 0, 0);
   }
 
-  onMapPositionChange(pos: { lat: number; lng: number }) {
+  onMapPositionChange(pos: { lat: number; lng: number }): void {
     this.pickedLat = pos.lat;
     this.pickedLng = pos.lng;
   }
@@ -267,7 +313,9 @@ export class BookingComponent implements AfterViewInit {
     const out: string[] = [];
     for (let h = 9; h <= 18; h++) {
       for (const m of [0, 30]) {
-        out.push(`${('0' + h).slice(-2)}:${('0' + m).slice(-2)}`);
+        const hh = h.toString().padStart(2, '0');
+        const mm = m.toString().padStart(2, '0');
+        out.push(`${hh}:${mm}`);
       }
     }
     return out;
@@ -285,37 +333,73 @@ export class BookingComponent implements AfterViewInit {
   isTimeDisabled(t: string): boolean {
     const d = this.form.get('date')?.value;
     if (!d) return false;
-    // FIX: deshabilitar horas pasadas usando la combinación fecha+hora en horario local
+    // Si la fecha es pasada, todas las horas deben estar deshabilitadas
+    if (this.isDateInPast(d)) return true;
+    // Si la fecha es futura, ninguna hora se considera pasada
+    if (!this.isDateToday(d)) return false;
+    // Fecha de hoy: solo deshabilitamos horas realmente anteriores a la hora actual
     const candidate = this.buildLocalDateTime(d, t);
     if (!candidate) return false;
     return candidate.getTime() < Date.now();
   }
 
-  onDateInputChange(value: string) {
+  onDateInputChange(value: string): void {
     this.form.get('date')?.setValue(value);
     this.validateDateAndAvailability();
   }
 
-  selectTime(value: string) {
+  selectTime(value: string): void {
     this.form.get('time')?.setValue(value);
     this.validateDateAndAvailability();
   }
 
-  private validateDateAndAvailability() {
+  private validateDateAndAvailability(): void {
     this.availabilityMessage = null;
     this.availabilityOk = null;
+    this.dateErrorMessage = null;
+    this.isPastDate = false;
+
     const d = this.form.get('date')?.value;
     const t = this.form.get('time')?.value;
-    if (!d || !t) return;
-    // FIX: validamos que la fecha+hora completas no estén en el pasado antes de consultar disponibilidad
-    const candidate = this.buildLocalDateTime(d, t);
-    if (!candidate) return;
-    if (candidate.getTime() < Date.now()) {
-      this.availabilityMessage = 'No puedes seleccionar una hora pasada del día de hoy.';
-      this.availabilityOk = false;
+
+    if (!d) {
       this.availableGroomerIds = null;
       return;
     }
+
+    // Validación explícita para fecha pasada
+    if (this.isDateInPast(d)) {
+      this.isPastDate = true;
+      this.dateErrorMessage =
+        'La fecha que elegiste ya pasó. Por favor selecciona una fecha futura.';
+      if (t) {
+        this.form.get('time')?.setValue('');
+      }
+      this.availableGroomerIds = null;
+      return;
+    }
+
+    if (!t) {
+      this.availableGroomerIds = null;
+      return;
+    }
+
+    // Para la fecha actual, validamos que la hora no haya pasado realmente
+    if (this.isDateToday(d)) {
+      const candidate = this.buildLocalDateTime(d, t);
+      if (!candidate) {
+        this.availableGroomerIds = null;
+        return;
+      }
+      if (candidate.getTime() < Date.now()) {
+        this.availabilityMessage =
+          'La hora que elegiste ya pasó. Por favor selecciona otra hora disponible.';
+        this.availabilityOk = false;
+        this.availableGroomerIds = null;
+        return;
+      }
+    }
+
     const dateIso = typeof d === 'string' ? d : this.toIsoDate(d);
     this.bookingService.checkAvailability(dateIso, t, 'FULL_GROOMING').subscribe({
       next: resp => {
@@ -331,12 +415,13 @@ export class BookingComponent implements AfterViewInit {
     });
   }
 
-  private loadPets() {
+  private loadPets(): void {
     this.http.get<Pet[]>(`${environment.apiUrl}/pets`).subscribe({
       next: data => {
         this.pets = data;
         if (!data.length) {
-          this.noPetsMessage = 'Aún no tienes mascotas registradas. Agrega una antes de continuar.';
+          this.noPetsMessage =
+            'Aún no tienes mascotas registradas. Agrega una antes de continuar.';
         }
       },
       error: () => {
@@ -345,10 +430,15 @@ export class BookingComponent implements AfterViewInit {
     });
   }
 
-  private loadGroomers() {
+  private loadGroomers(): void {
     this.groomerService.list().subscribe({
-      next: list => (this.groomers = list),
-      error: () => {}
+      next: list => {
+        this.groomers = list;
+      },
+      error: () => {
+        // Silenciamos errores aquí; se manejarán al intentar reservar si no hay groomers
+      }
     });
   }
 }
+

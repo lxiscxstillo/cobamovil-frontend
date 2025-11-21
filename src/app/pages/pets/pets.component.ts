@@ -10,11 +10,12 @@ import { ToastService } from '../../shared/toast/toast.service';
 import { ModalComponent } from '../../shared/modal/modal.component';
 import { ViewChild, ElementRef } from '@angular/core';
 import { AiService, PetAiRecommendation } from '../../core/services/ai.service';
+import { NombreServicioBonitoPipe } from '../../shared/pipes/nombre-servicio-bonito.pipe';
 
 @Component({
   selector: 'app-pets',
   standalone: true,
-  imports: [CommonModule, FormsModule, HeaderComponent, LoaderComponent, EmptyStateComponent, ModalComponent],
+  imports: [CommonModule, FormsModule, HeaderComponent, LoaderComponent, EmptyStateComponent, ModalComponent, NombreServicioBonitoPipe],
   templateUrl: './pets.component.html',
   styleUrls: ['./pets.component.scss']
 })
@@ -245,4 +246,3 @@ export class PetsComponent {
     });
   }
 }
-
