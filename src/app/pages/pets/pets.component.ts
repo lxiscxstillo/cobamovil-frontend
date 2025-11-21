@@ -9,6 +9,7 @@ import { EmptyStateComponent } from '../../shared/empty-state/empty-state.compon
 import { ToastService } from '../../shared/toast/toast.service';
 import { ModalComponent } from '../../shared/modal/modal.component';
 import { ViewChild, ElementRef } from '@angular/core';
+import { AiService, PetAiRecommendation } from '../../core/services/ai.service';
 
 @Component({
   selector: 'app-pets',
@@ -50,12 +51,14 @@ export class PetsComponent {
   confirmOpen = false;
   pendingDelete?: Pet;
   private lastDeleted?: Pet;
+  recommendations: { [petId: number]: PetAiRecommendation } = {};
+  aiLoading: { [petId: number]: boolean } = {};
 
   @ViewChild('nameInput') nameInput?: ElementRef<HTMLInputElement>;
   @ViewChild('ageInput') ageInput?: ElementRef<HTMLInputElement>;
   @ViewChild('weightInput') weightInput?: ElementRef<HTMLInputElement>;
 
-  constructor(private petService: PetService, private toast: ToastService) {
+  constructor(private petService: PetService, private aiService: AiService, private toast: ToastService) {
     this.load();
     // Load draft
     try { const raw = localStorage.getItem('pets.formDraft'); if (raw) this.model = JSON.parse(raw); } catch {}
@@ -151,6 +154,27 @@ export class PetsComponent {
     if (!id) return;
     if (this.expandedIds.has(id)) this.expandedIds.delete(id);
     else this.expandedIds.add(id);
+  }
+
+  requestAiRecommendation(pet: Pet): void {
+    if (!pet || !pet.id) {
+      this.toast.error('No se pudo solicitar la recomendación para esta mascota.');
+      return;
+    }
+
+    const petId = pet.id;
+    this.aiLoading[petId] = true;
+
+    this.aiService.getPetRecommendation(petId).subscribe({
+      next: (response) => {
+        this.recommendations[petId] = response;
+        this.aiLoading[petId] = false;
+      },
+      error: () => {
+        this.aiLoading[petId] = false;
+        this.toast.error('No se pudo obtener la recomendación en este momento. Inténtalo más tarde.');
+      }
+    });
   }
 }
 

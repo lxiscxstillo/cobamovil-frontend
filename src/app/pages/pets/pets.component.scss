@@ -63,6 +63,24 @@
   padding: 6px 10px; border-radius: 999px;
 }
 
+.ai-actions {
+  margin: 8px 0 4px;
+}
+
+.ai-recommendation-box {
+  margin-top: 12px;
+  padding: 12px;
+  border-radius: 8px;
+  background: #ecfeff;
+  border: 1px dashed rgba(8,145,178,.4);
+  font-size: 14px;
+}
+.ai-recommendation-box h4 {
+  margin: 0 0 6px;
+  font-size: 14px;
+  color: var(--primary-700);
+}
+
 .sections { max-height: 0; overflow: hidden; transition: max-height .3s var(--ease-smooth), opacity .3s var(--ease-smooth); opacity: 0; }
 .sections.open { max-height: 600px; opacity: 1; }
 .section { padding-top: 10px; border-top: 1px dashed rgba(2,132,199,.2); margin-top: 10px; }

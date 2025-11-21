@@ -5,7 +5,7 @@
     <header>
       <div>
         <h2>Mis Mascotas</h2>
-        <div class="muted">Gestiona tus mascotas para reservar más rápido</div>
+        <div class="muted">Gestiona tus mascotas para reservar m�s r�pido</div>
       </div>
       <button class="btn" style="width:auto;padding:10px 14px" (click)="toggleForm()">
         {{ showForm ? 'Cerrar' : 'Agregar' }}
@@ -19,7 +19,7 @@
     <section class="sheet" *ngIf="showForm">
       <div class="sheet-header">
         <h3>Nueva mascota</h3>
-        <p class="muted">Completa los datos básicos y de salud</p>
+        <p class="muted">Completa los datos b�sicos y de salud</p>
       </div>
       <div class="stack">
         <label class="label">Nombre</label>
@@ -53,7 +53,7 @@
 
         <div class="grid-2">
           <div>
-            <label class="label">Edad (años)</label>
+            <label class="label">Edad (a�os)</label>
             <input
               #ageInput
               class="input"
@@ -63,10 +63,10 @@
               [class.invalid]="submittedAdd && ageInvalid"
               [(ngModel)]="model.age"
               (ngModelChange)="persistDraft()"
-              placeholder="Edad en años (0 a 30)"
+              placeholder="Edad en a�os (0 a 30)"
             />
             <div class="error" *ngIf="submittedAdd && ageInvalid">
-              La edad debe estar entre 0 y 30 años.
+              La edad debe estar entre 0 y 30 a�os.
             </div>
           </div>
           <div>
@@ -94,7 +94,7 @@
           class="input"
           [(ngModel)]="model.behavior"
           (ngModelChange)="persistDraft()"
-          placeholder="Tranquilo, nervioso, juguetón..."
+          placeholder="Tranquilo, nervioso, juguet�n..."
           maxlength="120"
         />
 
@@ -103,7 +103,7 @@
           class="input"
           [(ngModel)]="model.healthNotes"
           (ngModelChange)="persistDraft()"
-          placeholder="Alergias, condiciones médicas, vacunas, desparasitaciones"
+          placeholder="Alergias, condiciones m�dicas, vacunas, desparasitaciones"
           maxlength="400"
         ></textarea>
 
@@ -116,7 +116,7 @@
           maxlength="300"
         ></textarea>
 
-        <label class="label">Desparasitación</label>
+        <label class="label">Desparasitaci�n</label>
         <textarea
           class="input"
           [(ngModel)]="model.deworming"
@@ -125,7 +125,7 @@
           maxlength="300"
         ></textarea>
 
-        <label class="label">Condiciones médicas</label>
+        <label class="label">Condiciones m�dicas</label>
         <textarea
           class="input"
           [(ngModel)]="model.medicalConditions"
@@ -134,7 +134,7 @@
           maxlength="300"
         ></textarea>
 
-        <label class="label">Último servicio de peluquería</label>
+        <label class="label">�ltimo servicio de peluquer�a</label>
         <input
           class="input"
           type="date"
@@ -142,7 +142,7 @@
           (ngModelChange)="persistDraft()"
         />
 
-        <button class="btn" (click)="add()">Añadir mascota</button>
+        <button class="btn" (click)="add()">A�adir mascota</button>
       </div>
     </section>
 
@@ -189,27 +189,56 @@
 
           <div class="chips">
             <span class="chip">{{ p.sex === 'F' ? 'Hembra' : 'Macho' }}</span>
-            <span class="chip" *ngIf="p.age !== undefined">{{ p.age }} años</span>
+            <span class="chip" *ngIf="p.age !== undefined">{{ p.age }} a�os</span>
             <span class="chip" *ngIf="p.weight !== undefined">{{ p.weight }} kg</span>
+          </div>
+
+          <div class="ai-actions">
+            <button
+              class="btn"
+              type="button"
+              (click)="requestAiRecommendation(p)"
+              [disabled]="aiLoading[p.id!]"
+            >
+              <ng-container *ngIf="!aiLoading[p.id!]; else loadingAiForPet">
+                Sugerencia inteligente
+              </ng-container>
+            </button>
+            <ng-template #loadingAiForPet>
+              Generando sugerencia...
+            </ng-template>
           </div>
 
           <div class="sections" [class.open]="isExpanded(p.id)">
             <div class="section">
-              <h4>Datos básicos</h4>
-              <div class="kv"><span>Raza</span><b>{{ p.breed || '—' }}</b></div>
-              <div class="kv"><span>Último servicio</span><b>{{ p.lastGroomDate || '—' }}</b></div>
+              <h4>Datos b�sicos</h4>
+              <div class="kv"><span>Raza</span><b>{{ p.breed || '-' }}</b></div>
+              <div class="kv"><span>�ltimo servicio</span><b>{{ p.lastGroomDate || '-' }}</b></div>
             </div>
             <div class="section">
               <h4>Comportamiento</h4>
-              <p>{{ p.behavior || 'Sin información' }}</p>
+              <p>{{ p.behavior || 'Sin informaci�n' }}</p>
             </div>
             <div class="section">
               <h4>Salud</h4>
-              <div class="kv"><span>Vacunas</span><b>{{ p.vaccinations || '—' }}</b></div>
-              <div class="kv"><span>Desparasitación</span><b>{{ p.deworming || '—' }}</b></div>
-              <div class="kv"><span>Condiciones médicas</span><b>{{ p.medicalConditions || '—' }}</b></div>
-              <div class="kv"><span>Notas de salud</span><b>{{ p.healthNotes || '—' }}</b></div>
+              <div class="kv"><span>Vacunas</span><b>{{ p.vaccinations || '-' }}</b></div>
+              <div class="kv"><span>Desparasitaci�n</span><b>{{ p.deworming || '-' }}</b></div>
+              <div class="kv"><span>Condiciones m�dicas</span><b>{{ p.medicalConditions || '-' }}</b></div>
+              <div class="kv"><span>Notas de salud</span><b>{{ p.healthNotes || '-' }}</b></div>
             </div>
+          </div>
+
+          <div class="ai-recommendation-box" *ngIf="recommendations[p.id] as rec">
+            <h4>Recomendación para {{ rec.petName }}</h4>
+            <p *ngIf="rec.recommendedServiceType">
+              <strong>Servicio sugerido:</strong> {{ rec.recommendedServiceType }}
+            </p>
+            <p *ngIf="rec.recommendedFrequency">
+              <strong>Frecuencia recomendada:</strong> {{ rec.recommendedFrequency }}
+            </p>
+            <p>
+              {{ rec.advice }}
+            </p>
           </div>
         </article>
       </div>
@@ -226,7 +255,7 @@
     <app-modal
       [open]="confirmOpen"
       title="Eliminar mascota"
-      [message]="'¿Eliminar ' + (pendingDelete?.name || 'esta mascota') + '?'"
+      [message]="'�Eliminar ' + (pendingDelete?.name || 'esta mascota') + '?'"
       confirmLabel="Eliminar"
       cancelLabel="Cancelar"
       (confirm)="confirmDelete()"
